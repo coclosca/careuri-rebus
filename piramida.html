@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ro"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pasiența Piramida</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f4efe3; --ink:#23303d; --accent:#176b63; --accent2:#c9872a;
+  --card:#fffdf8; --line:#d9cfba; --red:#c23b3b; --black:#2a3642;
+  --good:#2f8f5b; --shadow:0 6px 18px rgba(20,40,40,.14); --soft:#ede6d6;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#161d24; --ink:#eef2f4; --accent:#49b3a6; --accent2:#e0a24a;
+  --card:#f3efe6; --line:#36424d; --soft:#1e2730; --shadow:0 6px 20px rgba(0,0,0,.4);
+}}
+*{margin:0;box-sizing:border-box}
+html,body{height:100%}
+body{background:var(--paper);color:var(--ink);font-family:"Source Sans 3",system-ui,sans-serif;
+  display:flex;flex-direction:column;align-items:center;padding:10px 10px calc(14px + env(safe-area-inset-bottom));overflow-x:hidden}
+header{width:100%;max-width:560px;display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin-bottom:6px}
+h1{font-family:"Bricolage Grotesque";font-weight:800;font-size:clamp(22px,6vw,30px);line-height:1;letter-spacing:-.02em}
+h1 small{display:block;font-family:"Source Sans 3";font-weight:700;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:3px}
+.stats{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:5px 9px;font-weight:700;font-size:12px;box-shadow:var(--shadow);white-space:nowrap}
+.stat b{color:var(--accent);font-size:14px}
+#board{width:100%;max-width:560px;position:relative;flex:1;min-height:0}
+#pyramid{position:relative;margin:6px auto 0;}
+.card{position:absolute;border-radius:9px;background:var(--card);border:1px solid var(--line);
+  box-shadow:var(--shadow);display:flex;flex-direction:column;justify-content:space-between;
+  padding:4px 5px;cursor:pointer;user-select:none;transition:transform .08s, box-shadow .12s, opacity .2s;overflow:hidden}
+.card .r{font-family:"Bricolage Grotesque";font-weight:800;line-height:.9}
+.card .s{align-self:flex-end;line-height:.9}
+.card.red{color:var(--red)} .card.black{color:var(--black)}
+.card.covered{filter:brightness(.82) saturate(.7);cursor:default;box-shadow:none}
+.card.covered::after{content:"";position:absolute;inset:0;background:rgba(20,30,40,.14)}
+.card.sel{outline:3px solid var(--accent);outline-offset:1px;transform:translateY(-6px) scale(1.04);z-index:50}
+.card.free:not(.covered):active{transform:scale(.96)}
+.pile{display:flex;align-items:center;gap:14px;justify-content:center;margin-top:12px}
+.slot{border-radius:9px;border:2px dashed var(--line);display:flex;align-items:center;justify-content:center;position:relative}
+#stock{cursor:pointer;background:linear-gradient(135deg,var(--accent) 0 50%,#12544e 50% 100%);border:1px solid var(--accent);color:#fff;font-weight:800;box-shadow:var(--shadow)}
+#stock.empty{background:none;color:var(--accent);border:2px dashed var(--line)}
+#stock .cnt{font-family:"Bricolage Grotesque";font-size:20px}
+#stock small{font-size:10px;opacity:.85;font-weight:700}
+.pile .lbl{position:absolute;bottom:-18px;left:0;right:0;text-align:center;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);opacity:.7}
+.controls{display:flex;gap:9px;margin-top:30px;width:100%;max-width:560px;justify-content:center;flex-wrap:wrap}
+button.btn{appearance:none;border:1px solid var(--line);background:var(--card);color:var(--ink);
+  font-family:inherit;font-weight:700;font-size:14px;padding:11px 16px;border-radius:12px;cursor:pointer;box-shadow:var(--shadow)}
+button.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+button.btn:active{transform:translateY(1px)}
+.hint-txt{text-align:center;font-size:13px;color:var(--accent);font-weight:700;min-height:18px;margin-top:8px}
+.overlay{position:fixed;inset:0;background:rgba(15,25,30,.55);display:none;align-items:center;justify-content:center;padding:24px;z-index:100}
+.overlay.on{display:flex}
+.modal{background:var(--paper);border-radius:20px;padding:26px 22px;max-width:360px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.modal h2{font-family:"Bricolage Grotesque";font-weight:800;font-size:28px;margin-bottom:6px}
+.modal p{color:var(--ink);opacity:.8;margin-bottom:18px}
+.legend{font-size:12.5px;color:var(--ink);opacity:.75;text-align:center;max-width:560px;margin-top:4px;line-height:1.4}
+.legend b{color:var(--accent)}
+</style></head>
+<body>
+<header>
+  <h1><small>Pasiență · joc de cărți</small>Piramida</h1>
+  <div class="stats">
+    <div class="stat">Perechi <b id="sPairs">0</b>/28</div>
+    <div class="stat">Treceri <b id="sPass">3</b></div>
+    <div class="stat"><b id="sTime">0:00</b></div>
+  </div>
+</header>
+
+<div class="legend">Elimină perechi de cărți care însumează <b>13</b>. Popul (K)=13 iese singur. A=1, J=11, D=12. Poți folosi doar cărțile <b>libere</b> (neacoperite).</div>
+
+<div id="board">
+  <div id="pyramid"></div>
+  <div class="pile">
+    <div id="stock" class="slot"><div><div class="cnt" id="stockCnt">24</div><small>trage</small></div><div class="lbl">Pachet</div></div>
+    <div id="waste" class="slot"><div class="lbl">Descartat</div></div>
+  </div>
+</div>
+
+<div class="hint-txt" id="hint"></div>
+<div class="controls">
+  <button class="btn primary" id="bNew">Joc nou</button>
+  <button class="btn" id="bHint">Indiciu</button>
+  <button class="btn" id="bUndo">Înapoi</button>
+  <button class="btn" id="bRules">📖 Regulament</button>
+</div>
+
+<div class="overlay" id="rules"><div class="modal" style="text-align:left;max-width:400px">
+  <h2 style="text-align:center">📖 Regulament</h2>
+  <p style="text-align:center;margin-bottom:14px">Pasiența <b>Piramida</b></p>
+  <div style="font-size:14px;line-height:1.55;color:var(--ink)">
+    <p style="margin-bottom:10px"><b>Scop:</b> demolează toată piramida, eliminând perechi de cărți care însumează <b>13</b>.</p>
+    <p style="margin-bottom:10px"><b>Valori:</b> A = 1 · cărțile 2–10 = valoarea lor · J = 11 · D (Dama) = 12 · K (Popul) = 13.</p>
+    <p style="margin-bottom:6px"><b>Cum joci:</b></p>
+    <ul style="margin:0 0 10px 18px;padding:0">
+      <li>Folosești doar cărțile <b>libere</b> (neacoperite de altele).</li>
+      <li>Atingi două cărți libere care fac <b>13</b> → dispar (ex. 8 + 5, 9 + 4, 10 + 3, D + A).</li>
+      <li><b>Popul (K)</b> face 13 singur → iese dintr-o atingere.</li>
+      <li>Fără mutări? Trage din <b>Pachet</b> în „Descartat" și folosește cartea de deasupra.</li>
+      <li>Ai <b>3 treceri</b> prin pachet (când se golește, se reciclează).</li>
+    </ul>
+    <p style="margin-bottom:10px"><b>Butoane:</b> Indiciu (îți arată o pereche) · Înapoi (anulează) · Joc nou.</p>
+    <p><b>Câștigi</b> când ai eliminat toată piramida. Spune legenda că „se împlinește dorința"! 🎉</p>
+  </div>
+  <button class="btn primary" id="rulesClose" style="width:100%;margin-top:16px">Am înțeles</button>
+</div></div>
+
+<div class="overlay" id="ov"><div class="modal">
+  <h2 id="ovT">Felicitări!</h2>
+  <p id="ovP">Ai demolat toată piramida.</p>
+  <button class="btn primary" id="ovNew" style="width:100%">Joc nou</button>
+</div></div>
+
+<script>
+const $=id=>document.getElementById(id);
+const SUITS=[{s:"♠",c:"black"},{s:"♥",c:"red"},{s:"♦",c:"red"},{s:"♣",c:"black"}];
+const RANKS=[{r:"A",v:1},{r:"2",v:2},{r:"3",v:3},{r:"4",v:4},{r:"5",v:5},{r:"6",v:6},{r:"7",v:7},{r:"8",v:8},{r:"9",v:9},{r:"10",v:10},{r:"J",v:11},{r:"D",v:12},{r:"K",v:13}];
+let pyr, stock, waste, removed, selected, passes, pairs, startT, timer, history;
+
+function newDeck(){
+  let d=[];
+  for(const su of SUITS)for(const rk of RANKS)d.push({r:rk.r,v:rk.v,s:su.s,c:su.c});
+  for(let i=d.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[d[i],d[j]]=[d[j],d[i]];}
+  return d;
+}
+function deal(){
+  const d=newDeck();
+  pyr=[]; let k=0;
+  for(let r=0;r<7;r++){pyr[r]=[];for(let i=0;i<=r;i++)pyr[r][i]=d[k++];}
+  removed=pyr.map(row=>row.map(()=>false));
+  stock=d.slice(28); waste=[]; selected=null; passes=3; pairs=0; history=[];
+  startT=Date.now(); clearInterval(timer); timer=setInterval(tick,1000);
+  $("ov").classList.remove("on"); render(); tick();
+}
+function tick(){const s=(Date.now()-startT)/1000|0;$("sTime").textContent=(s/60|0)+":"+String(s%60).padStart(2,"0");}
+
+function covered(r,i){ if(r===6)return false; return !(removed[r+1][i] && removed[r+1][i+1]); }
+function isFreePyr(r,i){ return !removed[r][i] && !covered(r,i); }
+
+function layout(){
+  const board=$("board").clientWidth || 360;
+  const maxW=Math.min(board, 520);
+  // card width so bottom row (7 cards, slight overlap horizontally) fits
+  const cw=Math.min(66, (maxW-8)/7.4);
+  const ch=cw*1.42;
+  const ox=cw*0.07;           // horizontal gap addition
+  const voff=ch*0.44;         // vertical overlap
+  const py=$("pyramid");
+  py.style.height=(voff*6+ch+6)+"px";
+  const totalW=maxW;
+  return {cw,ch,ox,voff,totalW};
+}
+function render(){
+  const {cw,ch,ox,voff,totalW}=layout();
+  const py=$("pyramid"); py.innerHTML="";
+  const stepX=cw+ox*0;        // horizontal distance between adjacent cards in a row
+  const spacing=cw*1.02;
+  for(let r=0;r<7;r++){
+    const rowW=(r)*spacing+cw;
+    const startX=(totalW-rowW)/2;
+    for(let i=0;i<=r;i++){
+      if(removed[r][i])continue;
+      const card=pyr[r][i];
+      const el=document.createElement("div");
+      el.className="card "+card.c+(isFreePyr(r,i)?" free":" covered");
+      el.style.width=cw+"px"; el.style.height=ch+"px";
+      el.style.left=(startX+i*spacing)+"px";
+      el.style.top=(r*voff)+"px";
+      el.style.fontSize=(cw*0.34)+"px";
+      el.innerHTML='<div class="r">'+card.r+'</div><div class="s">'+card.s+'</div>';
+      if(selected&&selected.t==="pyr"&&selected.r===r&&selected.i===i)el.classList.add("sel");
+      if(isFreePyr(r,i))el.onclick=()=>pick({t:"pyr",r,i,v:card.v});
+      py.appendChild(el);
+    }
+  }
+  // stock + waste
+  const sc=$("stock"); sc.classList.toggle("empty",stock.length===0);
+  sc.style.width=cw+"px"; sc.style.height=ch+"px";
+  $("stockCnt").textContent=stock.length|| (passes>0?"↻":"–");
+  const wc=$("waste"); wc.style.width=cw+"px"; wc.style.height=ch+"px"; wc.innerHTML='<div class="lbl">Descartat</div>';
+  if(waste.length){
+    const card=waste[waste.length-1];
+    const el=document.createElement("div");
+    el.className="card "+card.c+" free"; el.style.width="100%"; el.style.height="100%";
+    el.style.fontSize=(cw*0.34)+"px";
+    el.innerHTML='<div class="r">'+card.r+'</div><div class="s">'+card.s+'</div>';
+    if(selected&&selected.t==="waste")el.classList.add("sel");
+    el.onclick=()=>pick({t:"waste",v:card.v});
+    wc.appendChild(el);
+  }
+  $("sPairs").textContent=pairs; $("sPass").textContent=passes;
+  $("hint").textContent="";
+}
+function snapshot(){history.push(JSON.stringify({pyr,stock,waste,removed,passes,pairs}));if(history.length>40)history.shift();}
+function pick(sel){
+  const val=sel.v;
+  if(val===13){ snapshot(); removeCard(sel); pairs++; afterMove(); return; }
+  if(!selected){ selected=sel; render(); return; }
+  if(sameSel(selected,sel)){ selected=null; render(); return; }
+  if(selected.v+val===13){ snapshot(); removeCard(selected); removeCard(sel); selected=null; pairs++; afterMove(); }
+  else { selected=sel; render(); }
+}
+function sameSel(a,b){ if(a.t!==b.t)return false; if(a.t==="waste")return true; return a.r===b.r&&a.i===b.i; }
+function removeCard(sel){
+  if(sel.t==="pyr")removed[sel.r][sel.i]=true;
+  else waste.pop();
+}
+function afterMove(){
+  render();
+  if(removed.every(row=>row.every(x=>x))){ win(); return; }
+  checkDead();
+}
+function drawStock(){
+  selected=null;
+  if(stock.length>0){ snapshot(); waste.push(stock.shift()); render(); checkDead(); }
+  else if(passes>1){ snapshot(); passes--; stock=waste.slice().reverse(); waste=[]; render(); }
+  else { $("hint").textContent="Nu mai ai treceri prin pachet."; }
+}
+$("stock").onclick=drawStock;
+
+function freeValues(){
+  const vals=[];
+  for(let r=0;r<7;r++)for(let i=0;i<=r;i++)if(isFreePyr(r,i))vals.push(pyr[r][i].v);
+  if(waste.length)vals.push(waste[waste.length-1].v);
+  return vals;
+}
+function hasMove(){
+  const v=freeValues();
+  if(v.includes(13))return true;
+  for(let i=0;i<v.length;i++)for(let j=i+1;j<v.length;j++)if(v[i]+v[j]===13)return true;
+  return false;
+}
+function checkDead(){
+  if(removed.every(row=>row.every(x=>x)))return;
+  if(!hasMove() && stock.length===0 && passes<=1){ lose(); }
+}
+function win(){ clearInterval(timer); $("ovT").textContent="Felicitări! 🎉"; $("ovP").textContent="Ai demolat toată piramida. Dorința ți se împlinește!"; $("ov").classList.add("on"); }
+function lose(){ clearInterval(timer); $("ovT").textContent="Joc blocat"; $("ovP").textContent="Nu mai sunt mutări posibile. Mai încearcă o dată!"; $("ov").classList.add("on"); }
+
+$("bHint").onclick=()=>{
+  const spots=[];
+  for(let r=0;r<7;r++)for(let i=0;i<=r;i++)if(isFreePyr(r,i))spots.push({r,i,v:pyr[r][i].v});
+  const w=waste.length?{w:true,v:waste[waste.length-1].v}:null;
+  // caută pereche
+  let found=null;
+  for(const a of spots){ if(a.v===13){found=[a];break;} }
+  if(!found)for(let x=0;x<spots.length;x++)for(let y=x+1;y<spots.length;y++)if(spots[x].v+spots[y].v===13){found=[spots[x],spots[y]];break;}
+  if(!found&&w)for(const a of spots)if(a.v+w.v===13){found=[a];break;}
+  if(found){ $("hint").textContent="Încearcă: "+found.map(c=>pyr[c.r][c.i].r+pyr[c.r][c.i].s).join(" + ")+(found.length===1&&found[0].v!==13?" + cartea descartată":""); }
+  else $("hint").textContent=stock.length?"Nicio pereche liberă — trage o carte din pachet.":"Nicio mutare — reciclează pachetul.";
+};
+$("bUndo").onclick=()=>{
+  if(!history.length){$("hint").textContent="Nimic de anulat.";return;}
+  const s=JSON.parse(history.pop());
+  pyr=s.pyr;stock=s.stock;waste=s.waste;removed=s.removed;passes=s.passes;pairs=s.pairs;selected=null;render();
+};
+$("bNew").onclick=deal; $("ovNew").onclick=deal;
+$("bRules").onclick=()=>$("rules").classList.add("on");
+$("rulesClose").onclick=()=>$("rules").classList.remove("on");
+$("rules").onclick=e=>{if(e.target.id==="rules")$("rules").classList.remove("on");};
+window.addEventListener("resize",()=>{if(pyr)render();});
+deal();
+</script>
+</body></html>
