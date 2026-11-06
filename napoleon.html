@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ro"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pasiența lui Napoleon</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#f4efe3;--ink:#23303d;--accent:#8a3a3a;--accent2:#c9872a;--card:#fffdf8;--line:#d9cfba;--red:#c23b3b;--black:#2a3642;--good:#2f8f5b;--shadow:0 5px 15px rgba(20,40,40,.14);--soft:#ede6d6;--felt:#2f6b4f}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#161d24;--ink:#eef2f4;--accent:#d4716e;--card:#f3efe6;--line:#36424d;--soft:#1e2730;--shadow:0 6px 20px rgba(0,0,0,.4);--felt:#214a38}}
+*{margin:0;box-sizing:border-box}
+html,body{min-height:100%}
+body{background:var(--paper);color:var(--ink);font-family:"Source Sans 3",system-ui,sans-serif;display:flex;flex-direction:column;align-items:center;padding:10px 10px calc(16px + env(safe-area-inset-bottom))}
+header{width:100%;max-width:520px;display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin-bottom:6px}
+h1{font-family:"Bricolage Grotesque";font-weight:800;font-size:clamp(20px,5.5vw,28px);line-height:1;letter-spacing:-.02em}
+h1 small{display:block;font-family:"Source Sans 3";font-weight:700;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:3px}
+.stats{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:5px 9px;font-weight:700;font-size:12px;box-shadow:var(--shadow);white-space:nowrap}
+.stat b{color:var(--accent);font-size:14px}
+.legend{font-size:12.5px;color:var(--ink);opacity:.78;text-align:center;max-width:520px;margin:2px 0 8px;line-height:1.4}
+.legend b{color:var(--accent)}
+.felt{background:var(--felt);border-radius:16px;padding:14px 10px;width:100%;max-width:520px;box-shadow:inset 0 2px 12px rgba(0,0,0,.25)}
+.rowlab{color:#e8e0cf;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;text-align:center;opacity:.8;margin:2px 0}
+.prow{display:flex;gap:7px;justify-content:center}
+.slot{width:60px;height:84px;border-radius:9px;border:2px dashed rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;position:relative;flex:0 0 auto}
+@media(max-width:400px){.slot{width:54px;height:76px}}
+.slot .ph{color:rgba(255,255,255,.55);font-weight:800;font-size:15px;text-align:center;line-height:1.1}
+.card{position:absolute;inset:0;border-radius:9px;background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow);display:flex;flex-direction:column;justify-content:space-between;padding:5px 6px;cursor:pointer;user-select:none}
+.card .r{font-family:"Bricolage Grotesque";font-weight:800;line-height:.9;font-size:20px}
+.card .s{align-self:flex-end;line-height:.9;font-size:20px}
+.card.red{color:var(--red)}.card.black{color:var(--black)}
+.slot.ok{border-color:#ffd36b;box-shadow:0 0 0 2px #ffd36b inset;cursor:pointer}
+.mid{display:flex;justify-content:center;gap:7px;margin:7px 0}
+.bottom{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:12px;width:100%;max-width:520px}
+.pile-wrap{text-align:center}
+.pile-wrap .lbl{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);opacity:.75;margin-top:16px}
+#deck{width:62px;height:86px;border-radius:9px;background:linear-gradient(135deg,var(--accent) 0 50%,#6e2c2c 50% 100%);border:1px solid var(--accent);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;box-shadow:var(--shadow)}
+#deck.empty{background:none;border:2px dashed var(--line);color:var(--accent)}
+#deck .c{font-family:"Bricolage Grotesque";font-weight:800;font-size:22px}
+#deck small{font-size:10px;font-weight:700;opacity:.9}
+#active{width:62px;height:86px;border-radius:9px;position:relative;border:2px dashed var(--line);display:flex;align-items:center;justify-content:center}
+#active .ph{color:var(--line);font-size:11px;text-align:center;font-weight:700}
+#active .card{cursor:pointer}
+#active.canplay .card{outline:3px solid var(--good);outline-offset:1px}
+.controls{display:flex;gap:9px;margin-top:16px;width:100%;max-width:520px;justify-content:center;flex-wrap:wrap}
+button.btn{appearance:none;border:1px solid var(--line);background:var(--card);color:var(--ink);font-family:inherit;font-weight:700;font-size:14px;padding:11px 15px;border-radius:12px;cursor:pointer;box-shadow:var(--shadow)}
+button.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+button.btn:active{transform:translateY(1px)}
+.hint-txt{text-align:center;font-size:13px;color:var(--accent);font-weight:700;min-height:18px;margin-top:8px}
+.overlay{position:fixed;inset:0;background:rgba(15,25,30,.55);display:none;align-items:center;justify-content:center;padding:22px;z-index:100}
+.overlay.on{display:flex}
+.modal{background:var(--paper);border-radius:20px;padding:24px 20px;max-width:400px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.modal h2{font-family:"Bricolage Grotesque";font-weight:800;font-size:26px;margin-bottom:6px;text-align:center}
+.modal p{color:var(--ink);opacity:.85;margin-bottom:10px;font-size:14px;line-height:1.5}
+.modal ul{margin:0 0 10px 18px;font-size:14px;line-height:1.5}
+</style></head>
+<body>
+<header>
+  <h1><small>Pasiență · 52 de cărți</small>Napoleon</h1>
+  <div class="stats">
+    <div class="stat">Așezate <b id="sDone">0</b>/52</div>
+    <div class="stat">Treceri <b id="sPass">3</b></div>
+    <div class="stat"><b id="sTime">0:00</b></div>
+  </div>
+</header>
+<div class="legend">4 <b>Dame</b> în centru. Pe <b>6</b> construiești crescător (6·7·8·9·10·J), pe <b>5</b> descrescător (5·4·3·2·A·K) — pe aceeași culoare. Atinge cartea activă ca s-o așezi.</div>
+
+<div class="felt">
+  <div class="rowlab">Crescător pe 6 → J</div>
+  <div class="prow" id="rowSix"></div>
+  <div class="rowlab" style="margin-top:8px">Damele</div>
+  <div class="mid" id="rowQ"></div>
+  <div class="rowlab">Descrescător pe 5 → K</div>
+  <div class="prow" id="rowFive"></div>
+</div>
+
+<div class="bottom">
+  <div class="pile-wrap"><div id="deck"><div class="c" id="deckCnt">52</div><small>trage</small></div><div class="lbl">Pachet</div></div>
+  <div class="pile-wrap"><div id="active"><div class="ph">carte<br>activă</div></div><div class="lbl">Activă</div></div>
+</div>
+
+<div class="hint-txt" id="hint"></div>
+<div class="controls">
+  <button class="btn primary" id="bDraw">Trage o carte</button>
+  <button class="btn" id="bNew">Joc nou</button>
+  <button class="btn" id="bRules">📖 Regulament</button>
+</div>
+
+<div class="overlay" id="rules"><div class="modal">
+  <h2>📖 Regulament</h2>
+  <p style="text-align:center"><b>Pasiența lui Napoleon</b> (varianta geometrică)</p>
+  <p><b>Scop:</b> așază toate cele 52 de cărți pe masă.</p>
+  <ul>
+    <li>Cele <b>4 Dame (D)</b> se pun în centru.</li>
+    <li>Pe fiecare <b>6</b> clădești <b>crescător</b>: 6·7·8·9·10·J, pe aceeași culoare/semn.</li>
+    <li>Pe fiecare <b>5</b> clădești <b>descrescător</b>: 5·4·3·2·A·K, pe aceeași culoare/semn.</li>
+    <li>Tragi cărți din pachet. Cartea pe care nu o poți așeza rămâne „activă" și merge în pachet la o nouă tragere.</li>
+    <li>Poți folosi doar cartea <b>activă</b> (ultima trasă).</li>
+    <li>Ai <b>3 treceri</b> prin pachet.</li>
+  </ul>
+  <p><b>Câștigi</b> când toate cărțile sunt așezate — în jurul Damelor rămân Valeții și Popii. 🎉</p>
+  <button class="btn primary" id="rulesClose" style="width:100%;margin-top:6px">Am înțeles</button>
+</div></div>
+
+<div class="overlay" id="ov"><div class="modal" style="text-align:center">
+  <h2 id="ovT">Felicitări!</h2>
+  <p id="ovP" style="text-align:center"></p>
+  <button class="btn primary" id="ovNew" style="width:100%">Joc nou</button>
+</div></div>
+
+<script>
+const $=id=>document.getElementById(id);
+const SUITS=[{s:"♠",c:"black"},{s:"♥",c:"red"},{s:"♦",c:"red"},{s:"♣",c:"black"}];
+const RANKS=[{r:"A",v:1},{r:"2",v:2},{r:"3",v:3},{r:"4",v:4},{r:"5",v:5},{r:"6",v:6},{r:"7",v:7},{r:"8",v:8},{r:"9",v:9},{r:"10",v:10},{r:"J",v:11},{r:"D",v:12},{r:"K",v:13}];
+const rLabel=v=>RANKS.find(x=>x.v===v).r;
+let deck,talon,active,queens,six,five,passes,startT,timer;
+const DESC_NEXT={5:4,4:3,3:2,2:1,1:13}; // 5->4->3->2->A->K
+
+function newDeck(){let d=[];for(const su of SUITS)for(const rk of RANKS)d.push({r:rk.r,v:rk.v,s:su.s,c:su.c});
+  for(let i=d.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[d[i],d[j]]=[d[j],d[i]];}return d;}
+function deal(){
+  deck=newDeck();talon=[];active=null;passes=3;
+  queens={};six={};five={};
+  for(const su of SUITS){queens[su.s]=null;six[su.s]=[];five[su.s]=[];}
+  startT=Date.now();clearInterval(timer);timer=setInterval(tick,1000);
+  $("ov").classList.remove("on");render();tick();
+}
+function tick(){const s=(Date.now()-startT)/1000|0;$("sTime").textContent=(s/60|0)+":"+String(s%60).padStart(2,"0");}
+
+function target(card){
+  if(!card)return null;const v=card.v,s=card.s;
+  if(v===12)return queens[s]===null?{p:"q",s}:null;
+  if(v===6)return six[s].length===0?{p:"6",s}:null;
+  if(v>=7&&v<=11){const t=six[s];return t.length&&t[t.length-1].v===v-1?{p:"6",s}:null;}
+  if(v===5)return five[s].length===0?{p:"5",s}:null;
+  // descendent: 4,3,2,A,K
+  const t=five[s];if(!t.length)return null;const top=t[t.length-1].v;
+  if(DESC_NEXT[top]===v)return{p:"5",s};
+  return null;
+}
+function placed(){let n=0;for(const su of SUITS){if(queens[su.s])n++;n+=six[su.s].length+five[su.s].length;}return n;}
+
+function cardHTML(card){return '<div class="card '+card.c+'"><div class="r">'+card.r+'</div><div class="s">'+card.s+'</div></div>';}
+function slot(topCard,ph,okClick){
+  const d=document.createElement("div");d.className="slot";
+  if(topCard)d.innerHTML=cardHTML(topCard);
+  else d.innerHTML='<div class="ph">'+ph+'</div>';
+  if(okClick)d.classList.add("ok"),d.onclick=okClick;
+  return d;
+}
+function render(){
+  // highlight valid target for active
+  const tg=target(active);
+  const six_row=$("rowSix");six_row.innerHTML="";
+  SUITS.forEach(su=>{const t=six[su.s];const top=t[t.length-1];
+    const ok=tg&&tg.p==="6"&&tg.s===su.s;
+    six_row.appendChild(slot(top, "6"+su.s+"↑", ok?()=>play():null));});
+  const q_row=$("rowQ");q_row.innerHTML="";
+  SUITS.forEach(su=>{const ok=tg&&tg.p==="q"&&tg.s===su.s;
+    q_row.appendChild(slot(queens[su.s], "D"+su.s, ok?()=>play():null));});
+  const five_row=$("rowFive");five_row.innerHTML="";
+  SUITS.forEach(su=>{const t=five[su.s];const top=t[t.length-1];
+    const ok=tg&&tg.p==="5"&&tg.s===su.s;
+    five_row.appendChild(slot(top, "5"+su.s+"↓", ok?()=>play():null));});
+  // deck + active
+  $("deck").classList.toggle("empty",deck.length===0);
+  $("deckCnt").textContent=deck.length|| (passes>1?"↻":"–");
+  const a=$("active");a.classList.toggle("canplay",!!tg);
+  if(active){a.innerHTML=cardHTML(active);a.firstChild.onclick=()=>play();}
+  else a.innerHTML='<div class="ph">carte<br>activă</div>';
+  $("sDone").textContent=placed();$("sPass").textContent=passes;
+  $("hint").textContent="";
+}
+function play(){
+  const tg=target(active);if(!tg){$("hint").textContent="Cartea activă nu se poate așeza — trage alta.";return;}
+  if(tg.p==="q")queens[tg.s]=active;
+  else if(tg.p==="6")six[tg.s].push(active);
+  else five[tg.s].push(active);
+  active=null;render();
+  if(placed()===52){win();return;}
+}
+function draw(){
+  // daca cartea activa inca poate fi jucata, nu o ingropa fara sa avertizezi? o ducem in pachet jos.
+  if(active){deck.push(active);active=null;}
+  if(deck.length===0){
+    if(passes>1){passes--;deck=talon.reverse();talon=[];}
+    else {render();$("hint").textContent="Nu mai ai treceri. Joc blocat dacă nu mai poți așeza.";checkDead();return;}
+  }
+  active=deck.shift();render();
+  // auto-play dame? le lasam manual pt claritate; dar aratam daca se poate
+  if(!target(active)){ /* ramane activa */ }
+  checkDead();
+}
+function anyPlayable(){
+  // activa sau orice din pachet poate deveni jucabila candva? simplificat: daca activa nu merge si nu mai sunt trageri
+  if(target(active))return true;
+  return deck.length>0 || passes>1;
+}
+function checkDead(){
+  if(placed()===52)return;
+  if(!target(active) && deck.length===0 && passes<=1){
+    // mai verificam daca vreo carte din talon ar putea fi jucata la reciclare — dar nu mai avem treceri
+    lose();
+  }
+}
+function win(){clearInterval(timer);$("ovT").textContent="Felicitări! 🎉";$("ovP").textContent="Ai așezat toate cele 52 de cărți. Pasiența a reușit!";$("ov").classList.add("on");}
+function lose(){clearInterval(timer);$("ovT").textContent="Joc blocat";$("ovP").textContent="Nu mai sunt mutări și s-au terminat trecerile. Mai încearcă!";$("ov").classList.add("on");}
+
+$("bDraw").onclick=draw;
+$("deck").onclick=draw;
+$("bNew").onclick=deal;$("ovNew").onclick=deal;
+$("bRules").onclick=()=>$("rules").classList.add("on");
+$("rulesClose").onclick=()=>$("rules").classList.remove("on");
+$("rules").onclick=e=>{if(e.target.id==="rules")$("rules").classList.remove("on");};
+deal();
+</script>
+</body></html>
