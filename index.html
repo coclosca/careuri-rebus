@@ -26,6 +26,19 @@ h1{font-family:"Bricolage Grotesque";font-weight:800;font-size:clamp(30px,8vw,42
 .tile.wide .emo{font-size:30px}
 .sect{font-weight:700;letter-spacing:.14em;text-transform:uppercase;font-size:11px;color:var(--accent);margin:22px 4px 10px}
 footer{text-align:center;color:var(--muted);font-size:12px;margin-top:26px}
+
+.offbtn{display:inline-flex;align-items:center;gap:7px;margin-top:14px;background:var(--card);border:1px solid var(--line);color:var(--accent);font-weight:700;font-size:13px;padding:9px 16px;border-radius:999px;box-shadow:var(--shadow);cursor:pointer;font-family:inherit}
+.offbtn:active{transform:translateY(1px)}
+.ovl{position:fixed;inset:0;background:rgba(15,25,30,.55);display:none;align-items:center;justify-content:center;padding:22px;z-index:100}
+.ovl.on{display:flex}
+.sheet{background:var(--paper);border-radius:20px;padding:24px 20px;max-width:420px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3);max-height:88vh;overflow:auto}
+.sheet h2{font-family:"Bricolage Grotesque";font-weight:800;font-size:24px;margin-bottom:4px;text-align:center}
+.sheet .sub{text-align:center;color:var(--muted);font-size:14px;margin-bottom:16px}
+.osec{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:12px}
+.osec h3{font-size:15px;font-weight:800;margin-bottom:8px;display:flex;align-items:center;gap:7px}
+.osec ol{margin:0 0 0 18px;padding:0;font-size:14px;line-height:1.6}
+.osec b{color:var(--accent)}
+.note{font-size:12.5px;color:var(--muted);text-align:center;line-height:1.4;margin-top:4px}
 </style>  <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#176b63">
   <link rel="apple-touch-icon" href="icon-192.png">
@@ -37,6 +50,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;margin-top:26px}
     <div class="kick">Jocuri de minte · și distracție</div>
     <h1>Integrame, Rebus<br>&amp; Jocuri</h1>
     <p>Alege un joc și distrează-te 👇</p>
+    <button class="offbtn" id="offBtn">📴 Joacă și fără internet — vezi cum</button>
   </div>
 
   <a class="tile wide" href="integrame.html">
@@ -70,4 +84,37 @@ footer{text-align:center;color:var(--muted);font-size:12px;margin-top:26px}
 
   <footer>Făcut cu drag · se adaugă jocuri noi mereu</footer>
 </div>
+
+<div class="ovl" id="offModal">
+  <div class="sheet">
+    <h2>📴 Joacă și fără internet</h2>
+    <div class="sub">Instalează jocurile ca aplicație și le joci oriunde — în avion, în metrou, pe mare.</div>
+    <div class="osec">
+      <h3>🤖 Android (Chrome)</h3>
+      <ol>
+        <li>Deschide acest site în <b>Chrome</b> (o dată, cu internet)</li>
+        <li>Apasă <b>⋮</b> (sus-dreapta)</li>
+        <li>Alege <b>„Adaugă pe ecranul principal"</b> (sau „Instalează aplicația")</li>
+        <li>Confirmă → apare o <b>iconiță</b> pe ecran</li>
+      </ol>
+    </div>
+    <div class="osec">
+      <h3>🍎 iPhone (Safari)</h3>
+      <ol>
+        <li>Deschide site-ul în <b>Safari</b> (o dată, cu internet)</li>
+        <li>Apasă butonul <b>Share</b> (pătratul cu săgeată ↑)</li>
+        <li>Alege <b>„Adaugă pe ecranul de pornire"</b> → Adaugă</li>
+      </ol>
+    </div>
+    <p class="note">💡 Trebuie deschis <b>o dată cu internet</b> ca să se salveze. După aceea merge și în modul avion ✈️.</p>
+    <button class="offbtn" id="offClose" style="width:100%;justify-content:center;margin-top:14px;background:var(--accent);color:#fff;border-color:var(--accent)">Am înțeles</button>
+  </div>
+</div>
+<script>
+(function(){var $=function(i){return document.getElementById(i)};
+$("offBtn").onclick=function(){$("offModal").classList.add("on")};
+$("offClose").onclick=function(){$("offModal").classList.remove("on")};
+$("offModal").onclick=function(e){if(e.target.id==="offModal")$("offModal").classList.remove("on")};
+})();
+</script>
 </body></html>
