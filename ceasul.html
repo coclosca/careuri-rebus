@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ro"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pasiența Ceasul</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#176b63">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#f4efe3;--ink:#23303d;--accent:#3a5a8a;--accent2:#c9872a;--card:#fffdf8;--line:#d9cfba;--red:#c23b3b;--black:#2a3642;--good:#2f8f5b;--shadow:0 5px 15px rgba(20,40,40,.14);--felt:#2f5b6b}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#161d24;--ink:#eef2f4;--accent:#6e93cc;--card:#f3efe6;--line:#36424d;--shadow:0 6px 20px rgba(0,0,0,.4);--felt:#213f4a}}
+*{margin:0;box-sizing:border-box}html,body{min-height:100%}
+body{background:var(--paper);color:var(--ink);font-family:"Source Sans 3",system-ui,sans-serif;display:flex;flex-direction:column;align-items:center;padding:10px 10px calc(16px + env(safe-area-inset-bottom))}
+.backlink{align-self:flex-start;color:var(--accent);font-weight:700;text-decoration:none;font-size:13px;background:var(--card);border:1px solid var(--line);padding:6px 12px;border-radius:999px;box-shadow:var(--shadow);margin-bottom:8px}
+header{width:100%;max-width:460px;display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin-bottom:6px}
+h1{font-family:"Bricolage Grotesque";font-weight:800;font-size:clamp(20px,5.5vw,28px);line-height:1;letter-spacing:-.02em}
+h1 small{display:block;font-weight:700;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:3px}
+.stats{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:5px 9px;font-weight:700;font-size:12px;box-shadow:var(--shadow);white-space:nowrap}
+.stat b{color:var(--accent);font-size:14px}
+.legend{font-size:12.5px;color:var(--ink);opacity:.78;text-align:center;max-width:460px;margin:2px 0 8px;line-height:1.4}
+.legend b{color:var(--accent)}
+#clock{position:relative;width:min(94vw,440px);height:min(94vw,440px);margin:4px auto;background:radial-gradient(circle at 50% 45%, rgba(255,255,255,.06), rgba(0,0,0,.08)),var(--felt);border-radius:50%;box-shadow:inset 0 2px 16px rgba(0,0,0,.3)}
+.pile{position:absolute;width:52px;height:72px;transform:translate(-50%,-50%);border-radius:8px}
+@media(max-width:380px){.pile{width:46px;height:64px}}
+.pile .seat{position:absolute;inset:0;border-radius:8px;border:2px dashed rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center}
+.pile .hr{position:absolute;top:-16px;left:50%;transform:translateX(-50%);font-size:11px;font-weight:800;color:#e8e0cf}
+.pile .down{position:absolute;inset:0;border-radius:8px;background:linear-gradient(135deg,var(--accent) 0 50%,#28406080 50%);border:1px solid var(--accent);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:15px;box-shadow:var(--shadow)}
+.pile .up{position:absolute;inset:0;border-radius:8px;background:var(--card);border:1px solid var(--line);display:flex;flex-direction:column;justify-content:space-between;padding:3px 5px;box-shadow:var(--shadow)}
+.pile .up .r{font-family:"Bricolage Grotesque";font-weight:800;font-size:18px;line-height:.9}
+.pile .up .s{align-self:flex-end;font-size:17px;line-height:.9}
+.up.red{color:var(--red)}.up.black{color:var(--black)}
+.pile .cnt{position:absolute;bottom:-7px;right:-7px;background:var(--accent2);color:#fff;font-size:10px;font-weight:800;border-radius:999px;min-width:18px;height:18px;display:flex;align-items:center;justify-content:center;padding:0 4px}
+.pile.active .down,.pile.active .up,.pile.active .seat{outline:3px solid #ffd36b;outline-offset:1px}
+.controls{display:flex;gap:9px;margin-top:14px;width:100%;max-width:460px;justify-content:center;flex-wrap:wrap}
+button.btn{appearance:none;border:1px solid var(--line);background:var(--card);color:var(--ink);font-family:inherit;font-weight:700;font-size:14px;padding:11px 15px;border-radius:12px;cursor:pointer;box-shadow:var(--shadow)}
+button.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+button.btn:active{transform:translateY(1px)}
+.overlay{position:fixed;inset:0;background:rgba(15,25,30,.55);display:none;align-items:center;justify-content:center;padding:22px;z-index:100}
+.overlay.on{display:flex}
+.modal{background:var(--paper);border-radius:20px;padding:24px 20px;max-width:380px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.modal h2{font-family:"Bricolage Grotesque";font-weight:800;font-size:26px;margin-bottom:6px;text-align:center}
+.modal p{opacity:.85;margin-bottom:10px;font-size:14px;line-height:1.5}
+.modal ul{margin:0 0 10px 18px;font-size:14px;line-height:1.5}
+</style></head>
+<body>
+<a class="backlink" href="index.html">← Meniu</a>
+<header>
+  <h1><small>Pasiență · joc de noroc</small>Ceasul</h1>
+  <div class="stats">
+    <div class="stat">Întoarse <b id="sRev">0</b>/52</div>
+    <div class="stat">Popi <b id="sK">0</b>/4</div>
+  </div>
+</header>
+<div class="legend">Întoarce cărțile și pune-le la <b>ora</b> lor (A=1, J=11, D=12, K=centru). Tragi apoi din teancul unde ai pus. <b>Câștigi</b> dacă întorci toate cărțile înainte să iasă al 4-lea Pop.</div>
+
+<div id="clock"></div>
+
+<div class="controls">
+  <button class="btn primary" id="bStep">Următoarea carte</button>
+  <button class="btn" id="bAuto">▶ Auto</button>
+  <button class="btn" id="bNew">Joc nou</button>
+  <button class="btn" id="bRules">📖 Reguli</button>
+</div>
+
+<div class="overlay" id="rules"><div class="modal">
+  <h2>📖 Regulament</h2>
+  <p style="text-align:center"><b>Pasiența Ceasul</b></p>
+  <p>Cele 52 de cărți sunt împărțite în 13 teancuri a câte 4, așezate ca pe un cadran de ceas (orele 1–12) plus unul în centru (Popii).</p>
+  <ul>
+    <li>Începi cu teancul din <b>centru</b>.</li>
+    <li>Întorci cartea de deasupra și o pui, cu fața în sus, la <b>ora</b> ei: A=ora 1, 2–10 la ora lor, J=11, D=12, K=centru.</li>
+    <li>Tragi apoi cartea de deasupra din <b>acel</b> teanc și repeți.</li>
+  </ul>
+  <p><b>Câștigi</b> dacă întorci toate cele 52. <b>Pierzi</b> dacă iese al 4-lea Pop (K) înainte de a descoperi restul — nu mai ai de unde trage.</p>
+  <button class="btn primary" id="rulesClose" style="width:100%;margin-top:6px">Am înțeles</button>
+</div></div>
+
+<div class="overlay" id="ov"><div class="modal" style="text-align:center">
+  <h2 id="ovT"></h2><p id="ovP" style="text-align:center"></p>
+  <button class="btn primary" id="ovNew" style="width:100%">Joc nou</button>
+</div></div>
+
+<script>
+const $=id=>document.getElementById(id);
+const SUITS=[{s:"♠",c:"black"},{s:"♥",c:"red"},{s:"♦",c:"red"},{s:"♣",c:"black"}];
+const RANKS=[{r:"A",v:1},{r:"2",v:2},{r:"3",v:3},{r:"4",v:4},{r:"5",v:5},{r:"6",v:6},{r:"7",v:7},{r:"8",v:8},{r:"9",v:9},{r:"10",v:10},{r:"J",v:11},{r:"D",v:12},{r:"K",v:13}];
+let piles,active,revealed,kings,autoT;
+
+function deal(){
+  let d=[];for(const su of SUITS)for(const rk of RANKS)d.push({r:rk.r,v:rk.v,s:su.s,c:su.c});
+  for(let i=d.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[d[i],d[j]]=[d[j],d[i]];}
+  piles=[];for(let i=0;i<13;i++)piles.push({down:[],up:[]});
+  for(let i=0;i<52;i++)piles[i%13].down.push(d[i]);
+  active=12;revealed=0;kings=0;stopAuto();$("ov").classList.remove("on");layout();render();
+}
+function layout(){
+  const cl=$("clock");cl.innerHTML="";
+  const sz=cl.clientWidth;const cx=sz/2,cy=sz/2;const R=sz/2-42;
+  for(let i=0;i<13;i++){
+    const el=document.createElement("div");el.className="pile";el.id="pile"+i;el.dataset.i=i;
+    let x=cx,y=cy;
+    if(i<12){const hour=i+1;const a=hour*30*Math.PI/180;x=cx+R*Math.sin(a);y=cy-R*Math.cos(a);}
+    el.style.left=x+"px";el.style.top=y+"px";
+    cl.appendChild(el);
+  }
+}
+function render(){
+  for(let i=0;i<13;i++){
+    const el=$("pile"+i);if(!el)continue;el.className="pile"+(i===active?" active":"");
+    const p=piles[i];const label=i<12?(i+1):"K";
+    let html='<div class="hr">'+label+'</div>';
+    if(p.up.length){const c=p.up[p.up.length-1];html+='<div class="up '+c.c+'"><div class="r">'+c.r+'</div><div class="s">'+c.s+'</div></div>';}
+    else if(p.down.length){html+='<div class="down">🂠</div>';}
+    else {html+='<div class="seat"></div>';}
+    if(p.down.length)html+='<div class="cnt">'+p.down.length+'</div>';
+    el.innerHTML=html;
+    el.onclick=(i===active&&p.down.length)?step:null;
+  }
+  $("sRev").textContent=revealed;$("sK").textContent=kings;
+}
+function step(){
+  const p=piles[active];
+  if(!p.down.length){stopAuto();return;}
+  const card=p.down.pop();
+  const h=card.v===13?12:card.v-1;
+  piles[h].up.push(card);revealed++;
+  if(card.v===13)kings++;
+  active=h;render();
+  if(revealed===52){stopAuto();win();return;}
+  if(!piles[active].down.length){stopAuto();setTimeout(lose,350);}
+}
+function win(){$("ovT").textContent="Felicitări! 🎉";$("ovP").textContent="Ai întors toate cele 52 de cărți! Pasiența a reușit — se spune că ți se împlinește dorința.";$("ov").classList.add("on");}
+function lose(){$("ovT").textContent="Ceasul s-a oprit";$("ovP").textContent="A ieșit al "+kings+"-lea Pop și nu mai ai de unde trage. Ai întors "+revealed+" cărți. Mai încearcă!";$("ov").classList.add("on");}
+function stopAuto(){if(autoT){clearInterval(autoT);autoT=null;}$("bAuto").textContent="▶ Auto";}
+$("bStep").onclick=()=>{if(piles[active].down.length)step();};
+$("bAuto").onclick=()=>{if(autoT){stopAuto();}else{$("bAuto").textContent="⏸ Stop";autoT=setInterval(()=>{if(piles[active].down.length)step();else stopAuto();},420);}};
+$("bNew").onclick=deal;$("ovNew").onclick=deal;
+$("bRules").onclick=()=>$("rules").classList.add("on");
+$("rulesClose").onclick=()=>$("rules").classList.remove("on");
+$("rules").onclick=e=>{if(e.target.id==="rules")$("rules").classList.remove("on");};
+window.addEventListener("resize",()=>{if(piles){layout();render();}});
+deal();
+</script>
+</body></html>
