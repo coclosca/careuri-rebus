@@ -8,8 +8,8 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--paper:#f4efe3;--ink:#23303d;--accent:#2563a8;--accent2:#c9872a;--card:#fffdf8;--line:#d9cfba;--good:#2f8f5b;--bad:#c23b3b;--muted:#6b6454;--shadow:0 5px 15px rgba(20,40,40,.14);--info:#e8f0fa;--infoline:#a9c6e8}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#161d24;--ink:#eef2f4;--accent:#5b9be0;--card:#1f2932;--line:#36424d;--muted:#9aa4ad;--shadow:0 6px 20px rgba(0,0,0,.4);--info:#182636;--infoline:#2d4b6e}}
+:root{--paper:#f4efe3;--ink:#23303d;--accent:#2563a8;--accent2:#c9872a;--card:#fffdf8;--line:#d9cfba;--good:#2f8f5b;--bad:#c23b3b;--muted:#6b6454;--shadow:0 5px 15px rgba(20,40,40,.14);--info:#e8f0fa;--infoline:#a9c6e8;--fact:#fbf3df;--factline:#e4c98a}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#161d24;--ink:#eef2f4;--accent:#5b9be0;--card:#1f2932;--line:#36424d;--muted:#9aa4ad;--shadow:0 6px 20px rgba(0,0,0,.4);--info:#182636;--infoline:#2d4b6e;--fact:#2a2418;--factline:#5c4a22}}
 *{margin:0;box-sizing:border-box}html,body{min-height:100%}
 body{background:var(--paper);color:var(--ink);font-family:"Source Sans 3",system-ui,sans-serif;display:flex;flex-direction:column;align-items:center;padding:12px 14px calc(18px + env(safe-area-inset-bottom))}
 .backlink{align-self:flex-start;color:var(--accent);font-weight:700;text-decoration:none;font-size:13px;background:var(--card);border:1px solid var(--line);padding:6px 12px;border-radius:999px;box-shadow:var(--shadow);margin-bottom:8px}
@@ -19,10 +19,17 @@ h1{font-family:"Bricolage Grotesque";font-weight:800;font-size:clamp(20px,5.5vw,
 h1 small{display:block;font-weight:700;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:3px}
 .stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:5px 10px;font-weight:700;font-size:13px;box-shadow:var(--shadow);white-space:nowrap}
 .stat b{color:var(--accent)}
-.subject{text-align:center;font-weight:700;color:var(--muted);font-size:14px;margin:2px 0 10px}
+.subject{text-align:center;font-weight:700;color:var(--muted);font-size:14px;margin:2px 0 12px}
 .subject b{color:var(--accent)}
 .bar{height:8px;background:var(--line);border-radius:999px;overflow:hidden;margin-bottom:16px}
 .bar>i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
+.pick-h{text-align:center;font-weight:700;color:var(--muted);margin:2px 0 12px;font-size:14px}
+.units{display:grid;gap:10px}
+.ubtn{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px 16px;cursor:pointer;box-shadow:var(--shadow);font-family:inherit;color:inherit;text-align:left}
+.ubtn:active{transform:scale(.98)}
+.ubtn .n{width:34px;height:34px;flex:none;border-radius:9px;background:var(--accent);color:#fff;display:grid;place-items:center;font-family:"Bricolage Grotesque";font-weight:800;font-size:16px}
+.ubtn .tt{font-weight:700;font-size:15px;line-height:1.2}
+.ubtn .cc{font-size:12px;color:var(--muted)}
 .qbox{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px 18px;box-shadow:var(--shadow);margin-bottom:14px;min-height:96px;display:flex;flex-direction:column;justify-content:center}
 .qbox .qn{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
 .qbox .qt{font-family:"Bricolage Grotesque";font-weight:700;font-size:clamp(18px,4.4vw,22px);line-height:1.2}
@@ -33,10 +40,12 @@ h1 small{display:block;font-weight:700;font-size:10.5px;letter-spacing:.16em;tex
 .opt.correct{background:var(--good);color:#fff;border-color:var(--good)}.opt.correct .lt{background:rgba(255,255,255,.25);color:#fff}
 .opt.wrong{background:var(--bad);color:#fff;border-color:var(--bad)}.opt.wrong .lt{background:rgba(255,255,255,.25);color:#fff}
 .opt.dim{opacity:.5}
-.explain{margin-top:14px;background:var(--info);border:1px solid var(--infoline);border-radius:14px;padding:14px 16px;animation:fade .3s}
+.box{margin-top:12px;border-radius:14px;padding:13px 15px;animation:fade .3s}
 @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1}}
-.explain .el{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:5px}
-.explain .et{font-size:15px;line-height:1.45}
+.box .bl{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px}
+.box .bt{font-size:15px;line-height:1.45}
+.explain{background:var(--info);border:1px solid var(--infoline)}.explain .bl{color:var(--accent)}
+.factb{background:var(--fact);border:1px solid var(--factline)}.factb .bl{color:var(--accent2)}
 .foot{margin-top:14px;display:flex;justify-content:center;gap:9px;flex-wrap:wrap}
 button.btn{appearance:none;border:1px solid var(--line);background:var(--card);color:var(--ink);font-family:inherit;font-weight:700;font-size:14px;padding:11px 18px;border-radius:12px;cursor:pointer;box-shadow:var(--shadow)}
 button.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
@@ -49,58 +58,74 @@ button.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent
 <body>
 <a class="backlink" href="index.html">&#8592; Meniu</a>
 <div class="wrap">
-  <header>
-    <h1><small>Teste școlare</small>Test</h1>
-    <div class="stat">Scor <b id="score">0</b></div>
-  </header>
+  <header><h1><small>Teste școlare</small>Test</h1><div class="stat" id="scoreWrap">Scor <b id="score">0</b></div></header>
   <div class="subject">📚 <b>Educație Muzicală</b> · Clasa a V-a</div>
   <div class="bar"><i id="bar"></i></div>
 
-  <div id="game">
+  <div id="pick">
+    <div class="pick-h">Alege unitatea de testat 👇</div>
+    <div class="units" id="units"></div>
+  </div>
+
+  <div id="game" class="hidden">
     <div class="qbox"><div class="qn" id="qn"></div><div class="qt" id="qt"></div></div>
     <div class="opts" id="opts"></div>
-    <div class="explain hidden" id="explain"><div class="el">✅ Explicație</div><div class="et" id="explainText"></div></div>
+    <div class="box explain hidden" id="explain"><div class="bl">✅ Explicație</div><div class="bt" id="explainText"></div></div>
+    <div class="box factb hidden" id="fact"><div class="bl">💡 Știați că…?</div><div class="bt" id="factText"></div></div>
     <div class="foot"><button class="btn primary hidden" id="next">Următoarea &#8594;</button></div>
   </div>
 
   <div id="end" class="result hidden">
-    <div class="big" id="finalScore">0/16</div>
+    <div class="big" id="finalScore">0/0</div>
     <div class="msg" id="finalMsg"></div>
     <div class="sub" id="finalSub"></div>
-    <div class="foot"><button class="btn primary" id="again">Reîncearcă testul</button></div>
+    <div class="foot"><button class="btn primary" id="again">Altă unitate</button></div>
   </div>
 </div>
 
 <script>
-const Q=[{"q":"Câte linii are portativul?","opts":["4","5","6"],"c":1,"e":"Portativul are 5 linii și 4 spații, pe care se scriu notele."},{"q":"Ce cheie se folosește cel mai des în clasa a V-a?","opts":["Cheia FA","Cheia SOL","Cheia DO"],"c":1,"e":"Cheia SOL (cheia viorii) se așază pe linia a 2-a și fixează nota SOL."},{"q":"Câte note muzicale există?","opts":["5","7","8"],"c":1,"e":"Sunt 7 note: DO, RE, MI, FA, SOL, LA, SI."},{"q":"Care sunt calitățile sunetului muzical?","opts":["Înălțime, durată, intensitate, timbru","Ritm, melodie, armonie","Tempo, nuanță, pauză"],"c":0,"e":"Un sunet muzical are: înălțime, durată, intensitate și timbru."},{"q":"Cât valorează o notă întreagă?","opts":["2 pătrimi","4 pătrimi","8 pătrimi"],"c":1,"e":"O notă întreagă = 4 pătrimi (sau 2 doimi)."},{"q":"Cum se numește semnul care arată tăcerea în muzică?","opts":["Nuanța","Pauza","Acordul"],"c":1,"e":"Pauza indică un moment de tăcere; are aceeași durată ca notele."},{"q":"Ce înseamnă nuanța „forte” (f)?","opts":["Să cânți încet","Să cânți tare","Să cânți repede"],"c":1,"e":"„Forte” înseamnă tare. „Piano” (p) înseamnă încet."},{"q":"Vioara face parte din familia instrumentelor cu:","opts":["Coarde","Suflat","Percuție"],"c":0,"e":"Vioara are coarde puse în vibrație cu arcușul."},{"q":"Toba face parte din familia instrumentelor de:","opts":["Coarde","Suflat","Percuție"],"c":2,"e":"Toba produce sunet prin lovire, deci e instrument de percuție."},{"q":"Cea mai înaltă voce de femeie sau de copil se numește:","opts":["Sopran","Alto","Bas"],"c":0,"e":"Vocile feminine: sopran (înalt) și alto (grav). Masculine: tenor și bas."},{"q":"Cea mai joasă voce de bărbat se numește:","opts":["Tenor","Bariton","Bas"],"c":2,"e":"Basul este cea mai joasă voce masculină."},{"q":"Măsura 4/4 are în fiecare măsură:","opts":["2 timpi","3 timpi","4 timpi"],"c":2,"e":"La 4/4 sunt 4 timpi de pătrime în fiecare măsură."},{"q":"Ce înseamnă tempoul „Allegro”?","opts":["Lent","Repede, vioi","Moderat"],"c":1,"e":"„Allegro” = repede, vioi. „Adagio” = lent, rar."},{"q":"Pianul produce sunetul prin:","opts":["Suflarea aerului","Ciupirea corzilor","Lovirea corzilor cu ciocănele"],"c":2,"e":"La pian, apăsând clapa, un ciocănel lovește corzile din interior."},{"q":"Gama DO major începe și se termină cu nota:","opts":["SOL","DO","LA"],"c":1,"e":"Gama DO major: DO-RE-MI-FA-SOL-LA-SI-DO."},{"q":"Semnul de repetiție îți cere să:","opts":["Cânți mai tare","Repeți un fragment","Te oprești"],"c":1,"e":"Semnul de repetiție (bară cu două puncte) cere reluarea unui fragment."}];
+const U=[{"t":"Unitatea 1 · Cânt și notație muzicală","s":"U1","q":[{"q":"Câte linii are portativul?","opts":["4","5","6"],"c":1,"e":"Portativul are 5 linii și 4 spații, pe care se scriu notele.","f":"Știați că înainte de portativ, muzica se nota cu niște semne numite neume, scrise deasupra textului?"},{"q":"Ce cheie se folosește pentru notarea înălțimilor în acest manual?","opts":["Cheia FA","Cheia SOL","Cheia DO"],"c":1,"e":"Cheia SOL fixează nota SOL pe linia a 2-a.","f":"Știați că cheia SOL se mai numește și „cheia viorii”?"},{"q":"Câte note muzicale există?","opts":["5","7","8"],"c":1,"e":"Cele 7 note: DO, RE, MI, FA, SOL, LA, SI.","f":"Știați că numele notelor vin dintr-un imn medieval în latină, unde fiecare vers începea cu o notă mai înaltă?"},{"q":"Cât valorează o notă întreagă?","opts":["2 pătrimi","4 pătrimi","8 pătrimi"],"c":1,"e":"Nota întreagă = 4 pătrimi (sau 2 doimi).","f":""},{"q":"Care este cea mai scurtă durată învățată în această unitate?","opts":["Optimea","Pătrimea","Șaisprezecimea"],"c":2,"e":"Patru șaisprezecimi fac o pătrime.","f":""},{"q":"Ce face punctul de prelungire pus după o notă?","opts":["O scurtează","Îi mărește durata cu jumătate","O face mai tare"],"c":1,"e":"Punctul adaugă jumătate din valoarea notei.","f":""},{"q":"Legato-ul de prelungire leagă două note de:","opts":["Înălțimi diferite","Aceeași înălțime","Durate diferite"],"c":1,"e":"Legato de prelungire = aceeași înălțime (duratele se adună).","f":""},{"q":"Semnul de repetiție îți cere să:","opts":["Cânți mai tare","Reiei un fragment","Te oprești"],"c":1,"e":"Bara cu două puncte cere reluarea fragmentului.","f":""},{"q":"Cântul vocal se realizează cu ajutorul:","opts":["Vocii","Instrumentului","Tobei"],"c":0,"e":"Cântul vocal folosește vocea.","f":"Știați că vocea umană este considerată cel mai vechi „instrument” muzical?"},{"q":"Pauza în muzică reprezintă:","opts":["Un sunet lung","Un moment de tăcere","Un acord"],"c":1,"e":"Pauza marchează tăcerea și are, și ea, durată.","f":""},{"q":"„Mersul treptat” al melodiei înseamnă că notele merg:","opts":["Prin salturi mari","Din treaptă în treaptă","Pe loc"],"c":1,"e":"Mersul treptat = note vecine, fără salturi.","f":""}]},{"t":"Unitatea 2 · Elemente de folclor","s":"U2","q":[{"q":"„Hora” este un:","opts":["Instrument","Dans popular","Cântec religios"],"c":1,"e":"Hora este un dans popular, de obicei în cerc.","f":"Știați că la horă dansatorii se prind de mână și se mișcă toți în cerc, simbolizând unitatea?"},{"q":"Colindele se cântă de obicei în preajma:","opts":["Paștelui","Crăciunului","verii"],"c":1,"e":"Colindele sunt obiceiuri de iarnă.","f":"Știați că unele colinde românești au sute de ani și se transmit din bătrâni?"},{"q":"Folclorul se transmite mai ales:","opts":["Din cărți","Pe cale orală, din generație în generație","Prin radio"],"c":1,"e":"Folclorul se transmite oral.","f":""},{"q":"„Doina” este un cântec popular:","opts":["Vesel, de joc","Liric, de dor","De luptă"],"c":1,"e":"Doina exprimă dorul și sentimentele.","f":"Știați că doina este considerată specific românească și e protejată de UNESCO?"},{"q":"Un instrument popular românesc de suflat este:","opts":["Pianul","Naiul","Orga"],"c":1,"e":"Naiul, fluierul și cavalul sunt instrumente populare de suflat.","f":"Știați că naiul are tuburi de lungimi diferite, fiecare dând alt sunet?"},{"q":"„Călușul” este un dans ritual inclus în patrimoniul:","opts":["UNESCO","NATO","UE"],"c":0,"e":"Călușul e în patrimoniul cultural imaterial UNESCO.","f":""},{"q":"„Sârba” este un dans popular:","opts":["Lent și trist","Vioi, în cerc sau linie","Religios"],"c":1,"e":"Sârba are ritm rapid și vioi.","f":""},{"q":"Muzica populară însoțește, de regulă:","opts":["Doar concertele","Tradiții și obiceiuri","Doar școala"],"c":1,"e":"Folclorul e legat de nunți, sărbători, munca câmpului.","f":""}]},{"t":"Unitatea 3 · Măsuri și gesturi dirijorale","s":"U3","q":[{"q":"Măsura de 2 timpi se notează:","opts":["2/4","3/4","4/4"],"c":0,"e":"Măsura de doi timpi de pătrime se scrie 2/4.","f":""},{"q":"Măsura de 3 timpi (ca la vals) se notează:","opts":["2/4","3/4","4/4"],"c":1,"e":"Măsura de trei timpi se scrie 3/4.","f":"Știați că valsul se dansează pe măsura de 3 timpi: UN-doi-trei, UN-doi-trei?"},{"q":"Într-o măsură de 4/4 încap:","opts":["2 pătrimi","3 pătrimi","4 pătrimi"],"c":2,"e":"La 4/4 sunt 4 timpi de pătrime pe măsură.","f":""},{"q":"Cel care conduce un cor sau o orchestră se numește:","opts":["Solist","Dirijor","Compozitor"],"c":1,"e":"Dirijorul conduce ansamblul prin gesturi.","f":"Știați că dirijorul nu scoate niciun sunet, dar e cel mai important pentru ca toți să cânte la fel?"},{"q":"Primul timp dintr-o măsură este, de obicei:","opts":["Cel accentuat (tare)","Cel mai slab","O pauză"],"c":0,"e":"Timpul 1 este, de regulă, accentuat.","f":""},{"q":"Bara de măsură împarte melodia în:","opts":["Note","Măsuri","Pauze"],"c":1,"e":"Barele verticale delimitează măsurile.","f":""},{"q":"Gesturile dirijorale marchează:","opts":["Nuanțele","Timpii măsurii","Instrumentele"],"c":1,"e":"Dirijorul arată prin gesturi timpii fiecărei măsuri.","f":""}]},{"t":"Unitatea 4 · Gama majoră și gama minoră","s":"U4","q":[{"q":"Cea mai mică distanță dintre două sunete alăturate se numește:","opts":["Ton","Semiton","Octavă"],"c":1,"e":"Semitonul e cel mai mic interval dintre două sunete vecine.","f":"Știați că pe pian, un semiton e distanța de la o clapă la următoarea, inclusiv cele negre?"},{"q":"Un ton întreg este egal cu:","opts":["Un semiton","Două semitonuri","Patru semitonuri"],"c":1,"e":"Un ton = două semitonuri.","f":""},{"q":"Gama Do major începe și se termină cu nota:","opts":["SOL","DO","LA"],"c":1,"e":"DO-RE-MI-FA-SOL-LA-SI-DO.","f":""},{"q":"Câte sunete are gama majoră, de la tonică până la octava ei?","opts":["5","7","8"],"c":2,"e":"8 sunete (7 trepte + repetarea tonicii, o octavă mai sus).","f":""},{"q":"Prima treaptă (tonica) a gamei la minor este nota:","opts":["DO","LA","MI"],"c":1,"e":"Gama la minor pornește de la nota LA.","f":""},{"q":"Gama minoră are, de obicei, un caracter:","opts":["Vesel, luminos","Trist, melancolic","Foarte rapid"],"c":1,"e":"Majoră = luminos; minoră = mai trist.","f":"Știați că multe cântece vesele sunt în game majore, iar cele triste în game minore?"}]},{"t":"Unitatea 5 · Tempo, nuanțe și timbru","s":"U5","q":[{"q":"Ce înseamnă tempoul „Allegro”?","opts":["Lent","Repede, vioi","Pe loc"],"c":1,"e":"Allegro = repede, vioi.","f":"Știați că termenii de tempo sunt în italiană, fiindcă Italia a fost centrul muzicii în Renaștere?"},{"q":"Ce înseamnă tempoul „Adagio”?","opts":["Lent, rar","Foarte repede","Moderat"],"c":0,"e":"Adagio = lent, rar.","f":""},{"q":"Ce înseamnă tempoul „Andante”?","opts":["Foarte repede","În mers potrivit, moderat","Foarte lent"],"c":1,"e":"Andante = mers liniștit, moderat.","f":""},{"q":"Nuanța „forte” (f) cere să cânți:","opts":["Încet","Tare","Repede"],"c":1,"e":"Forte = tare; piano (p) = încet.","f":""},{"q":"„Crescendo” înseamnă să cânți:","opts":["Din ce în ce mai tare","Din ce în ce mai încet","Mai repede"],"c":0,"e":"Crescendo = treptat mai tare.","f":""},{"q":"Cea mai înaltă voce de femeie/copil se numește:","opts":["Sopran","Alto","Bas"],"c":0,"e":"Vocile feminine: sopran (înalt) și alto (grav).","f":""},{"q":"Cea mai joasă voce de bărbat se numește:","opts":["Tenor","Bas","Alto"],"c":1,"e":"Basul e cea mai joasă voce masculină.","f":""},{"q":"Vioara face parte din familia instrumentelor cu:","opts":["Coarde","Suflat","Percuție"],"c":0,"e":"Vioara are coarde puse în vibrație cu arcușul.","f":"Știați că arcușul viorii este făcut, de obicei, din păr de cal?"},{"q":"Toba face parte din familia instrumentelor de:","opts":["Coarde","Suflat","Percuție"],"c":2,"e":"Toba produce sunet prin lovire = percuție.","f":"Știați că toba este unul dintre cele mai vechi instrumente din lume?"},{"q":"Un grup mare de oameni care cântă împreună cu vocea se numește:","opts":["Orchestră","Cor","Fanfară"],"c":1,"e":"Corul e un ansamblu vocal.","f":"Știați că cel mai mare cor din lume a avut peste 120.000 de oameni?"}]}];
 const $=id=>document.getElementById(id);
 const LET=["A","B","C","D"];
-let idx,score,answered;
-function start(){idx=0;score=0;$("end").classList.add("hidden");$("game").classList.remove("hidden");render();}
+let qs,idx,score,answered,uname;
+function buildUnits(){
+  const box=$("units");box.innerHTML="";
+  U.forEach((u,i)=>{const b=document.createElement("button");b.className="ubtn";
+    b.innerHTML='<span class="n">'+(i+1)+'</span><span><span class="tt">'+u.t.split("·")[1].trim()+'</span><span class="cc">'+u.q.length+' întrebări</span></span>';
+    b.onclick=()=>start(i);box.appendChild(b);});
+  // test general
+  const b=document.createElement("button");b.className="ubtn";
+  b.innerHTML='<span class="n" style="background:var(--accent2)">★</span><span><span class="tt">Test general (toate unitățile)</span><span class="cc">16 întrebări amestecate</span></span>';
+  b.onclick=()=>startGeneral();box.appendChild(b);
+}
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]];}return a;}
+function start(i){uname=U[i].t.split("·")[1].trim();qs=U[i].q.slice();begin();}
+function startGeneral(){uname="Test general";let all=[];U.forEach(u=>u.q.forEach(q=>all.push(q)));qs=shuffle(all).slice(0,16);begin();}
+function begin(){idx=0;score=0;$("pick").classList.add("hidden");$("end").classList.add("hidden");$("game").classList.remove("hidden");render();}
 function render(){
-  const q=Q[idx];answered=false;
-  $("qn").textContent="Întrebarea "+(idx+1)+" din "+Q.length;
-  $("qt").textContent=q.q;$("bar").style.width=(idx/Q.length*100)+"%";$("score").textContent=score;
+  const q=qs[idx];answered=false;
+  $("qn").textContent="Întrebarea "+(idx+1)+" din "+qs.length+" · "+uname;
+  $("qt").textContent=q.q;$("bar").style.width=(idx/qs.length*100)+"%";$("score").textContent=score;
   const box=$("opts");box.innerHTML="";
   q.opts.forEach((o,i)=>{const b=document.createElement("button");b.className="opt";b.innerHTML='<span class="lt">'+LET[i]+'</span><span>'+o+'</span>';b.onclick=()=>pick(b,i);box.appendChild(b);});
-  $("explain").classList.add("hidden");$("next").classList.add("hidden");
+  $("explain").classList.add("hidden");$("fact").classList.add("hidden");$("next").classList.add("hidden");
 }
 function pick(btn,i){
   if(answered)return;answered=true;
-  const q=Q[idx];const btns=[...document.querySelectorAll(".opt")];
-  btns.forEach((b,j)=>{if(j===q.c)b.classList.add("correct");else if(b===btn)b.classList.add("wrong");else b.classList.add("dim");b.onclick=null;});
+  const q=qs[idx];[...document.querySelectorAll(".opt")].forEach((b,j)=>{if(j===q.c)b.classList.add("correct");else if(b===btn)b.classList.add("wrong");else b.classList.add("dim");b.onclick=null;});
   if(i===q.c){score++;$("score").textContent=score;}
   $("explainText").textContent=q.e;$("explain").classList.remove("hidden");
+  if(q.f){$("factText").textContent=q.f;$("fact").classList.remove("hidden");}
   $("next").classList.remove("hidden");
 }
-$("next").onclick=()=>{idx++;if(idx>=Q.length)finish();else render();};
+$("next").onclick=()=>{idx++;if(idx>=qs.length)finish();else render();};
 function finish(){
   $("bar").style.width="100%";$("game").classList.add("hidden");$("end").classList.remove("hidden");
-  const tot=Q.length;$("finalScore").textContent=score+"/"+tot;
+  const tot=qs.length;$("finalScore").textContent=score+"/"+tot;
   const pct=score/tot;let m;if(pct>=.9)m="Excelent! 🏆";else if(pct>=.7)m="Foarte bine! 👏";else if(pct>=.5)m="Bine, dar mai exersează 🙂";else m="Mai citește lecția 💪";
-  $("finalMsg").textContent=m;$("finalSub").textContent="Ai răspuns corect la "+score+" din "+tot+" întrebări.";
+  $("finalMsg").textContent=m;$("finalSub").textContent=uname+" · ai răspuns corect la "+score+" din "+tot+".";
 }
-$("again").onclick=start;
-start();
+$("again").onclick=()=>{$("end").classList.add("hidden");$("game").classList.add("hidden");$("pick").classList.remove("hidden");$("bar").style.width="0";$("score").textContent="0";};
+buildUnits();
 </script>
 </body></html>

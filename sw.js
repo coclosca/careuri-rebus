@@ -1,4 +1,4 @@
-const C = "jocuri-v6";
+const C = "jocuri-v7";
 const CORE = ["./","./index.html","./integrame.html","./piramida.html","./napoleon.html","./ceasul.html","./quiz.html","./scoala.html","./manifest.json","./icon-192.png","./icon-512.png"];
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(C).then(c => c.addAll(CORE)).then(() => self.skipWaiting()));
