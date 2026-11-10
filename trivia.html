@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ro"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Trivia ⚡</title>
+<link rel="manifest" href="manifest.json"><meta name="theme-color" content="#176b63"><link rel="apple-touch-icon" href="icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#f4efe3;--ink:#23303d;--accent:#7c3aed;--accent2:#c9872a;--card:#fffdf8;--line:#d9cfba;--good:#2f8f5b;--bad:#c23b3b;--muted:#6b6454;--shadow:0 6px 18px rgba(20,40,40,.14);--fact:#f3ecff;--factline:#cdb4f0;--c1:#e23b57;--c2:#2a7de1;--c3:#d8912a}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#15121c;--ink:#eef2f4;--accent:#a983f0;--card:#201a2b;--line:#3a3348;--muted:#9a94a5;--shadow:0 6px 20px rgba(0,0,0,.45);--fact:#241a33;--factline:#4a3a63}}
+*{margin:0;box-sizing:border-box}html,body{min-height:100%}
+body{background:var(--paper);color:var(--ink);font-family:"Source Sans 3",system-ui,sans-serif;display:flex;flex-direction:column;align-items:center;padding:12px 14px calc(18px + env(safe-area-inset-bottom))}
+.backlink{align-self:flex-start;color:var(--accent);font-weight:700;text-decoration:none;font-size:13px;background:var(--card);border:1px solid var(--line);padding:6px 12px;border-radius:999px;box-shadow:var(--shadow);margin-bottom:8px}
+.wrap{width:100%;max-width:480px}
+header{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
+h1{font-family:"Bricolage Grotesque";font-weight:800;font-size:clamp(22px,6vw,28px);line-height:1}
+h1 small{display:block;font-weight:700;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:2px}
+.hud{display:flex;gap:7px}
+.pill{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:5px 10px;font-weight:800;font-size:13px;box-shadow:var(--shadow);white-space:nowrap}
+.pill b{color:var(--accent)}
+.timebar{height:9px;background:var(--line);border-radius:999px;overflow:hidden;margin:4px 0 14px}
+.timebar>i{display:block;height:100%;width:100%;background:linear-gradient(90deg,var(--good),var(--c3),var(--bad));transition:width .25s linear}
+.cat{text-align:center;font-weight:800;font-size:12px;color:var(--muted);margin-bottom:8px;letter-spacing:.03em}
+.qbox{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 18px;box-shadow:var(--shadow);margin-bottom:14px;min-height:104px;display:flex;align-items:center;justify-content:center;text-align:center}
+.qbox .qt{font-family:"Bricolage Grotesque";font-weight:700;font-size:clamp(18px,4.6vw,23px);line-height:1.22}
+.opts{display:grid;gap:11px}
+.opt{appearance:none;border:none;color:#fff;font-family:inherit;font-weight:800;font-size:17px;padding:17px 16px;border-radius:14px;cursor:pointer;box-shadow:var(--shadow);text-align:left;transition:.1s;display:flex;align-items:center;gap:11px}
+.opt .ic{width:26px;height:26px;flex:none;border-radius:7px;background:rgba(255,255,255,.22);display:grid;place-items:center;font-size:15px}
+.opt:active{transform:scale(.98)}
+.opt.o0{background:var(--c1)}.opt.o1{background:var(--c2)}.opt.o2{background:var(--c3)}
+.opt.win{background:var(--good)!important;box-shadow:0 0 0 3px color-mix(in srgb,var(--good) 45%,transparent)}
+.opt.lose{background:var(--bad)!important}
+.opt.mut{opacity:.4}
+.factb{margin-top:12px;border-radius:14px;padding:13px 15px;background:var(--fact);border:1px solid var(--factline);animation:fade .3s}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1}}
+.factb .bl{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px;color:var(--accent)}
+.factb .bt{font-size:15px;line-height:1.45}
+.foot{margin-top:14px;display:flex;justify-content:center}
+button.btn{appearance:none;border:1px solid var(--line);background:var(--card);color:var(--ink);font-family:inherit;font-weight:800;font-size:15px;padding:13px 26px;border-radius:12px;cursor:pointer;box-shadow:var(--shadow)}
+button.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.hidden{display:none}
+/* start + end */
+.panel{text-align:center;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:30px 22px;box-shadow:var(--shadow);margin-top:6px}
+.panel .big{font-size:60px;line-height:1;margin-bottom:6px}
+.panel h2{font-family:"Bricolage Grotesque";font-weight:800;font-size:26px;margin-bottom:6px}
+.panel p{color:var(--muted);font-size:15px;line-height:1.5;margin-bottom:18px}
+.panel .score{font-family:"Bricolage Grotesque";font-weight:800;font-size:52px;color:var(--accent);line-height:1}
+.panel .lbl{color:var(--muted);font-size:13px;margin:4px 0 20px}
+.lenrow{display:flex;gap:9px;justify-content:center;margin-bottom:18px;flex-wrap:wrap}
+.lenrow button{appearance:none;border:1px solid var(--line);background:var(--paper);color:var(--ink);font-family:inherit;font-weight:800;font-size:14px;padding:10px 16px;border-radius:999px;cursor:pointer}
+.lenrow button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.flash{position:fixed;left:50%;top:30%;transform:translateX(-50%);font-family:"Bricolage Grotesque";font-weight:800;font-size:30px;color:var(--good);pointer-events:none;opacity:0}
+.flash.go{animation:pop 1s ease}
+@keyframes pop{0%{opacity:0;transform:translateX(-50%) translateY(10px) scale(.8)}20%{opacity:1;transform:translateX(-50%) translateY(0) scale(1.1)}80%{opacity:1}100%{opacity:0;transform:translateX(-50%) translateY(-18px)}}
+</style></head>
+<body>
+<a class="backlink" href="index.html">&#8592; Meniu</a>
+<div class="wrap">
+  <header>
+    <h1><small>Rapid · Curiozități</small>Trivia ⚡</h1>
+    <div class="hud" id="hud">
+      <div class="pill">🔥 <b id="streak">0</b></div>
+      <div class="pill" id="scoreWrap"><b id="score">0</b> p</div>
+    </div>
+  </header>
+  <div class="timebar" id="timewrap"><i id="time"></i></div>
+
+  <div id="start" class="panel">
+    <div class="big">⚡</div>
+    <h2>Trivia</h2>
+    <p>Întrebări rapide și surprinzătoare. Răspunzi repede = mai multe puncte. Câte le nimerești la rând?</p>
+    <div class="lenrow" id="lenrow">
+      <button data-n="8">8 întrebări</button>
+      <button data-n="12" class="on">12 întrebări</button>
+      <button data-n="20">20 întrebări</button>
+    </div>
+    <button class="btn primary" id="startBtn">Start ⚡</button>
+  </div>
+
+  <div id="game" class="hidden">
+    <div class="cat" id="cat"></div>
+    <div class="qbox"><div class="qt" id="qt"></div></div>
+    <div class="opts" id="opts"></div>
+    <div class="factb hidden" id="fact"><div class="bl">💡 Știați că…?</div><div class="bt" id="factText"></div></div>
+    <div class="foot"><button class="btn primary hidden" id="next">Următoarea ⚡</button></div>
+  </div>
+
+  <div id="end" class="panel hidden">
+    <div class="big" id="endEmo">🎉</div>
+    <div class="score" id="finalScore">0</div>
+    <div class="lbl">puncte</div>
+    <h2 id="endMsg"></h2>
+    <p id="endSub"></p>
+    <div style="display:flex;gap:9px;justify-content:center">
+      <button class="btn primary" id="again">Din nou ⚡</button>
+      <a class="btn" href="index.html" style="text-decoration:none;display:inline-block">Meniu</a>
+    </div>
+  </div>
+</div>
+<div class="flash" id="flash"></div>
+
+<script>
+const ALL=[{"q":"Delfinii dorm cu o singură jumătate a creierului odată.","opts":["Adevărat","Fals"],"c":0,"f":"Așa pot ieși la suprafață să respire chiar și în somn — cealaltă jumătate rămâne de pază.","cat":"🐬 Animale"},{"q":"Caracatița are trei inimi.","opts":["Adevărat","Fals"],"c":0,"f":"Două pompează sânge spre branhii, una spre restul corpului. Și are sânge albastru!","cat":"🐙 Animale"},{"q":"Elefanții pot sări.","opts":["Adevărat","Fals"],"c":1,"f":"Elefanții sunt singurele mamifere care nu pot sări deloc — sunt prea grei.","cat":"🐘 Animale"},{"q":"Un melc poate dormi până la 3 ani.","opts":["Adevărat","Fals"],"c":0,"f":"Când e prea uscat sau frig, melcul intră într-un somn lung ca să supraviețuiască.","cat":"🐌 Animale"},{"q":"Ursul polar are pielea neagră sub blana albă.","opts":["Adevărat","Fals"],"c":0,"f":"Pielea neagră absoarbe mai bine căldura soarelui; blana nu e albă, ci transparentă.","cat":"🐻‍❄️ Animale"},{"q":"Crocodilii își pot scoate limba.","opts":["Adevărat","Fals"],"c":1,"f":"Limba crocodilului e prinsă de cerul gurii, așa că nu o poate scoate.","cat":"🐊 Animale"},{"q":"Ce grup de animale „plantează” din greșeală mii de copaci?","opts":["Veverițele","Vulpile","Aricii"],"c":0,"f":"Veverițele își îngroapă ghindele și uită unde — multe devin stejari.","cat":"🐿️ Animale"},{"q":"Inima unui creveți se află în cap.","opts":["Adevărat","Fals"],"c":0,"f":"La creveți, inima și alte organe importante sunt chiar în zona capului.","cat":"🦐 Animale"},{"q":"Cât cântărește limba unei balene albastre, aproximativ?","opts":["Cât o pisică","Cât un om","Cât un elefant"],"c":2,"f":"Limba ei singură poate cântări cât un elefant — e cel mai mare animal de pe Pământ.","cat":"🐋 Animale"},{"q":"Girafa are mai multe vertebre la gât decât omul.","opts":["Adevărat","Fals"],"c":1,"f":"Surprinzător, și girafa, și omul au exact 7 vertebre la gât — doar că ale girafei sunt uriașe.","cat":"🦒 Animale"},{"q":"Un pui de cangur la naștere e cât o bomboană.","opts":["Adevărat","Fals"],"c":0,"f":"Se naște minuscul și se cațără singur în marsupiul mamei, unde crește luni de zile.","cat":"🦘 Animale"},{"q":"Flamingo se nasc roz.","opts":["Adevărat","Fals"],"c":1,"f":"Se nasc gri! Devin roz de la creveții și algele pe care le mănâncă.","cat":"🦩 Animale"},{"q":"O zi pe Venus durează mai mult decât un an pe Venus.","opts":["Adevărat","Fals"],"c":0,"f":"Venus se rotește atât de încet încât o rotație (o zi) e mai lungă decât ocolul în jurul Soarelui.","cat":"🪐 Spațiu"},{"q":"În cât timp ajunge lumina Soarelui la Pământ?","opts":["8 secunde","8 minute","8 ore"],"c":1,"f":"Deși lumina e cea mai rapidă din univers, tot îi ia circa 8 minute să ajungă la noi.","cat":"☀️ Spațiu"},{"q":"Planeta Saturn ar pluti în apă, dacă ar exista un ocean destul de mare.","opts":["Adevărat","Fals"],"c":0,"f":"Saturn e atât de puțin dens încât ar pluti — e format mai ales din gaze.","cat":"🪐 Spațiu"},{"q":"Urmele de pași lăsate pe Lună vor dispărea în câțiva ani.","opts":["Adevărat","Fals"],"c":1,"f":"Pe Lună nu e vânt, așa că urmele astronauților pot rămâne milioane de ani.","cat":"🌙 Spațiu"},{"q":"Cine a fost primul om care a pășit pe Lună?","opts":["Neil Armstrong","Iuri Gagarin","Buzz Aldrin"],"c":0,"f":"Neil Armstrong, în 1969. Gagarin fusese primul om în spațiu, în 1961.","cat":"🌕 Spațiu"},{"q":"Există mai multe stele în univers decât fire de nisip pe toate plajele Pământului.","opts":["Adevărat","Fals"],"c":0,"f":"Numărul stelelor e de-a dreptul amețitor — mult peste toate firele de nisip de pe Terra.","cat":"✨ Spațiu"},{"q":"Acidul din stomac e destul de puternic cât să dizolve metal.","opts":["Adevărat","Fals"],"c":0,"f":"E atât de puternic încât stomacul își reface mucoasa la câteva zile ca să nu se digere pe sine.","cat":"🫀 Corp uman"},{"q":"Smalțul dinților este cel mai dur material din corpul uman.","opts":["Adevărat","Fals"],"c":0,"f":"Mai dur chiar decât osul — dar, odată stricat, nu se reface singur.","cat":"🦷 Corp uman"},{"q":"Limba are zone separate pentru dulce, acru și amar.","opts":["Adevărat","Fals"],"c":1,"f":"E un mit vechi! Toată limba simte toate gusturile.","cat":"👅 Corp uman"},{"q":"De câte ori bate inima omului, aproximativ, într-o zi?","opts":["10.000","100.000","1.000.000"],"c":1,"f":"În jur de 100.000 de bătăi pe zi, fără pauză, toată viața.","cat":"❤️ Corp uman"},{"q":"Gemenii identici au aceleași amprente.","opts":["Adevărat","Fals"],"c":1,"f":"Chiar și gemenii identici au amprente diferite — sunt unice pentru fiecare om.","cat":"🖐️ Corp uman"},{"q":"Când te înroșești de rușine, se înroșește ușor și mucoasa stomacului.","opts":["Adevărat","Fals"],"c":0,"f":"Aceeași reacție a vaselor de sânge care-ți colorează obrajii se întâmplă și în interior.","cat":"😊 Corp uman"},{"q":"Care este capitala Australiei?","opts":["Sydney","Canberra","Melbourne"],"c":1,"f":"Mulți cred că e Sydney, dar capitala e Canberra.","cat":"🗺️ Lume"},{"q":"Care e cel mai mare deșert de pe Pământ?","opts":["Sahara","Antarctica","Gobi"],"c":1,"f":"Antarctica! Un deșert e definit de puține precipitații, nu de nisip — iar Antarctica e cel mai mare.","cat":"🏜️ Lume"},{"q":"Care e cea mai mică țară din lume?","opts":["Monaco","Vaticanul","San Marino"],"c":1,"f":"Vaticanul încape de sute de ori în orașul București.","cat":"⛪ Lume"},{"q":"Cu câte țări se învecinează România?","opts":["3","5","7"],"c":1,"f":"Cinci: Ucraina, R. Moldova, Bulgaria, Serbia și Ungaria.","cat":"🇷🇴 Lume"},{"q":"Groenlanda este cea mai mare insulă din lume.","opts":["Adevărat","Fals"],"c":0,"f":"E insulă; Australia e mai mare, dar e considerată continent, nu insulă.","cat":"🧊 Lume"},{"q":"Care e cel mai înalt munte de pe Pământ?","opts":["Everest","Kilimanjaro","Mont Blanc"],"c":0,"f":"Everest, circa 8.849 m. Alpiniștii au nevoie de butelii de oxigen ca să urce.","cat":"⛰️ Lume"},{"q":"Marele Zid Chinezesc se vede cu ochiul liber din spațiu.","opts":["Adevărat","Fals"],"c":1,"f":"Este un mit celebru — de pe orbită nu se distinge cu ochiul liber.","cat":"🧱 Istorie"},{"q":"Cleopatra a trăit mai aproape în timp de aterizarea pe Lună decât de construirea Marii Piramide.","opts":["Adevărat","Fals"],"c":0,"f":"Piramida era deja veche de peste 2500 de ani pe vremea Cleopatrei — istoria e mai lungă decât pare!","cat":"👑 Istorie"},{"q":"În Evul Mediu oamenii educați credeau că Pământul e plat.","opts":["Adevărat","Fals"],"c":1,"f":"Mit! Savanții știau de mult că Pământul e rotund, încă din Antichitate.","cat":"🌍 Istorie"},{"q":"Ketchup-ul se vindea cândva ca medicament.","opts":["Adevărat","Fals"],"c":0,"f":"În anii 1830, în SUA, era vândut ca leac pentru stomac!","cat":"🍅 Istorie"},{"q":"Mierea de albine nu se strică niciodată.","opts":["Adevărat","Fals"],"c":0,"f":"S-a găsit miere veche de mii de ani în morminte egiptene, încă bună de mâncat.","cat":"🍯 Mâncare"},{"q":"Banana este, din punct de vedere botanic, o boabă (bacă).","opts":["Adevărat","Fals"],"c":0,"f":"Da! Iar căpșuna, surprinzător, NU este o boabă adevărată.","cat":"🍌 Mâncare"},{"q":"Morcovii au fost la început de culoare mov.","opts":["Adevărat","Fals"],"c":0,"f":"Morcovul portocaliu a apărut mai târziu, cultivat de olandezi.","cat":"🥕 Mâncare"},{"q":"Ciocolata albă conține cacao solidă (pudră de cacao).","opts":["Adevărat","Fals"],"c":1,"f":"Conține doar unt de cacao — de aceea unii spun că nici nu e „ciocolată” adevărată.","cat":"🍫 Mâncare"},{"q":"Un fulger este mai fierbinte decât suprafața Soarelui.","opts":["Adevărat","Fals"],"c":0,"f":"Aerul dintr-un fulger se încinge de câteva ori mai tare decât suprafața Soarelui.","cat":"⚡ Știință"},{"q":"Diamantul și mina (grafitul) creionului sunt făcute din același element.","opts":["Adevărat","Fals"],"c":0,"f":"Amândouă sunt carbon pur — doar aranjarea atomilor diferă complet.","cat":"💎 Știință"},{"q":"Un curcubeu este, de fapt, un cerc complet.","opts":["Adevărat","Fals"],"c":0,"f":"De pe sol vedem doar jumătate; dintr-un avion poți vedea cercul întreg.","cat":"🌈 Știință"},{"q":"Cât poate cântări un nor obișnuit de ploaie?","opts":["Câteva kilograme","Câteva sute de tone","Cât o mașină"],"c":1,"f":"Deși plutește, un nor conține apă cât sute de tone — doar că e împrăștiată în picături minuscule.","cat":"☁️ Știință"},{"q":"Apa fierbinte poate îngheța, în anumite condiții, mai repede decât apa rece.","opts":["Adevărat","Fals"],"c":0,"f":"Se numește efectul Mpemba și încă îi uimește pe oamenii de știință.","cat":"🧊 Știință"},{"q":"Sticla este un lichid care curge foarte încet.","opts":["Adevărat","Fals"],"c":1,"f":"Mit! Sticla e un solid (amorf); geamurile vechi sunt mai groase jos din cauza fabricării, nu a curgerii.","cat":"🪟 Știință"}];
+const $=i=>document.getElementById(i);
+const TPQ=15; // secunde pe intrebare
+let qs,idx,score,streak,best,chosen=12,timer,tleft,answered;
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]];}return a;}
+$("lenrow").onclick=e=>{const b=e.target.closest('button');if(!b)return;chosen=+b.dataset.n;[...$("lenrow").children].forEach(x=>x.classList.toggle('on',x===b));};
+$("startBtn").onclick=begin; $("again").onclick=begin;
+function begin(){qs=shuffle(ALL).slice(0,chosen);idx=0;score=0;streak=0;$("start").classList.add("hidden");$("end").classList.add("hidden");$("game").classList.remove("hidden");$("hud").style.visibility="visible";$("timewrap").style.visibility="visible";render();}
+function render(){
+  const q=qs[idx];answered=false;
+  $("cat").textContent=q.cat+" · "+(idx+1)+"/"+qs.length;
+  $("qt").textContent=q.q;
+  $("score").textContent=score;$("streak").textContent=streak;
+  const box=$("opts");box.innerHTML="";
+  const ICON=["🔴","🔵","🟡"];
+  q.opts.forEach((o,i)=>{const b=document.createElement("button");b.className="opt o"+i;b.innerHTML='<span class="ic">'+ICON[i]+'</span><span>'+o+'</span>';b.onclick=()=>pick(i,b);box.appendChild(b);});
+  $("fact").classList.add("hidden");$("next").classList.add("hidden");
+  // timer
+  tleft=TPQ;$("time").style.width="100%";
+  clearInterval(timer);
+  timer=setInterval(()=>{tleft-=0.1;const pct=Math.max(0,tleft/TPQ*100);$("time").style.width=pct+"%";if(tleft<=0){clearInterval(timer);timeout();}},100);
+}
+function lockOpts(correct,chosenI){
+  [...document.querySelectorAll(".opt")].forEach((b,i)=>{b.onclick=null;if(i===correct)b.classList.add("win");else if(i===chosenI)b.classList.add("lose");else b.classList.add("mut");});
+}
+function showAfter(q){
+  if(q.f){$("factText").textContent=q.f;$("fact").classList.remove("hidden");}
+  $("next").classList.remove("hidden");
+}
+function pick(i,btn){
+  if(answered)return;answered=true;clearInterval(timer);
+  const q=qs[idx];
+  if(i===q.c){
+    const bonus=Math.round(tleft*10),pts=100+bonus;score+=pts;streak++;
+    if(streak>=2){flash("🔥 x"+streak);}
+    $("score").textContent=score;$("streak").textContent=streak;
+  }else{streak=0;$("streak").textContent=0;}
+  lockOpts(q.c,i);showAfter(q);
+}
+function timeout(){
+  if(answered)return;answered=true;streak=0;$("streak").textContent=0;
+  const q=qs[idx];lockOpts(q.c,-1);showAfter(q);
+}
+function flash(t){const f=$("flash");f.textContent=t;f.classList.remove("go");void f.offsetWidth;f.classList.add("go");}
+$("next").onclick=()=>{idx++;if(idx>=qs.length)finish();else render();};
+function finish(){
+  clearInterval(timer);$("game").classList.add("hidden");$("end").classList.remove("hidden");
+  $("hud").style.visibility="hidden";$("timewrap").style.visibility="hidden";
+  $("finalScore").textContent=score;
+  const max=qs.length*250, pct=score/max;
+  let emo,msg;
+  if(pct>=.75){emo="🏆";msg="Geniu de trivia!";}
+  else if(pct>=.5){emo="🎉";msg="Foarte bine!";}
+  else if(pct>=.3){emo="👍";msg="Bun! Mai încearcă.";}
+  else{emo="🙂";msg="Se poate și mai sus!";}
+  $("endEmo").textContent=emo;$("endMsg").textContent=msg;
+  $("endSub").textContent="Ai strâns "+score+" puncte din "+qs.length+" întrebări.";
+}
+$("hud").style.visibility="hidden";$("timewrap").style.visibility="hidden";
+</script>
+</body></html>
