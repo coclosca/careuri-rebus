@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ro"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Teste Școlare</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#176b63">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#f4efe3;--ink:#23303d;--accent:#2563a8;--accent2:#c9872a;--card:#fffdf8;--line:#d9cfba;--good:#2f8f5b;--bad:#c23b3b;--muted:#6b6454;--shadow:0 5px 15px rgba(20,40,40,.14);--info:#e8f0fa;--infoline:#a9c6e8}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#161d24;--ink:#eef2f4;--accent:#5b9be0;--card:#1f2932;--line:#36424d;--muted:#9aa4ad;--shadow:0 6px 20px rgba(0,0,0,.4);--info:#182636;--infoline:#2d4b6e}}
+*{margin:0;box-sizing:border-box}html,body{min-height:100%}
+body{background:var(--paper);color:var(--ink);font-family:"Source Sans 3",system-ui,sans-serif;display:flex;flex-direction:column;align-items:center;padding:12px 14px calc(18px + env(safe-area-inset-bottom))}
+.backlink{align-self:flex-start;color:var(--accent);font-weight:700;text-decoration:none;font-size:13px;background:var(--card);border:1px solid var(--line);padding:6px 12px;border-radius:999px;box-shadow:var(--shadow);margin-bottom:8px}
+.wrap{width:100%;max-width:480px}
+header{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin-bottom:6px}
+h1{font-family:"Bricolage Grotesque";font-weight:800;font-size:clamp(20px,5.5vw,26px);line-height:1}
+h1 small{display:block;font-weight:700;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:3px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:5px 10px;font-weight:700;font-size:13px;box-shadow:var(--shadow);white-space:nowrap}
+.stat b{color:var(--accent)}
+.subject{text-align:center;font-weight:700;color:var(--muted);font-size:14px;margin:2px 0 10px}
+.subject b{color:var(--accent)}
+.bar{height:8px;background:var(--line);border-radius:999px;overflow:hidden;margin-bottom:16px}
+.bar>i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
+.qbox{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px 18px;box-shadow:var(--shadow);margin-bottom:14px;min-height:96px;display:flex;flex-direction:column;justify-content:center}
+.qbox .qn{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+.qbox .qt{font-family:"Bricolage Grotesque";font-weight:700;font-size:clamp(18px,4.4vw,22px);line-height:1.2}
+.opts{display:grid;gap:10px}
+.opt{appearance:none;border:1px solid var(--line);background:var(--card);color:var(--ink);font-family:inherit;font-weight:700;font-size:16px;padding:15px 14px;border-radius:13px;cursor:pointer;box-shadow:var(--shadow);text-align:left;transition:.1s;display:flex;gap:10px;align-items:center}
+.opt .lt{width:26px;height:26px;flex:none;border-radius:7px;background:var(--line);color:var(--ink);display:grid;place-items:center;font-size:14px}
+.opt:active{transform:scale(.98)}
+.opt.correct{background:var(--good);color:#fff;border-color:var(--good)}.opt.correct .lt{background:rgba(255,255,255,.25);color:#fff}
+.opt.wrong{background:var(--bad);color:#fff;border-color:var(--bad)}.opt.wrong .lt{background:rgba(255,255,255,.25);color:#fff}
+.opt.dim{opacity:.5}
+.explain{margin-top:14px;background:var(--info);border:1px solid var(--infoline);border-radius:14px;padding:14px 16px;animation:fade .3s}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1}}
+.explain .el{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:5px}
+.explain .et{font-size:15px;line-height:1.45}
+.foot{margin-top:14px;display:flex;justify-content:center;gap:9px;flex-wrap:wrap}
+button.btn{appearance:none;border:1px solid var(--line);background:var(--card);color:var(--ink);font-family:inherit;font-weight:700;font-size:14px;padding:11px 18px;border-radius:12px;cursor:pointer;box-shadow:var(--shadow)}
+button.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.result{text-align:center;padding:24px 10px}
+.result .big{font-family:"Bricolage Grotesque";font-weight:800;font-size:56px;color:var(--accent);line-height:1}
+.result .msg{font-size:17px;margin:10px 0 6px;font-weight:600}
+.result .sub{font-size:13px;color:var(--muted);margin-bottom:20px}
+.hidden{display:none}
+</style></head>
+<body>
+<a class="backlink" href="index.html">&#8592; Meniu</a>
+<div class="wrap">
+  <header>
+    <h1><small>Teste școlare</small>Test</h1>
+    <div class="stat">Scor <b id="score">0</b></div>
+  </header>
+  <div class="subject">📚 <b>Educație Muzicală</b> · Clasa a V-a</div>
+  <div class="bar"><i id="bar"></i></div>
+
+  <div id="game">
+    <div class="qbox"><div class="qn" id="qn"></div><div class="qt" id="qt"></div></div>
+    <div class="opts" id="opts"></div>
+    <div class="explain hidden" id="explain"><div class="el">✅ Explicație</div><div class="et" id="explainText"></div></div>
+    <div class="foot"><button class="btn primary hidden" id="next">Următoarea &#8594;</button></div>
+  </div>
+
+  <div id="end" class="result hidden">
+    <div class="big" id="finalScore">0/16</div>
+    <div class="msg" id="finalMsg"></div>
+    <div class="sub" id="finalSub"></div>
+    <div class="foot"><button class="btn primary" id="again">Reîncearcă testul</button></div>
+  </div>
+</div>
+
+<script>
+const Q=[{"q":"Câte linii are portativul?","opts":["4","5","6"],"c":1,"e":"Portativul are 5 linii și 4 spații, pe care se scriu notele."},{"q":"Ce cheie se folosește cel mai des în clasa a V-a?","opts":["Cheia FA","Cheia SOL","Cheia DO"],"c":1,"e":"Cheia SOL (cheia viorii) se așază pe linia a 2-a și fixează nota SOL."},{"q":"Câte note muzicale există?","opts":["5","7","8"],"c":1,"e":"Sunt 7 note: DO, RE, MI, FA, SOL, LA, SI."},{"q":"Care sunt calitățile sunetului muzical?","opts":["Înălțime, durată, intensitate, timbru","Ritm, melodie, armonie","Tempo, nuanță, pauză"],"c":0,"e":"Un sunet muzical are: înălțime, durată, intensitate și timbru."},{"q":"Cât valorează o notă întreagă?","opts":["2 pătrimi","4 pătrimi","8 pătrimi"],"c":1,"e":"O notă întreagă = 4 pătrimi (sau 2 doimi)."},{"q":"Cum se numește semnul care arată tăcerea în muzică?","opts":["Nuanța","Pauza","Acordul"],"c":1,"e":"Pauza indică un moment de tăcere; are aceeași durată ca notele."},{"q":"Ce înseamnă nuanța „forte” (f)?","opts":["Să cânți încet","Să cânți tare","Să cânți repede"],"c":1,"e":"„Forte” înseamnă tare. „Piano” (p) înseamnă încet."},{"q":"Vioara face parte din familia instrumentelor cu:","opts":["Coarde","Suflat","Percuție"],"c":0,"e":"Vioara are coarde puse în vibrație cu arcușul."},{"q":"Toba face parte din familia instrumentelor de:","opts":["Coarde","Suflat","Percuție"],"c":2,"e":"Toba produce sunet prin lovire, deci e instrument de percuție."},{"q":"Cea mai înaltă voce de femeie sau de copil se numește:","opts":["Sopran","Alto","Bas"],"c":0,"e":"Vocile feminine: sopran (înalt) și alto (grav). Masculine: tenor și bas."},{"q":"Cea mai joasă voce de bărbat se numește:","opts":["Tenor","Bariton","Bas"],"c":2,"e":"Basul este cea mai joasă voce masculină."},{"q":"Măsura 4/4 are în fiecare măsură:","opts":["2 timpi","3 timpi","4 timpi"],"c":2,"e":"La 4/4 sunt 4 timpi de pătrime în fiecare măsură."},{"q":"Ce înseamnă tempoul „Allegro”?","opts":["Lent","Repede, vioi","Moderat"],"c":1,"e":"„Allegro” = repede, vioi. „Adagio” = lent, rar."},{"q":"Pianul produce sunetul prin:","opts":["Suflarea aerului","Ciupirea corzilor","Lovirea corzilor cu ciocănele"],"c":2,"e":"La pian, apăsând clapa, un ciocănel lovește corzile din interior."},{"q":"Gama DO major începe și se termină cu nota:","opts":["SOL","DO","LA"],"c":1,"e":"Gama DO major: DO-RE-MI-FA-SOL-LA-SI-DO."},{"q":"Semnul de repetiție îți cere să:","opts":["Cânți mai tare","Repeți un fragment","Te oprești"],"c":1,"e":"Semnul de repetiție (bară cu două puncte) cere reluarea unui fragment."}];
+const $=id=>document.getElementById(id);
+const LET=["A","B","C","D"];
+let idx,score,answered;
+function start(){idx=0;score=0;$("end").classList.add("hidden");$("game").classList.remove("hidden");render();}
+function render(){
+  const q=Q[idx];answered=false;
+  $("qn").textContent="Întrebarea "+(idx+1)+" din "+Q.length;
+  $("qt").textContent=q.q;$("bar").style.width=(idx/Q.length*100)+"%";$("score").textContent=score;
+  const box=$("opts");box.innerHTML="";
+  q.opts.forEach((o,i)=>{const b=document.createElement("button");b.className="opt";b.innerHTML='<span class="lt">'+LET[i]+'</span><span>'+o+'</span>';b.onclick=()=>pick(b,i);box.appendChild(b);});
+  $("explain").classList.add("hidden");$("next").classList.add("hidden");
+}
+function pick(btn,i){
+  if(answered)return;answered=true;
+  const q=Q[idx];const btns=[...document.querySelectorAll(".opt")];
+  btns.forEach((b,j)=>{if(j===q.c)b.classList.add("correct");else if(b===btn)b.classList.add("wrong");else b.classList.add("dim");b.onclick=null;});
+  if(i===q.c){score++;$("score").textContent=score;}
+  $("explainText").textContent=q.e;$("explain").classList.remove("hidden");
+  $("next").classList.remove("hidden");
+}
+$("next").onclick=()=>{idx++;if(idx>=Q.length)finish();else render();};
+function finish(){
+  $("bar").style.width="100%";$("game").classList.add("hidden");$("end").classList.remove("hidden");
+  const tot=Q.length;$("finalScore").textContent=score+"/"+tot;
+  const pct=score/tot;let m;if(pct>=.9)m="Excelent! 🏆";else if(pct>=.7)m="Foarte bine! 👏";else if(pct>=.5)m="Bine, dar mai exersează 🙂";else m="Mai citește lecția 💪";
+  $("finalMsg").textContent=m;$("finalSub").textContent="Ai răspuns corect la "+score+" din "+tot+" întrebări.";
+}
+$("again").onclick=start;
+start();
+</script>
+</body></html>
