@@ -2,33 +2,50 @@
 <html lang="ro"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Integrame, Rebus &amp; Jocuri</title>
+<title>PlayLudiq — Jocuri de minte &amp; Teste școlare</title>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--paper:#f4efe3;--ink:#23303d;--accent:#176b63;--accent2:#c9872a;--card:#fffdf8;--line:#d9cfba;--shadow:0 6px 18px rgba(20,40,40,.12);--muted:#6b6454}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#161d24;--ink:#eef2f4;--accent:#49b3a6;--accent2:#e0a24a;--card:#1f2932;--line:#36424d;--muted:#9aa4ad;--shadow:0 6px 20px rgba(0,0,0,.4)}}
+:root{--paper:#f4efe3;--ink:#23303d;--accent:#176b63;--accent2:#c9872a;--school:#2563a8;--card:#fffdf8;--line:#d9cfba;--shadow:0 6px 18px rgba(20,40,40,.12);--muted:#6b6454}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#161d24;--ink:#eef2f4;--accent:#49b3a6;--accent2:#e0a24a;--school:#5b9be0;--card:#1f2932;--line:#36424d;--muted:#9aa4ad;--shadow:0 6px 20px rgba(0,0,0,.4)}}
 *{margin:0;box-sizing:border-box}
 body{background:var(--paper);color:var(--ink);font-family:"Source Sans 3",system-ui,sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:28px 16px calc(28px + env(safe-area-inset-bottom))}
 .wrap{width:100%;max-width:520px}
-.hero{text-align:center;margin-bottom:24px}
-.hero .kick{font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);font-size:12px;margin-bottom:6px}
-h1{font-family:"Bricolage Grotesque";font-weight:800;font-size:clamp(30px,8vw,42px);line-height:1.02;letter-spacing:-.02em}
+.hero{text-align:center;margin-bottom:22px}
+.hero .kick{font-weight:800;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);font-size:12px;margin-bottom:6px}
+h1{font-family:"Bricolage Grotesque";font-weight:800;font-size:clamp(28px,7.5vw,40px);line-height:1.04;letter-spacing:-.02em}
 .hero p{color:var(--muted);margin-top:8px;font-size:15px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-top:8px}
-.tile{display:flex;flex-direction:column;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px 16px;text-decoration:none;color:inherit;box-shadow:var(--shadow);transition:transform .1s, box-shadow .15s;position:relative;overflow:hidden;min-height:132px}
-.tile:active{transform:scale(.97)}
-.tile .emo{font-size:34px;line-height:1}
-.tile .nm{font-family:"Bricolage Grotesque";font-weight:800;font-size:18px;line-height:1.05}
-.tile .ds{font-size:12.5px;color:var(--muted);line-height:1.3}
-.tile.soon{opacity:.6;pointer-events:none}
-.tile.soon::after{content:"în curând";position:absolute;top:10px;right:10px;font-size:9px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;background:var(--accent2);color:#fff;padding:3px 7px;border-radius:999px}
-.tile.wide{grid-column:1 / -1;flex-direction:row;align-items:center;gap:14px;min-height:auto}
-.tile.wide .emo{font-size:30px}
-.sect{font-weight:700;letter-spacing:.14em;text-transform:uppercase;font-size:11px;color:var(--accent);margin:22px 4px 10px}
-footer{text-align:center;color:var(--muted);font-size:12px;margin-top:26px}
-
 .offbtn{display:inline-flex;align-items:center;gap:7px;margin-top:14px;background:var(--card);border:1px solid var(--line);color:var(--accent);font-weight:700;font-size:13px;padding:9px 16px;border-radius:999px;box-shadow:var(--shadow);cursor:pointer;font-family:inherit}
 .offbtn:active{transform:translateY(1px)}
+
+/* === cele doua usi === */
+.doors{display:grid;gap:14px;margin-top:6px}
+.door{display:flex;align-items:center;gap:16px;border-radius:20px;padding:22px 20px;text-decoration:none;color:inherit;box-shadow:var(--shadow);position:relative;overflow:hidden;border:1px solid var(--line);transition:transform .1s}
+.door:active{transform:scale(.98)}
+.door .emo{font-size:40px;line-height:1;flex:none}
+.door .nm{font-family:"Bricolage Grotesque";font-weight:800;font-size:22px;line-height:1.05}
+.door .ds{font-size:13px;color:var(--muted);line-height:1.35;margin-top:3px}
+.door .go{margin-left:auto;font-size:24px;opacity:.5;flex:none}
+.door.play{background:linear-gradient(135deg,var(--card),color-mix(in srgb,var(--accent) 12%,var(--card)))}
+.door.play .emo{filter:drop-shadow(0 2px 4px rgba(0,0,0,.1))}
+.door.school{background:linear-gradient(135deg,var(--card),color-mix(in srgb,var(--school) 14%,var(--card)));border-color:color-mix(in srgb,var(--school) 30%,var(--line))}
+.door.school .nm{color:var(--school)}
+
+.sect{font-weight:800;letter-spacing:.14em;text-transform:uppercase;font-size:11px;color:var(--accent);margin:26px 4px 12px;display:flex;align-items:center;gap:8px}
+.sect::after{content:"";flex:1;height:1px;background:var(--line)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.tile{display:flex;flex-direction:column;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px 16px;text-decoration:none;color:inherit;box-shadow:var(--shadow);transition:transform .1s;position:relative;overflow:hidden;min-height:128px}
+.tile:active{transform:scale(.97)}
+.tile .emo{font-size:32px;line-height:1}
+.tile .nm{font-family:"Bricolage Grotesque";font-weight:800;font-size:17px;line-height:1.05}
+.tile .ds{font-size:12.5px;color:var(--muted);line-height:1.3}
+.tile.wide{grid-column:1 / -1;flex-direction:row;align-items:center;gap:14px;min-height:auto}
+.tile.wide .emo{font-size:30px}
+
+/* === slot reclama (placeholder; se umple cu AdSense) === */
+.adslot{margin:24px 0 4px;border:1px dashed var(--line);border-radius:14px;min-height:90px;display:flex;align-items:center;justify-content:center;background:color-mix(in srgb,var(--muted) 6%,transparent);color:var(--muted);font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:700}
+
+footer{text-align:center;color:var(--muted);font-size:12px;margin-top:22px}
+
 .ovl{position:fixed;inset:0;background:rgba(15,25,30,.55);display:none;align-items:center;justify-content:center;padding:22px;z-index:100}
 .ovl.on{display:flex}
 .sheet{background:var(--paper);border-radius:20px;padding:24px 20px;max-width:420px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3);max-height:88vh;overflow:auto}
@@ -39,53 +56,69 @@ footer{text-align:center;color:var(--muted);font-size:12px;margin-top:26px}
 .osec ol{margin:0 0 0 18px;padding:0;font-size:14px;line-height:1.6}
 .osec b{color:var(--accent)}
 .note{font-size:12.5px;color:var(--muted);text-align:center;line-height:1.4;margin-top:4px}
-</style>  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#176b63">
-  <link rel="apple-touch-icon" href="icon-192.png">
-  <script>if('serviceWorker' in navigator){addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}</script>
+</style>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#176b63">
+<link rel="apple-touch-icon" href="icon-192.png">
+<script>if('serviceWorker' in navigator){addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}</script>
+<!-- AdSense: decomentează și pune ca-pub-ul tău când ai contul
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXX" crossorigin="anonymous"></script>
+-->
 </head>
 <body>
 <div class="wrap">
   <div class="hero">
-    <div class="kick">Jocuri de minte · și distracție</div>
-    <h1>Integrame, Rebus<br>&amp; Jocuri</h1>
-    <p>Alege un joc și distrează-te 👇</p>
+    <div class="kick">PlayLudiq</div>
+    <h1>Jocuri de minte<br>&amp; Teste școlare</h1>
+    <p>Alege o lume 👇</p>
     <button class="offbtn" id="offBtn">📴 Joacă și fără internet — vezi cum</button>
   </div>
 
+  <div class="doors">
+    <a class="door play" href="#jocuri">
+      <div class="emo">🎮</div>
+      <div><div class="nm">Joacă-te</div><div class="ds">Integrame, rebus, pasiențe și quiz — pentru distracție.</div></div>
+      <div class="go">→</div>
+    </a>
+    <a class="door school" href="scoala.html">
+      <div class="emo">📚</div>
+      <div><div class="nm">Teste școlare</div><div class="ds">Învață pe materii și module. Acum: Educație Muzicală cl. a V-a.</div></div>
+      <div class="go">→</div>
+    </a>
+  </div>
+
+  <div class="sect" id="jocuri">🎮 Joacă-te</div>
   <a class="tile wide" href="integrame.html">
     <div class="emo">🧩</div>
     <div><div class="nm">Integrame &amp; Rebus</div><div class="ds">Careuri pe domenii și niveluri, cu rebus și capcane.</div></div>
   </a>
-
-    <a class="tile wide" href="scoala.html">
-    <div class="emo">📚</div>
-    <div><div class="nm">Teste Școlare</div><div class="ds">Teste pe materii, după manual. Acum: Educație Muzicală cl. a V-a.</div></div>
+  <a class="tile wide" href="quiz.html" style="margin-top:13px">
+    <div class="emo">🧠</div>
+    <div><div class="nm">Quiz &amp; Trivia</div><div class="ds">Cultură generală pe teme, stil Kahoot, cu „Știați că…?".</div></div>
   </a>
 
-  <div class="sect">Pasiențe (jocuri de cărți)</div>
+  <div class="sect">🂡 Pasiențe (jocuri de cărți)</div>
   <div class="grid">
     <a class="tile" href="piramida.html">
-      <div class="emo">🔺</div>
-      <div class="nm">Piramida</div>
+      <div class="emo">🔺</div><div class="nm">Piramida</div>
       <div class="ds">Elimină perechi care fac 13.</div>
     </a>
     <a class="tile" href="napoleon.html">
-      <div class="emo">👑</div>
-      <div class="nm">Napoleon</div>
+      <div class="emo">👑</div><div class="nm">Napoleon</div>
       <div class="ds">Construiește pe 6 și pe 5, cu 52 de cărți.</div>
     </a>
     <a class="tile" href="ceasul.html">
-      <div class="emo">🕐</div>
-      <div class="nm">Ceasul</div>
+      <div class="emo">🕐</div><div class="nm">Ceasul</div>
       <div class="ds">Pasiență cu cadran de ceas.</div>
     </a>
-    <a class="tile" href="quiz.html">
-      <div class="emo">🧠</div>
-      <div class="nm">Quiz</div>
-      <div class="ds">Cultură generală, stil Kahoot.</div>
+    <a class="tile" href="#jocuri" style="opacity:.55;pointer-events:none">
+      <div class="emo">➕</div><div class="nm">În curând</div>
+      <div class="ds">Alte pasiențe și jocuri de cărți.</div>
     </a>
   </div>
+
+  <!-- slot reclama: devine AdSense cand ai contul -->
+  <div class="adslot" aria-hidden="true">Spațiu reclamă</div>
 
   <footer>Făcut cu drag · se adaugă jocuri noi mereu</footer>
 </div>
@@ -122,7 +155,7 @@ $("offClose").onclick=function(){$("offModal").classList.remove("on")};
 $("offModal").onclick=function(e){if(e.target.id==="offModal")$("offModal").classList.remove("on")};
 })();
 </script>
-<footer style="margin:26px auto 10px;text-align:center;font-size:11.5px;color:var(--muted,#8a857a);opacity:.8;line-height:1.5;max-width:480px">
+<footer style="margin:22px auto 10px;text-align:center;font-size:11.5px;color:var(--muted,#8a857a);opacity:.8;line-height:1.5;max-width:480px">
 © 2026 · <b>PlayLudiq</b>™ · Corneliu<br>Toate drepturile rezervate
 </footer>
 </body></html>
