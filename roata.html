@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ro"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Roata Cuvintelor — PlayLudiq</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#f4efe3;--ink:#23303d;--accent:#176b63;--accent2:#c9872a;--card:#fffdf8;--line:#d9cfba;--good:#2f8f5b;--bad:#c23b3b;--muted:#6b6454;--shadow:0 5px 15px rgba(20,40,40,.14);--tile:#fffdf8;--tileink:#23303d;--vowel:#c9872a}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#161d24;--ink:#eef2f4;--accent:#49b3a6;--accent2:#e0a24a;--card:#1f2932;--line:#36424d;--muted:#9aa4ad;--shadow:0 6px 20px rgba(0,0,0,.4);--tile:#273340;--tileink:#eef2f4;--vowel:#e0a24a}}
+*{margin:0;box-sizing:border-box}html,body{min-height:100%}
+body{background:var(--paper);color:var(--ink);font-family:"Source Sans 3",system-ui,sans-serif;display:flex;flex-direction:column;align-items:center;padding:10px 12px calc(14px + env(safe-area-inset-bottom))}
+.backlink{align-self:flex-start;color:var(--accent);font-weight:700;text-decoration:none;font-size:13px;background:var(--card);border:1px solid var(--line);padding:6px 12px;border-radius:999px;box-shadow:var(--shadow);margin-bottom:8px}
+.wrap{width:100%;max-width:560px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
+h1{font-family:"Bricolage Grotesque";font-weight:800;font-size:clamp(18px,4.8vw,23px);line-height:1}
+h1 small{display:block;font-weight:700;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:2px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:5px 9px;font-weight:700;font-size:12px;box-shadow:var(--shadow);white-space:nowrap}
+.cat{text-align:center;font-size:12.5px;color:var(--muted);margin-bottom:6px}
+.cat b{color:var(--accent)}
+.budgets{display:flex;gap:10px;justify-content:center;margin-bottom:12px}
+.budget{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:7px 14px;font-weight:800;font-size:13px;box-shadow:var(--shadow);display:flex;gap:7px;align-items:center}
+.budget .v{color:var(--vowel)} .budget .c{color:var(--accent)}
+.board{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 12px;box-shadow:var(--shadow);margin-bottom:12px;display:flex;flex-wrap:wrap;gap:7px 9px;justify-content:center;min-height:70px}
+.word{display:flex;gap:4px}
+.tile{width:26px;height:34px;border-radius:6px;background:var(--tile);border:1px solid var(--line);display:grid;place-items:center;font-family:"Bricolage Grotesque";font-weight:800;font-size:19px;color:var(--tileink);box-shadow:0 1px 2px rgba(20,40,40,.1)}
+.tile.blank{color:transparent;border-bottom:3px solid var(--accent)}
+.tile.rev{animation:pop .25s}
+.tile.vow{color:var(--vowel)}
+@keyframes pop{from{transform:scale(.6);opacity:.3}to{transform:scale(1);opacity:1}}
+.punc{display:flex;align-items:flex-end;font-family:"Bricolage Grotesque";font-weight:800;font-size:19px;padding-bottom:4px;color:var(--muted)}
+.kb{display:flex;flex-direction:column;gap:6px;align-items:center;margin-bottom:10px}
+.krow{display:flex;gap:4px;justify-content:center;width:100%}
+.key{appearance:none;border:1px solid var(--line);background:var(--card);color:var(--ink);font-family:inherit;font-weight:800;font-size:15px;flex:1;max-width:32px;height:40px;border-radius:7px;cursor:pointer;box-shadow:var(--shadow);padding:0}
+.key.vow{color:var(--vowel);border-color:var(--vowel)}
+.key:active{transform:translateY(1px)}
+.key.used{opacity:.35;pointer-events:none}
+.key.hit{background:var(--good);color:#fff;border-color:var(--good)}
+.key.miss{background:var(--bad);color:#fff;border-color:var(--bad);opacity:.6}
+.ctrls{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:4px}
+button.btn{appearance:none;border:1px solid var(--line);background:var(--card);color:var(--ink);font-family:inherit;font-weight:700;font-size:13px;padding:10px 14px;border-radius:12px;cursor:pointer;box-shadow:var(--shadow)}
+button.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.hintrow{text-align:center;font-size:12.5px;color:var(--muted);min-height:18px;margin:2px 0 10px}
+.hintrow b{color:var(--accent)}
+.author{text-align:center;font-size:15px;font-weight:700;color:var(--accent);margin:8px 0;min-height:20px}
+.author span{color:var(--muted);font-weight:600}
+.help{font-size:12.5px;color:var(--muted);text-align:center;line-height:1.5;margin-top:8px}
+.help b{color:var(--accent)}
+footer{text-align:center;color:var(--muted);font-size:11px;margin-top:16px;opacity:.85;line-height:1.5}
+.overlay{position:fixed;inset:0;background:rgba(15,25,30,.55);display:none;align-items:center;justify-content:center;padding:22px;z-index:100}
+.overlay.on{display:flex}
+.modal{background:var(--paper);border-radius:20px;padding:24px 20px;max-width:380px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.modal h2{font-family:"Bricolage Grotesque";font-weight:800;font-size:24px;margin-bottom:6px}
+.modal p{color:var(--muted);font-size:14px;margin-bottom:14px;line-height:1.5}
+.modal input{width:100%;font-family:inherit;font-size:16px;padding:12px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);text-align:center;font-weight:700;margin-bottom:12px;text-transform:uppercase}
+.modal input.bad{border-color:var(--bad);animation:shk .4s}
+@keyframes shk{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.mrow{display:flex;gap:8px}
+.mrow .btn{flex:1}
+</style>
+<link rel="manifest" href="manifest.json"><meta name="theme-color" content="#176b63"><link rel="apple-touch-icon" href="icon-192.png">
+<script>if('serviceWorker' in navigator){addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}</script>
+<script src="view.js" defer></script><script src="cookies.js" defer></script>
+</head>
+<body>
+<a class="backlink" href="jocuri.html">← Jocuri</a>
+<div class="wrap">
+  <div class="top">
+    <h1><small>Ghicește fraza</small>Roata Cuvintelor</h1>
+    <div class="stat">Scor: <b id="score">0</b></div>
+  </div>
+
+  <div class="cat">Categorie: <b id="cat">Proverb</b></div>
+  <div class="budgets">
+    <div class="budget"><span class="v">🅰️ Vocale</span> <b id="vLeft">3</b></div>
+    <div class="budget"><span class="c">🅱️ Consoane</span> <b id="cLeft">4</b></div>
+  </div>
+
+  <div class="board" id="board"></div>
+  <div class="hintrow" id="hint">Alege litere, apoi apasă „Ghicește!"</div>
+
+  <div class="kb" id="kb"></div>
+
+  <div class="ctrls">
+    <button class="btn primary" id="guessBtn">✓ Ghicește soluția</button>
+    <button class="btn" id="revealBtn">👁️ Soluția</button>
+    <button class="btn" id="newBtn">🔄 Alta</button>
+  </div>
+
+  <div class="help">
+    Ghicește proverbul! Ai <b>3 vocale</b> și <b>4 consoane</b> de dezvăluit. Apasă o literă → apare peste tot unde există (sau se marchează dacă lipsește). Când crezi că știi, apasă <b>„Ghicește soluția"</b> și scrie fraza întreagă.
+  </div>
+  <footer>© 2026 · <b>PlayLudiq</b>™ · versiune beta · <a href="confidentialitate.html" style="color:inherit;text-decoration:underline">Confidențialitate</a></footer>
+</div>
+
+<div class="overlay" id="guessOv"><div class="modal">
+  <h2>Scrie soluția</h2>
+  <p>Scrie proverbul întreg (fără grija diacriticelor).</p>
+  <input id="guessInp" autocomplete="off" autocapitalize="characters" placeholder="ex. VORBA DULCE MULT ADUCE">
+  <div class="mrow"><button class="btn" id="guessCancel">Înapoi</button><button class="btn primary" id="guessOk">Verifică</button></div>
+</div></div>
+
+<div class="overlay" id="endOv"><div class="modal">
+  <h2 id="endT">🎉 Corect!</h2>
+  <div class="author" id="endAuthor"></div>
+  <button class="btn primary" id="endNew" style="width:100%">Alt proverb</button>
+</div></div>
+
+<script>
+(function(){
+var $=function(i){return document.getElementById(i);};
+var VOW={A:1,E:1,I:1,O:1,U:1};
+function isL(ch){return ch>="A"&&ch<="Z";}
+// proverbe / maxime (fara diacritice, MAJUSCULE)
+var LIST=[
+ {t:"VORBA DULCE MULT ADUCE",a:"Proverb romanesc"},
+ {t:"OMUL SFINTESTE LOCUL",a:"Proverb romanesc"},
+ {t:"APA TRECE PIETRELE RAMAN",a:"Proverb romanesc"},
+ {t:"GRABA STRICA TREABA",a:"Proverb romanesc"},
+ {t:"PRIETENUL LA NEVOIE SE CUNOASTE",a:"Proverb romanesc"},
+ {t:"BUTURUGA MICA RASTOARNA CARUL MARE",a:"Proverb romanesc"},
+ {t:"PICATURA MICA GAURESTE PIATRA TARE",a:"Proverb romanesc"},
+ {t:"NU LASA PE MAINE CE POTI FACE AZI",a:"Proverb romanesc"},
+ {t:"MINCIUNA ARE PICIOARE SCURTE",a:"Proverb romanesc"},
+ {t:"POMUL SE CUNOASTE DUPA ROADE",a:"Proverb romanesc"},
+ {t:"FIERUL SE BATE CAT E CALD",a:"Proverb romanesc"},
+ {t:"PAZA BUNA TRECE PRIMEJDIA REA",a:"Proverb romanesc"},
+ {t:"OCHII CARE NU SE VAD SE UITA",a:"Proverb romanesc"},
+ {t:"DUPA FAPTA SI RASPLATA",a:"Proverb romanesc"},
+ {t:"NEVOIA INVATA PE OM",a:"Proverb romanesc"},
+ {t:"CAPUL PLECAT SABIA NU-L TAIE",a:"Proverb romanesc"},
+ {t:"MESERIA E BRATARA DE AUR",a:"Proverb romanesc"},
+ {t:"AI CARTE AI PARTE",a:"Proverb romanesc"},
+ {t:"BINE FACI BINE GASESTI",a:"Proverb romanesc"},
+ {t:"TOT PASAREA PE LIMBA EI PIERE",a:"Proverb romanesc"},
+ {t:"LUPUL ISI SCHIMBA PARUL DAR NARAVUL BA",a:"Proverb romanesc"},
+ {t:"CINE SE SCOALA DE DIMINEATA DEPARTE AJUNGE",a:"Proverb romanesc"},
+ {t:"CINE FUGE DUPA DOI IEPURI NU PRINDE NICIUNUL",a:"Proverb romanesc"},
+ {t:"CUNOASTE-TE PE TINE INSUTI",a:"Socrate"},
+ {t:"STIU CA NU STIU NIMIC",a:"Socrate"},
+ {t:"AM VENIT AM VAZUT AM INVINS",a:"Iulius Cezar"},
+ {t:"OMUL ESTE MASURA TUTUROR LUCRURILOR",a:"Protagoras"},
+ {t:"INDOIALA E INCEPUTUL INTELEPCIUNII",a:"Aristotel"},
+ {t:"GRABESTE-TE INCET",a:"Imparatul Augustus"}
+];
+var KROWS=[["A","B","C","D","E","F","G","H","I","J"],["K","L","M","N","O","P","Q","R","S","T"],["U","V","W","X","Y","Z"]];
+
+var cur=null, vLeft=3, cLeft=4, revealed={}, used={}, score=0, solved=false, usedLetters=0;
+
+function norm(s){return s.toUpperCase().replace(/[^A-Z]/g,"");}
+function newRound(){
+  cur=LIST[Math.random()*LIST.length|0];
+  vLeft=3;cLeft=4;revealed={};used={};solved=false;usedLetters=0;
+  $("cat").textContent=cur.a;
+  $("endOv").classList.remove("on");$("guessOv").classList.remove("on");
+  $("hint").textContent="Alege litere, apoi apasă Ghicește!";
+  render();renderKb();
+}
+function render(){
+  $("vLeft").textContent=vLeft;$("cLeft").textContent=cLeft;$("score").textContent=score;
+  var box=$("board");box.innerHTML="";var word=null;
+  for(var i=0;i<cur.t.length;i++){
+    var ch=cur.t[i];
+    if(ch===" "){word=null;continue;}
+    if(!word){word=document.createElement("div");word.className="word";box.appendChild(word);}
+    if(!isL(ch)){var pu=document.createElement("div");pu.className="punc";pu.textContent=ch;word.appendChild(pu);continue;}
+    var t=document.createElement("div");
+    var show = solved || revealed[ch];
+    t.className="tile"+(show?(VOW[ch]?" tile vow":""):" blank");
+    t.textContent=show?ch:"";
+    word.appendChild(t);
+  }
+}
+function renderKb(){
+  var kb=$("kb");kb.innerHTML="";
+  KROWS.forEach(function(row){
+    var r=document.createElement("div");r.className="krow";
+    row.forEach(function(L){
+      var b=document.createElement("button");
+      b.className="key"+(VOW[L]?" vow":"")+(used[L]?(cur.t.indexOf(L)>=0?" hit":" miss"):"");
+      if(used[L])b.className+=" used";
+      b.textContent=L;b.onclick=function(){pick(L);};
+      r.appendChild(b);
+    });
+    kb.appendChild(r);
+  });
+}
+function pick(L){
+  if(solved||used[L])return;
+  var isV=!!VOW[L];
+  if(isV && vLeft<=0){flash("Nu mai ai vocale. Apasă Ghicește soluția.");return;}
+  if(!isV && cLeft<=0){flash("Nu mai ai consoane. Apasă Ghicește soluția.");return;}
+  used[L]=1; if(isV)vLeft--; else cLeft--; usedLetters++;
+  var exists=cur.t.indexOf(L)>=0;
+  if(exists){revealed[L]=1;flash("Da! „"+L+"\" apare în proverb.");} else {flash("„"+L+"\" nu există. Ai pierdut o alegere.");}
+  render();renderKb();
+  // auto win if everything revealed
+  if(allRevealed()){doWin(true);}
+}
+function allRevealed(){
+  for(var i=0;i<cur.t.length;i++){var ch=cur.t[i];if(isL(ch)&&!revealed[ch])return false;}
+  return true;
+}
+function flash(m){$("hint").innerHTML=m;}
+function doWin(auto){
+  solved=true;render();
+  var bonus = Math.max(1, 10 - usedLetters);
+  score += bonus;
+  $("score").textContent=score;
+  $("endT").textContent = auto? "🎉 Dezvăluit!" : "🎉 Corect!";
+  $("endAuthor").innerHTML='„'+cur.t+'" <span>— '+cur.a+'</span><br><span>+'+bonus+' puncte</span>';
+  $("endOv").classList.add("on");
+}
+function reveal(){ solved=true;render();$("endT").textContent="Soluția";$("endAuthor").innerHTML='„'+cur.t+'" <span>— '+cur.a+'</span>';$("endOv").classList.add("on"); }
+
+// guess modal
+$("guessBtn").onclick=function(){ if(solved)return; $("guessInp").value="";$("guessInp").classList.remove("bad");$("guessOv").classList.add("on");setTimeout(function(){$("guessInp").focus();},50); };
+$("guessCancel").onclick=function(){$("guessOv").classList.remove("on");};
+$("guessOk").onclick=function(){
+  if(norm($("guessInp").value)===norm(cur.t)){ $("guessOv").classList.remove("on"); for(var i=0;i<cur.t.length;i++){var ch=cur.t[i];if(isL(ch))revealed[ch]=1;} doWin(false); }
+  else { $("guessInp").classList.add("bad"); setTimeout(function(){$("guessInp").classList.remove("bad");},500); }
+};
+$("guessInp").addEventListener("keydown",function(e){if(e.key==="Enter")$("guessOk").click();});
+$("revealBtn").onclick=reveal;
+$("newBtn").onclick=newRound;
+$("endNew").onclick=newRound;
+$("endOv").onclick=function(e){if(e.target.id==="endOv")$("endOv").classList.remove("on");};
+$("guessOv").onclick=function(e){if(e.target.id==="guessOv")$("guessOv").classList.remove("on");};
+newRound();
+})();
+</script>
+<!-- Cloudflare Web Analytics --><script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "74c145f1f04942f2879e1c23044be639"}'></script><!-- End Cloudflare Web Analytics -->
+</body></html>
