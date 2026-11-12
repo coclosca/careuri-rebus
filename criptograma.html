@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ro"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Criptograma — citate celebre · PlayLudiq</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#f4efe3;--ink:#23303d;--accent:#176b63;--accent2:#c9872a;--card:#fffdf8;--line:#d9cfba;--good:#2f8f5b;--bad:#c23b3b;--muted:#6b6454;--shadow:0 5px 15px rgba(20,40,40,.14);--sel:#ffe9a8;--selink:#5a4a1a}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#161d24;--ink:#eef2f4;--accent:#49b3a6;--accent2:#e0a24a;--card:#1f2932;--line:#36424d;--muted:#9aa4ad;--shadow:0 6px 20px rgba(0,0,0,.4);--sel:#4a3a10;--selink:#f0d98a}}
+*{margin:0;box-sizing:border-box}html,body{min-height:100%}
+body{background:var(--paper);color:var(--ink);font-family:"Source Sans 3",system-ui,sans-serif;display:flex;flex-direction:column;align-items:center;padding:10px 12px calc(14px + env(safe-area-inset-bottom))}
+.backlink{align-self:flex-start;color:var(--accent);font-weight:700;text-decoration:none;font-size:13px;background:var(--card);border:1px solid var(--line);padding:6px 12px;border-radius:999px;box-shadow:var(--shadow);margin-bottom:8px}
+.wrap{width:100%;max-width:560px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+h1{font-family:"Bricolage Grotesque";font-weight:800;font-size:clamp(18px,4.8vw,23px);line-height:1}
+h1 small{display:block;font-weight:700;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:2px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:5px 10px;font-weight:700;font-size:12.5px;box-shadow:var(--shadow);white-space:nowrap}
+.stat b{color:var(--accent)}
+.puzzle{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 14px;box-shadow:var(--shadow);margin-bottom:12px;display:flex;flex-wrap:wrap;gap:9px 10px;justify-content:center}
+.word{display:flex;gap:3px}
+.punc{display:flex;align-items:flex-end;font-family:"Bricolage Grotesque";font-weight:800;font-size:21px;padding-bottom:16px;color:var(--muted)}
+.cell{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer}
+.cell .box{width:23px;height:30px;border-bottom:2.5px solid var(--line);display:grid;place-items:center;font-family:"Bricolage Grotesque";font-weight:800;font-size:19px;line-height:1}
+.cell .code{font-size:10.5px;font-weight:800;color:var(--muted);letter-spacing:.02em}
+.cell.sel .box{background:var(--sel);border-bottom-color:var(--accent2);border-radius:5px 5px 0 0;color:var(--selink)}
+.cell.same .box{border-bottom-color:var(--accent)}
+.cell.lock .box{color:var(--good)}
+.cell.bad .box{color:var(--bad);border-bottom-color:var(--bad)}
+.cell.done .box{color:var(--good)}
+.hintrow{text-align:center;font-size:12.5px;color:var(--muted);margin:-2px 0 12px;min-height:16px}
+.hintrow b{color:var(--accent)}
+.kb{display:flex;flex-direction:column;gap:6px;align-items:center;margin-bottom:12px}
+.krow{display:flex;gap:5px;justify-content:center;width:100%}
+.key{appearance:none;border:1px solid var(--line);background:var(--card);color:var(--ink);font-family:inherit;font-weight:800;font-size:15px;flex:1;max-width:34px;height:42px;border-radius:8px;cursor:pointer;box-shadow:var(--shadow);padding:0}
+.key.wide{max-width:60px;font-size:13px}
+.key:active{transform:translateY(1px)}
+.key.used{opacity:.4}
+.ctrls{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+button.btn{appearance:none;border:1px solid var(--line);background:var(--card);color:var(--ink);font-family:inherit;font-weight:700;font-size:13px;padding:9px 13px;border-radius:12px;cursor:pointer;box-shadow:var(--shadow)}
+button.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.author{text-align:center;font-size:15px;font-weight:700;color:var(--accent);margin:4px 0 12px;min-height:20px}
+.author span{color:var(--muted);font-weight:600}
+.win{text-align:center;background:var(--card);border:1px solid var(--good);border-radius:14px;padding:14px;box-shadow:var(--shadow);margin-bottom:12px}
+.win .t{font-family:"Bricolage Grotesque";font-weight:800;font-size:20px;color:var(--good)}
+.hidden{display:none}
+.help{font-size:12.5px;color:var(--muted);text-align:center;line-height:1.5;margin-top:6px}
+.help b{color:var(--accent)}
+footer{text-align:center;color:var(--muted);font-size:11px;margin-top:16px;opacity:.85;line-height:1.5}
+</style>
+<link rel="manifest" href="manifest.json"><meta name="theme-color" content="#176b63"><link rel="apple-touch-icon" href="icon-192.png">
+<script>if('serviceWorker' in navigator){addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}</script>
+<script src="view.js" defer></script><script src="cookies.js" defer></script>
+</head>
+<body>
+<a class="backlink" href="jocuri.html">← Jocuri</a>
+<div class="wrap">
+  <div class="top">
+    <h1><small>Perspicacitate</small>Criptograma</h1>
+    <div style="display:flex;gap:6px">
+      <div class="stat">💡 <b id="hints">3</b></div>
+      <div class="stat">Litere <b id="prog">0/0</b></div>
+    </div>
+  </div>
+
+  <div class="win hidden" id="winBox"><div class="t">🎉 Rezolvat!</div></div>
+  <div class="author" id="author"></div>
+  <div class="puzzle" id="puzzle"></div>
+  <div class="hintrow" id="hintrow"></div>
+
+  <div class="kb" id="kb"></div>
+
+  <div class="ctrls">
+    <button class="btn primary" id="newBtn">🔄 Alt citat</button>
+    <button class="btn" id="hintBtn">💡 O literă</button>
+    <button class="btn" id="checkBtn">✓ Verifică</button>
+    <button class="btn" id="solveBtn">👁️ Soluția</button>
+  </div>
+
+  <div class="help">
+    Fiecare literă din citat a fost înlocuită cu alta (cifru). Numărul mic de sub căsuță e <b>codul</b>.
+    Apasă o căsuță, apoi o literă de pe tastatură — se completează <b>peste tot unde apare același cod</b>. Descoperă citatul și autorul!
+  </div>
+  <footer>© 2026 · <b>PlayLudiq</b>™ · versiune beta · <a href="confidentialitate.html" style="color:inherit;text-decoration:underline">Confidențialitate</a></footer>
+</div>
+
+<script>
+(function(){
+var $=function(i){return document.getElementById(i);};
+// citate: text deja fara diacritice, MAJUSCULE; a = autor
+var QUOTES=[
+ {t:"OMUL SFINTESTE LOCUL",a:"Proverb romanesc"},
+ {t:"VORBA DULCE MULT ADUCE",a:"Proverb romanesc"},
+ {t:"APA TRECE PIETRELE RAMAN",a:"Proverb romanesc"},
+ {t:"GRABA STRICA TREABA",a:"Proverb romanesc"},
+ {t:"PRIETENUL LA NEVOIE SE CUNOASTE",a:"Proverb romanesc"},
+ {t:"CINE SE SCOALA DE DIMINEATA DEPARTE AJUNGE",a:"Proverb romanesc"},
+ {t:"BUTURUGA MICA RASTOARNA CARUL MARE",a:"Proverb romanesc"},
+ {t:"PICATURA MICA GAURESTE PIATRA TARE",a:"Proverb romanesc"},
+ {t:"NU LASA PE MAINE CE POTI FACE AZI",a:"Proverb romanesc"},
+ {t:"LUPUL ISI SCHIMBA PARUL DAR NARAVUL BA",a:"Proverb romanesc"},
+ {t:"MINCIUNA ARE PICIOARE SCURTE",a:"Proverb romanesc"},
+ {t:"POMUL SE CUNOASTE DUPA ROADE",a:"Proverb romanesc"},
+ {t:"FIERUL SE BATE CAT E CALD",a:"Proverb romanesc"},
+ {t:"PAZA BUNA TRECE PRIMEJDIA REA",a:"Proverb romanesc"},
+ {t:"OCHII CARE NU SE VAD SE UITA",a:"Proverb romanesc"},
+ {t:"DUPA FAPTA SI RASPLATA",a:"Proverb romanesc"},
+ {t:"NEVOIA INVATA PE OM",a:"Proverb romanesc"},
+ {t:"CAPUL PLECAT SABIA NU-L TAIE",a:"Proverb romanesc"},
+ {t:"MESERIA E BRATARA DE AUR",a:"Proverb romanesc"},
+ {t:"AI CARTE AI PARTE",a:"Proverb romanesc"},
+ {t:"BINE FACI BINE GASESTI",a:"Proverb romanesc"},
+ {t:"CINE FUGE DUPA DOI IEPURI NU PRINDE NICIUNUL",a:"Proverb romanesc"},
+ {t:"TOT PASAREA PE LIMBA EI PIERE",a:"Proverb romanesc"},
+ {t:"GURA LUMII NUMAI PAMANTUL O ASTUPA",a:"Proverb romanesc"},
+ {t:"CUNOASTE-TE PE TINE INSUTI",a:"Socrate"},
+ {t:"STIU CA NU STIU NIMIC",a:"Socrate"},
+ {t:"AM VENIT AM VAZUT AM INVINS",a:"Iulius Cezar"},
+ {t:"GRABESTE-TE INCET",a:"Imparatul Augustus"},
+ {t:"OMUL ESTE MASURA TUTUROR LUCRURILOR",a:"Protagoras"},
+ {t:"NIMENI NU SE SCALDA DE DOUA ORI IN ACELASI RAU",a:"Heraclit"},
+ {t:"STIINTA FARA CONSTIINTA E RUINA SUFLETULUI",a:"Rabelais"},
+ {t:"CELE MAI MARI CALATORII INCEP CU UN SINGUR PAS",a:"Lao Zi"},
+ {t:"NU EXISTA VANT PRIELNIC PENTRU CEL CE NU STIE INCOTRO MERGE",a:"Seneca"},
+ {t:"INDOIALA E INCEPUTUL INTELEPCIUNII",a:"Aristotel"}
+];
+var ALPHA="ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+var KROWS=[["A","B","C","D","E","F","G","H","I"],["J","K","L","M","N","O","P","Q","R"],["S","T","U","V","W","X","Y","Z"]];
+var cipher={}, decode={}, plain="", codeStr="", guess={}, locked={}, curSel=-1, cells=[], hints=3, solved=false;
+
+function shuffledPerm(){ // derangement-ish over A-Z (no fixed point)
+  while(true){
+    var p=ALPHA.slice();
+    for(var i=p.length-1;i>0;i--){var j=Math.random()*(i+1)|0;var t=p[i];p[i]=p[j];p[j]=t;}
+    var ok=true;for(var k=0;k<26;k++){if(p[k]===ALPHA[k]){ok=false;break;}}
+    if(ok)return p;
+  }
+}
+function newGame(){
+  var q=QUOTES[Math.random()*QUOTES.length|0];
+  plain=q.t; curAuthor=q.a;
+  var perm=shuffledPerm(); cipher={}; decode={};
+  for(var i=0;i<26;i++){cipher[ALPHA[i]]=perm[i];decode[perm[i]]=ALPHA[i];}
+  // build code string (cipher text)
+  codeStr=""; for(var c=0;c<plain.length;c++){var ch=plain[c];codeStr+=(ch>="A"&&ch<="Z")?cipher[ch]:ch;}
+  guess={}; locked={}; curSel=-1; hints=3; solved=false;
+  $("hints").textContent=hints; $("winBox").classList.add("hidden"); $("author").textContent="";
+  render();
+}
+var curAuthor="";
+
+function render(){
+  var box=$("puzzle"); box.innerHTML=""; cells=[];
+  var word=null;
+  for(var i=0;i<codeStr.length;i++){
+    var ch=codeStr[i], orig=plain[i];
+    if(orig===" "){ word=null; continue; }
+    if(!(ch>="A"&&ch<="Z")){ // punctuation
+      if(!word){word=document.createElement("div");word.className="word";box.appendChild(word);}
+      var pu=document.createElement("div");pu.className="punc";pu.textContent=ch;word.appendChild(pu);continue;
+    }
+    if(!word){word=document.createElement("div");word.className="word";box.appendChild(word);}
+    var cell=document.createElement("div");cell.className="cell";cell.dataset.code=ch;cell.dataset.pos=i;
+    var g=guess[ch]||"";
+    cell.innerHTML='<div class="box">'+(g||"")+'</div><div class="code">'+ch+'</div>';
+    (function(pos){cell.onclick=function(){selectPos(pos);};})(i);
+    word.appendChild(cell); cells.push({el:cell,code:ch,pos:i});
+    if(locked[ch])cell.classList.add("lock");
+  }
+  // selection highlight
+  if(curSel>=0){var selCode=codeStr[curSel];
+    cells.forEach(function(c){if(c.pos===curSel)c.el.classList.add("sel");else if(c.code===selCode)c.el.classList.add("same");});
+  }
+  // progress
+  var distinct={},done={};
+  for(var j=0;j<codeStr.length;j++){var cc=codeStr[j];if(cc>="A"&&cc<="Z"){distinct[cc]=1;if(guess[cc])done[cc]=1;}}
+  $("prog").textContent=Object.keys(done).length+"/"+Object.keys(distinct).length;
+  // keyboard used state
+  var used={};for(var k in guess){if(guess[k])used[guess[k]]=1;}
+  [].forEach.call(document.querySelectorAll(".key[data-l]"),function(b){b.classList.toggle("used",!!used[b.dataset.l]&&!solved);});
+  $("hintrow").innerHTML=curSel>=0?("Cod selectat: <b>"+codeStr[curSel]+"</b> — alege litera lui"):"Apasă o căsuță ca să începi";
+}
+function selectPos(pos){ if(solved)return; var ch=codeStr[pos]; if(locked[ch]){curSel=pos;render();return;} curSel=pos; render(); }
+function nextUnsolved(){ // move selection to next cell without a guess
+  if(curSel<0)return; var start=cells.findIndex(function(c){return c.pos===curSel;});
+  for(var n=1;n<=cells.length;n++){var c=cells[(start+n)%cells.length];if(!guess[c.code]&&!locked[c.code]){curSel=c.pos;return;}}
+}
+function setLetter(L){
+  if(solved||curSel<0)return; var code=codeStr[curSel]; if(locked[code])return;
+  // 1-1: if L already used by another code, clear that one
+  for(var c in guess){if(guess[c]===L&&c!==code)delete guess[c];}
+  guess[code]=L; nextUnsolved(); render(); checkWin();
+}
+function backspace(){ if(solved||curSel<0)return; var code=codeStr[curSel]; if(locked[code])return; delete guess[code]; render(); }
+function checkWin(){
+  var ok=true;
+  for(var i=0;i<codeStr.length;i++){var cc=codeStr[i];if(cc>="A"&&cc<="Z"){if(guess[cc]!==plain[i]){ok=false;break;}}}
+  if(ok){solved=true;curSel=-1;$("winBox").classList.remove("hidden");$("author").innerHTML='„'+plain+'" <span>— '+curAuthor+'</span>';
+    cells.forEach(function(c){c.el.classList.add("done");});render();}
+}
+function giveHint(){
+  if(solved||hints<=0)return;
+  // find a code whose guess is wrong/empty
+  var cand=[];var seen={};
+  for(var i=0;i<codeStr.length;i++){var cc=codeStr[i];if(cc>="A"&&cc<="Z"&&!seen[cc]){seen[cc]=1;if(guess[cc]!==decode[cc])cand.push(cc);}}
+  if(!cand.length)return;
+  var code=cand[Math.random()*cand.length|0];
+  // clear any other code using that letter
+  var L=decode[code];for(var c in guess){if(guess[c]===L&&c!==code)delete guess[c];}
+  guess[code]=L; locked[code]=1; hints--; $("hints").textContent=hints; render(); checkWin();
+}
+function verify(){
+  if(solved)return;
+  cells.forEach(function(c){c.el.classList.remove("bad");if(guess[c.code]&&guess[c.code]!==decode[c.code])c.el.classList.add("bad");});
+  setTimeout(function(){cells.forEach(function(c){c.el.classList.remove("bad");});},1100);
+}
+function solveAll(){
+  for(var i=0;i<codeStr.length;i++){var cc=codeStr[i];if(cc>="A"&&cc<="Z")guess[cc]=decode[cc];}
+  solved=true;curSel=-1;$("winBox").classList.add("hidden");$("author").innerHTML='„'+plain+'" <span>— '+curAuthor+'</span>';
+  render();cells.forEach(function(c){c.el.classList.add("done");});
+}
+// keyboard
+var kb=$("kb");
+KROWS.forEach(function(row,ri){
+  var r=document.createElement("div");r.className="krow";
+  if(ri===2){var del=document.createElement("button");del.className="key wide";del.textContent="⌫";del.onclick=backspace;r.appendChild(del);}
+  row.forEach(function(L){var b=document.createElement("button");b.className="key";b.dataset.l=L;b.textContent=L;b.onclick=function(){setLetter(L);};r.appendChild(b);});
+  kb.appendChild(r);
+});
+// physical keyboard
+addEventListener("keydown",function(e){
+  var k=e.key.toUpperCase();
+  if(k.length===1&&k>="A"&&k<="Z"){setLetter(k);e.preventDefault();}
+  else if(e.key==="Backspace"){backspace();e.preventDefault();}
+});
+$("newBtn").onclick=newGame;
+$("hintBtn").onclick=giveHint;
+$("checkBtn").onclick=verify;
+$("solveBtn").onclick=solveAll;
+newGame();
+})();
+</script>
+<!-- Cloudflare Web Analytics --><script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "74c145f1f04942f2879e1c23044be639"}'></script><!-- End Cloudflare Web Analytics -->
+</body></html>
