@@ -7,12 +7,12 @@
 <style>
 :root{
   --paper:#f4efe3; --ink:#23303d; --accent:#176b63; --accent2:#c9872a;
-  --card:#fffdf8; --line:#d9cfba; --red:#c23b3b; --black:#2a3642;
+  --card:#fffdf8; --face:#fffdf8; --line:#d9cfba; --red:#c23b3b; --black:#2a3642;
   --good:#2f8f5b; --shadow:0 6px 18px rgba(20,40,40,.14); --soft:#ede6d6; --muted:#6b6454;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
   --paper:#161d24; --ink:#eef2f4; --accent:#49b3a6; --accent2:#e0a24a;
-  --card:#f3efe6; --line:#36424d; --soft:#1e2730; --shadow:0 6px 20px rgba(0,0,0,.4); --muted:#9aa4ad;
+  --card:#1f2932; --face:#f3efe6; --line:#36424d; --soft:#1e2730; --shadow:0 6px 20px rgba(0,0,0,.4); --muted:#9aa4ad;
 }}
 *{margin:0;box-sizing:border-box}html,body{height:100%}
 body{background:var(--paper);color:var(--ink);font-family:"Source Sans 3",system-ui,sans-serif;display:flex;flex-direction:column;align-items:center;padding:8px 8px calc(12px + env(safe-area-inset-bottom));overflow-x:hidden}
@@ -31,7 +31,7 @@ h1 small{display:block;font-weight:700;font-size:9.5px;letter-spacing:.16em;text
 .empty{border:2px dashed var(--line);border-radius:9px;display:grid;place-items:center;color:var(--line);font-size:calc(var(--cw)*.5)}
 .empty.f{color:var(--accent2);opacity:.55}
 .col{position:relative;width:100%}
-.card{position:absolute;left:0;width:100%;height:var(--ch);border-radius:9px;background:var(--card);border:1px solid var(--line);box-shadow:0 1px 2px rgba(20,40,40,.14);display:flex;flex-direction:column;justify-content:space-between;padding:3px 4px;cursor:pointer;user-select:none;overflow:hidden}
+.card{position:absolute;left:0;width:100%;height:var(--ch);border-radius:9px;background:var(--face);border:1px solid var(--line);box-shadow:0 1px 2px rgba(20,40,40,.14);display:flex;flex-direction:column;justify-content:space-between;padding:3px 4px;cursor:pointer;user-select:none;overflow:hidden}
 .card .r{font-family:"Bricolage Grotesque";font-weight:800;line-height:.86;font-size:calc(var(--cw)*.42)}
 .card .s{align-self:flex-end;line-height:.86;font-size:calc(var(--cw)*.42)}
 .card .big{position:absolute;top:50%;left:50%;transform:translate(-50%,-48%);font-size:calc(var(--cw)*.72);opacity:.9;pointer-events:none}
@@ -276,13 +276,23 @@ function autoOne(src,c,i){
 }
 // auto to foundations (as many as possible)
 function autoFinish(){
-  var moved=true,did=false;
-  while(moved){moved=false;
-    // waste top
-    if(S.waste.length){var w=S.waste[S.waste.length-1];if(canToFound(w,w.s)){if(!did){pushHist();did=true;}S.found[w.s].push(S.waste.pop());moved=true;moves++;continue;}}
-    for(var c=0;c<7;c++){var pile=S.tab[c];if(!pile.length)continue;var t=pile[pile.length-1];if(t.up&&canToFound(t,t.s)){if(!did){pushHist();did=true;}S.found[t.s].push(pile.pop());if(pile.length&&!pile[pile.length-1].up)pile[pile.length-1].up=true;moved=true;moves++;}}
+  pushHist();
+  var startMoves=moves, guard=0, stale=0;
+  while(guard++<600){
+    var m=false;
+    // send any available top (waste or tableau) to its foundation
+    if(S.waste.length){var w=S.waste[S.waste.length-1];if(canToFound(w,w.s)){S.found[w.s].push(S.waste.pop());m=true;moves++;}}
+    for(var c=0;c<7;c++){var pile=S.tab[c];if(!pile.length)continue;var t=pile[pile.length-1];if(t.up&&canToFound(t,t.s)){S.found[t.s].push(pile.pop());if(pile.length&&!pile[pile.length-1].up)pile[pile.length-1].up=true;m=true;moves++;}}
+    if(m){stale=0;continue;}
+    // nothing from tops -> draw from stock to bring new cards up
+    if(S.stock.length){var n=Math.min(draw,S.stock.length);for(var k=0;k<n;k++){var cc=S.stock.pop();cc.up=true;S.waste.push(cc);}continue;}
+    // stock empty -> recycle waste once or twice to retry
+    if(S.waste.length){ stale++; if(stale>2)break;
+      while(S.waste.length){var c2=S.waste.pop();c2.up=false;S.stock.push(c2);} continue; }
+    break;
   }
-  if(did){$("moves").textContent=moves;clearSel();render();checkWin();}
+  if(moves!==startMoves){$("moves").textContent=moves;clearSel();render();checkWin();}
+  else { hist.pop(); }
 }
 function checkWin(){var n=0;for(var f=0;f<4;f++)n+=S.found[f].length;
   if(n===52){if(timer)clearInterval(timer);$("winSub").textContent="Rezolvată din "+moves+" mutări, în "+$("time").textContent+". 🎉";$("win").classList.add("on");}}
