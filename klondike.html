@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="ro"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Solitaire (Klondike) — PlayLudiq</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f4efe3; --ink:#23303d; --accent:#176b63; --accent2:#c9872a;
+  --card:#fffdf8; --line:#d9cfba; --red:#c23b3b; --black:#2a3642;
+  --good:#2f8f5b; --shadow:0 6px 18px rgba(20,40,40,.14); --soft:#ede6d6; --muted:#6b6454;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#161d24; --ink:#eef2f4; --accent:#49b3a6; --accent2:#e0a24a;
+  --card:#f3efe6; --line:#36424d; --soft:#1e2730; --shadow:0 6px 20px rgba(0,0,0,.4); --muted:#9aa4ad;
+}}
+*{margin:0;box-sizing:border-box}html,body{height:100%}
+body{background:var(--paper);color:var(--ink);font-family:"Source Sans 3",system-ui,sans-serif;display:flex;flex-direction:column;align-items:center;padding:8px 8px calc(12px + env(safe-area-inset-bottom));overflow-x:hidden}
+.backlink{align-self:flex-start;color:var(--accent);font-weight:700;text-decoration:none;font-size:13px;background:var(--card);border:1px solid var(--line);padding:6px 12px;border-radius:999px;box-shadow:var(--shadow);margin-bottom:6px}
+.wrap{width:100%;max-width:560px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+h1{font-family:"Bricolage Grotesque";font-weight:800;font-size:clamp(17px,4.6vw,22px);line-height:1}
+h1 small{display:block;font-weight:700;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:2px}
+.stats{display:flex;gap:6px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:5px 9px;font-weight:700;font-size:12px;box-shadow:var(--shadow);white-space:nowrap}
+.stat b{color:var(--accent)}
+.board{width:100%}
+.row{display:grid;grid-template-columns:repeat(7,1fr);gap:var(--gap)}
+.toprow{margin-bottom:10px}
+.slot{position:relative;width:100%;height:var(--ch);border-radius:9px}
+.empty{border:2px dashed var(--line);border-radius:9px;display:grid;place-items:center;color:var(--line);font-size:calc(var(--cw)*.5)}
+.empty.f{color:var(--accent2);opacity:.55}
+.col{position:relative;width:100%}
+.card{position:absolute;left:0;width:100%;height:var(--ch);border-radius:9px;background:var(--card);border:1px solid var(--line);box-shadow:0 1px 2px rgba(20,40,40,.14);display:flex;flex-direction:column;justify-content:space-between;padding:3px 4px;cursor:pointer;user-select:none;overflow:hidden}
+.card .r{font-family:"Bricolage Grotesque";font-weight:800;line-height:.86;font-size:calc(var(--cw)*.42)}
+.card .s{align-self:flex-end;line-height:.86;font-size:calc(var(--cw)*.42)}
+.card .big{position:absolute;top:50%;left:50%;transform:translate(-50%,-48%);font-size:calc(var(--cw)*.72);opacity:.9;pointer-events:none}
+.card.red{color:var(--red)} .card.black{color:var(--black)}
+.card.down{background:repeating-linear-gradient(45deg,var(--accent) 0 7px,#12544e 7px 14px);border-color:var(--accent);cursor:pointer}
+.card.down .r,.card.down .s,.card.down .big{display:none}
+.card.sel{outline:3px solid var(--accent2);outline-offset:1px;z-index:60}
+.card.hintdst{outline:3px solid var(--good);outline-offset:1px}
+#stock .card.down{cursor:pointer}
+.stockempty{cursor:pointer;border:2px dashed var(--accent);border-radius:9px;height:var(--ch);display:grid;place-items:center;color:var(--accent);font-size:calc(var(--cw)*.6)}
+.ctrls{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+button.btn{appearance:none;border:1px solid var(--line);background:var(--card);color:var(--ink);font-family:inherit;font-weight:700;font-size:13.5px;padding:10px 15px;border-radius:12px;cursor:pointer;box-shadow:var(--shadow)}
+button.btn:active{transform:translateY(1px)}
+button.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.opt{display:flex;gap:7px;align-items:center;justify-content:center;margin-top:10px;font-size:13px;color:var(--muted)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:var(--card);box-shadow:var(--shadow)}
+.seg button{appearance:none;border:none;background:transparent;font-family:inherit;font-weight:800;font-size:12.5px;padding:6px 12px;cursor:pointer;color:var(--muted)}
+.seg button.on{background:var(--accent);color:#fff}
+.overlay{position:fixed;inset:0;background:rgba(15,25,30,.55);display:none;align-items:center;justify-content:center;padding:24px;z-index:100}
+.overlay.on{display:flex}
+.modal{background:var(--paper);border-radius:20px;padding:26px 22px;max-width:380px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.modal h2{font-family:"Bricolage Grotesque";font-weight:800;font-size:26px;margin-bottom:6px}
+.modal p{color:var(--muted);font-size:14px;margin-bottom:16px;line-height:1.5}
+.help{font-size:12.5px;color:var(--muted);text-align:center;line-height:1.5;margin-top:14px;max-width:520px}
+.help b{color:var(--accent)}
+footer{text-align:center;color:var(--muted);font-size:11px;margin-top:16px;opacity:.85;line-height:1.5}
+</style>
+<link rel="manifest" href="manifest.json"><meta name="theme-color" content="#176b63"><link rel="apple-touch-icon" href="icon-192.png">
+<script>if('serviceWorker' in navigator){addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}</script>
+<script src="view.js" defer></script><script src="cookies.js" defer></script>
+</head>
+<body>
+<a class="backlink" href="jocuri.html">← Jocuri</a>
+<div class="wrap">
+  <div class="top">
+    <h1><small>Pasiență</small>Solitaire · Klondike</h1>
+    <div class="stats">
+      <div class="stat">⏱️ <b id="time">0:00</b></div>
+      <div class="stat">Mutări <b id="moves">0</b></div>
+    </div>
+  </div>
+
+  <div class="board">
+    <div class="row toprow">
+      <div class="slot" id="stock"></div>
+      <div class="slot" id="waste"></div>
+      <div class="slot" aria-hidden="true"></div>
+      <div class="slot found" id="f0"></div>
+      <div class="slot found" id="f1"></div>
+      <div class="slot found" id="f2"></div>
+      <div class="slot found" id="f3"></div>
+    </div>
+    <div class="row" id="tableau">
+      <div class="col" id="t0"></div><div class="col" id="t1"></div><div class="col" id="t2"></div>
+      <div class="col" id="t3"></div><div class="col" id="t4"></div><div class="col" id="t5"></div><div class="col" id="t6"></div>
+    </div>
+  </div>
+
+  <div class="ctrls">
+    <button class="btn primary" id="newBtn">🔄 Joc nou</button>
+    <button class="btn" id="undoBtn">↶ Înapoi</button>
+    <button class="btn" id="autoBtn">⚡ La casă</button>
+  </div>
+  <div class="opt">
+    Trage din pachet:
+    <span class="seg"><button id="d1" class="on">1 carte</button><button id="d3">3 cărți</button></span>
+  </div>
+
+  <div class="help">
+    🎯 <b>Scop:</b> mută toate cărțile pe cele 4 case (sus-dreapta), de la <b>As</b> la <b>Rege</b>, pe culori.<br>
+    👆 Apasă o carte, apoi locul unde o pui. <b>Dublu-tap</b> = o trimite direct la casă. Jos construiești <b>descrescător și alternând culorile</b> (roșu–negru). Pe o coloană goală pui doar un <b>Rege</b>.
+  </div>
+  <footer>© 2026 · <b>PlayLudiq</b>™ · versiune beta · <a href="confidentialitate.html" style="color:inherit;text-decoration:underline">Confidențialitate</a></footer>
+</div>
+
+<div class="overlay" id="win"><div class="modal">
+  <h2>🏆 Felicitări!</h2>
+  <p id="winSub">Ai rezolvat pasiența.</p>
+  <button class="btn primary" id="winNew" style="width:100%">Joc nou</button>
+</div></div>
+
+<script>
+(function(){
+var $=function(i){return document.getElementById(i);};
+var SUIT=["♠","♥","♦","♣"]; // spade heart diamond club
+function red(s){return s===1||s===2;}
+function rlabel(r){return r===1?"A":r===11?"J":r===12?"Q":r===13?"K":(""+r);}
+
+var S=null, hist=[], moves=0, draw=1, startT=0, timer=null, sel=null;
+
+function freshDeck(){var d=[];for(var s=0;s<4;s++)for(var r=1;r<=13;r++)d.push({r:r,s:s,up:false});
+  for(var i=d.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=d[i];d[i]=d[j];d[j]=t;}return d;}
+
+function deal(){
+  var d=freshDeck();
+  S={stock:[],waste:[],found:[[],[],[],[]],tab:[[],[],[],[],[],[],[]]};
+  for(var c=0;c<7;c++){for(var k=0;k<=c;k++){var card=d.pop();card.up=(k===c);S.tab[c].push(card);}}
+  S.stock=d; // rest face-down
+  hist=[];moves=0;sel=null;
+  $("moves").textContent="0";
+  startT=Date.now();if(timer)clearInterval(timer);timer=setInterval(tick,1000);$("time").textContent="0:00";
+  render();
+}
+function tick(){var s=Math.floor((Date.now()-startT)/1000);$("time").textContent=Math.floor(s/60)+":"+("0"+(s%60)).slice(-2);}
+
+function snapshot(){return JSON.stringify(S);}
+function pushHist(){hist.push(snapshot());if(hist.length>200)hist.shift();}
+function undo(){if(!hist.length)return;S=JSON.parse(hist.pop());sel=null;moves++;$("moves").textContent=moves;render();}
+
+function sizeBoard(){
+  var wrap=document.querySelector(".wrap");var W=wrap.clientWidth;
+  var gap=Math.max(3,Math.round(W*0.012));
+  var cw=Math.floor((W-6*gap)/7);
+  var ch=Math.round(cw*1.42);
+  document.documentElement.style.setProperty("--gap",gap+"px");
+  document.documentElement.style.setProperty("--cw",cw+"px");
+  document.documentElement.style.setProperty("--ch",ch+"px");
+  return {cw:cw,ch:ch};
+}
+
+function cardEl(card){
+  var e=document.createElement("div");
+  e.className="card "+(card.up?(red(card.s)?"red":"black"):"down");
+  if(card.up){e.innerHTML='<span class="r">'+rlabel(card.r)+'</span><span class="s">'+SUIT[card.s]+'</span><span class="big">'+SUIT[card.s]+'</span>';}
+  return e;
+}
+
+function render(){
+  var sz=sizeBoard();var ch=sz.ch;
+  var peekUp=Math.round(ch*0.34), peekDown=Math.round(ch*0.17);
+  // stock
+  var st=$("stock");st.innerHTML="";
+  if(S.stock.length){var sc=document.createElement("div");sc.className="card down";sc.onclick=drawStock;st.appendChild(sc);}
+  else{var se=document.createElement("div");se.className="stockempty";se.textContent="↻";se.onclick=drawStock;st.appendChild(se);}
+  // waste (show up to last 3 if draw3, else last)
+  var wa=$("waste");wa.innerHTML="";
+  if(S.waste.length){
+    var show=draw===3?S.waste.slice(-3):S.waste.slice(-1);
+    var base=S.waste.length-show.length;
+    var fanW=Math.round(sz.cw*0.26);
+    show.forEach(function(card,i){var e=cardEl(card);e.style.left=(i*fanW)+"px";e.style.width=(sz.cw)+"px";
+      var isTop=(base+i===S.waste.length-1);
+      if(isTop){e.onclick=function(){selectWaste();};e.ondblclick=function(){autoOne('waste');};if(sel&&sel.src==='waste')e.classList.add('sel');}
+      else{e.style.pointerEvents="none";}
+      wa.appendChild(e);});
+    wa.style.position="relative";
+  }
+  // foundations
+  for(var f=0;f<4;f++){var fe=$("f"+f);fe.innerHTML="";var pile=S.found[f];
+    if(pile.length){var e=cardEl(pile[pile.length-1]);e.onclick=(function(fi){return function(){clickFound(fi);};})(f);fe.appendChild(e);}
+    else{var em=document.createElement("div");em.className="empty f";em.textContent=SUIT[f];em.onclick=(function(fi){return function(){clickFound(fi);};})(f);
+      if(sel&&canToFound(selTopCard(),f)&&selIsSingle())em.classList.add("hintdst");fe.appendChild(em);}
+  }
+  // tableau
+  for(var c=0;c<7;c++){
+    var col=$("t"+c);col.innerHTML="";var pile=S.tab[c];var top=0;
+    if(!pile.length){var em2=document.createElement("div");em2.className="empty";em2.style.height="var(--ch)";em2.textContent="K";
+      em2.onclick=(function(ci){return function(){clickTab(ci,-1);};})(c);
+      if(sel&&canToTabEmpty())em2.classList.add("hintdst");col.appendChild(em2);col.style.height="var(--ch)";continue;}
+    for(var i=0;i<pile.length;i++){
+      var card=pile[i];var e=cardEl(card);e.style.top=top+"px";
+      (function(ci,ii,up){ e.onclick=function(){clickTab(ci,ii);}; if(up){e.ondblclick=function(){autoOne('tab',ci,ii);};} })(c,i,card.up);
+      if(sel&&sel.src==='tab'&&sel.col===c&&i>=sel.idx)e.classList.add('sel');
+      col.appendChild(e);
+      top+=(i===pile.length-1)?0:(card.up?peekUp:peekDown);
+    }
+    col.style.height=(top+ch)+"px";
+  }
+  // destination hints on tableau tops
+  if(sel){for(var c2=0;c2<7;c2++){var pile2=S.tab[c2];if(!pile2.length)continue;
+    if(canToTab(selTopCard(),c2)){var last=$("t"+c2).lastChild;if(last)last.classList.add("hintdst");}}}
+}
+
+// ---- selection helpers ----
+function selTopCard(){if(!sel)return null;if(sel.src==='waste')return S.waste[S.waste.length-1];return S.tab[sel.col][sel.idx];}
+function selIsSingle(){if(!sel)return false;if(sel.src==='waste')return true;return sel.idx===S.tab[sel.col].length-1;}
+function canToFound(card,f){if(!card)return false;if(card.s!==f)return false;var pile=S.found[f];if(!pile.length)return card.r===1;return pile[pile.length-1].r===card.r-1;}
+function canToTab(card,c){if(!card)return false;var pile=S.tab[c];if(!pile.length)return card.r===13;var t=pile[pile.length-1];if(!t.up)return false;return red(card.s)!==red(t.s)&&card.r===t.r-1;}
+function canToTabEmpty(){var card=selTopCard();return card&&card.r===13;}
+
+// ---- interactions ----
+function clearSel(){sel=null;}
+function selectWaste(){if(sel&&sel.src==='waste'){clearSel();render();return;}sel={src:'waste'};render();}
+function clickTab(c,i){
+  var pile=S.tab[c];
+  // empty column tapped
+  if(i===-1){ if(sel){tryMoveTo('tab',c);} return; }
+  var card=pile[i];
+  if(!card.up){ // face-down: only flip if it's the top card and nothing selected handling
+    if(i===pile.length-1){pushHist();card.up=true;moves++;$("moves").textContent=moves;clearSel();render();}
+    return;
+  }
+  // if we have a selection, this tap is a destination (drop on this column)
+  if(sel){ tryMoveTo('tab',c); return; }
+  // otherwise select this run (i..end)
+  sel={src:'tab',col:c,idx:i};render();
+}
+function clickFound(f){
+  if(sel){ if(selIsSingle()){tryMoveToFound(f);} return; }
+  // selecting from foundation not allowed (keep simple)
+}
+function tryMoveTo(kind,c){
+  var card=selTopCard();if(!card){clearSel();render();return;}
+  if(!canToTab(card,c)){ clearSel();render();return; }
+  pushHist();
+  var run=takeSel();
+  for(var k=0;k<run.length;k++)S.tab[c].push(run[k]);
+  afterMove();
+}
+function tryMoveToFound(f){
+  var card=selTopCard();if(!card||!selIsSingle()||!canToFound(card,f)){clearSel();render();return;}
+  pushHist();var run=takeSel();S.found[f].push(run[0]);afterMove();
+}
+function takeSel(){ // remove selected cards from source, return array
+  if(sel.src==='waste'){return [S.waste.pop()];}
+  var pile=S.tab[sel.col];var run=pile.splice(sel.idx);
+  if(pile.length&&!pile[pile.length-1].up)pile[pile.length-1].up=true; // flip exposed
+  return run;
+}
+function afterMove(){moves++;$("moves").textContent=moves;clearSel();render();checkWin();}
+
+function drawStock(){
+  pushHist();
+  if(!S.stock.length){ // recycle
+    while(S.waste.length){var c=S.waste.pop();c.up=false;S.stock.push(c);}
+  } else {
+    var n=Math.min(draw,S.stock.length);
+    for(var k=0;k<n;k++){var c=S.stock.pop();c.up=true;S.waste.push(c);}
+  }
+  moves++;$("moves").textContent=moves;clearSel();render();
+}
+
+// double-tap: send a single card straight to its foundation
+function autoOne(src,c,i){
+  var card;
+  if(src==='waste')card=S.waste[S.waste.length-1];
+  else{var pile=S.tab[c];if(i!==pile.length-1)return;card=pile[i];}
+  if(!card)return;
+  if(canToFound(card,card.s)){pushHist();
+    if(src==='waste')S.waste.pop();else{S.tab[c].pop();if(S.tab[c].length&&!S.tab[c][S.tab[c].length-1].up)S.tab[c][S.tab[c].length-1].up=true;}
+    S.found[card.s].push(card);moves++;$("moves").textContent=moves;clearSel();render();checkWin();}
+}
+// auto to foundations (as many as possible)
+function autoFinish(){
+  var moved=true,did=false;
+  while(moved){moved=false;
+    // waste top
+    if(S.waste.length){var w=S.waste[S.waste.length-1];if(canToFound(w,w.s)){if(!did){pushHist();did=true;}S.found[w.s].push(S.waste.pop());moved=true;moves++;continue;}}
+    for(var c=0;c<7;c++){var pile=S.tab[c];if(!pile.length)continue;var t=pile[pile.length-1];if(t.up&&canToFound(t,t.s)){if(!did){pushHist();did=true;}S.found[t.s].push(pile.pop());if(pile.length&&!pile[pile.length-1].up)pile[pile.length-1].up=true;moved=true;moves++;}}
+  }
+  if(did){$("moves").textContent=moves;clearSel();render();checkWin();}
+}
+function checkWin(){var n=0;for(var f=0;f<4;f++)n+=S.found[f].length;
+  if(n===52){if(timer)clearInterval(timer);$("winSub").textContent="Rezolvată din "+moves+" mutări, în "+$("time").textContent+". 🎉";$("win").classList.add("on");}}
+
+// ---- controls ----
+$("newBtn").onclick=function(){deal();};
+$("undoBtn").onclick=function(){undo();};
+$("autoBtn").onclick=function(){autoFinish();};
+$("winNew").onclick=function(){$("win").classList.remove("on");deal();};
+$("win").onclick=function(e){if(e.target.id==='win')$("win").classList.remove("on");};
+$("d1").onclick=function(){draw=1;$("d1").classList.add("on");$("d3").classList.remove("on");};
+$("d3").onclick=function(){draw=3;$("d3").classList.add("on");$("d1").classList.remove("on");};
+var rz;addEventListener("resize",function(){clearTimeout(rz);rz=setTimeout(function(){if(S)render();},120);});
+deal();
+})();
+</script>
+<!-- Cloudflare Web Analytics --><script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "74c145f1f04942f2879e1c23044be639"}'></script><!-- End Cloudflare Web Analytics -->
+</body></html>
