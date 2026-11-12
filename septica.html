@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="ro"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Septică — PlayLudiq</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#f4efe3;--ink:#23303d;--accent:#176b63;--accent2:#c9872a;--card:#fffdf8;--line:#d9cfba;--red:#c23b3b;--black:#2a3642;--good:#2f8f5b;--muted:#6b6454;--shadow:0 5px 15px rgba(20,40,40,.14);--felt:#1f6b5e}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#161d24;--ink:#eef2f4;--accent:#49b3a6;--accent2:#e0a24a;--card:#f3efe6;--line:#36424d;--muted:#9aa4ad;--shadow:0 6px 20px rgba(0,0,0,.4);--felt:#143f38}}
+*{margin:0;box-sizing:border-box}html,body{min-height:100%}
+body{background:var(--paper);color:var(--ink);font-family:"Source Sans 3",system-ui,sans-serif;display:flex;flex-direction:column;align-items:center;padding:8px 10px calc(12px + env(safe-area-inset-bottom))}
+.backlink{align-self:flex-start;color:var(--accent);font-weight:700;text-decoration:none;font-size:13px;background:var(--card);border:1px solid var(--line);padding:6px 12px;border-radius:999px;box-shadow:var(--shadow);margin-bottom:6px}
+.wrap{width:100%;max-width:520px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
+h1{font-family:"Bricolage Grotesque";font-weight:800;font-size:clamp(18px,4.8vw,23px);line-height:1}
+h1 small{display:block;font-weight:700;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:2px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:5px 9px;font-weight:700;font-size:12px;box-shadow:var(--shadow)}
+/* mode select */
+.pick{text-align:center;padding:10px 0}
+.pick h2{font-family:"Bricolage Grotesque";font-weight:800;font-size:22px;margin:8px 0 4px}
+.pick p{color:var(--muted);font-size:14px;margin-bottom:18px}
+.mode{display:flex;flex-direction:column;gap:12px}
+.mbtn{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;cursor:pointer;box-shadow:var(--shadow);font-family:inherit;color:inherit;text-align:left}
+.mbtn:active{transform:scale(.98)}
+.mbtn .emo{font-size:32px}
+.mbtn .t{font-family:"Bricolage Grotesque";font-weight:800;font-size:18px}
+.mbtn .d{font-size:12.5px;color:var(--muted);margin-top:2px;line-height:1.3}
+.rules{margin-top:16px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;box-shadow:var(--shadow);text-align:left;font-size:13px;line-height:1.55;color:var(--muted)}
+.rules b{color:var(--accent)}
+.rules h3{font-size:13.5px;color:var(--ink);margin-bottom:6px;font-family:"Bricolage Grotesque";font-weight:800}
+/* table */
+.felt{background:var(--felt);border-radius:18px;padding:12px;box-shadow:var(--shadow);margin-bottom:10px;color:#fff}
+.pname{font-weight:800;font-size:13px;display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.pname .pts{background:rgba(255,255,255,.18);border-radius:8px;padding:2px 8px;font-size:12px}
+.backs{display:flex;gap:3px;min-height:52px;flex-wrap:wrap}
+.back{width:34px;height:48px;border-radius:6px;background:repeating-linear-gradient(45deg,#2a8d7d 0 6px,#17655a 6px 12px);border:1px solid rgba(255,255,255,.25)}
+.center{min-height:84px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;margin:8px 0}
+.pile{display:flex;gap:4px;flex-wrap:wrap;justify-content:center;min-height:56px;align-items:center}
+.msg{font-size:12.5px;text-align:center;opacity:.95;min-height:16px}
+.stockc{font-size:11px;opacity:.8;text-align:center}
+.card{width:42px;height:58px;border-radius:7px;background:var(--card);border:1px solid var(--line);display:flex;flex-direction:column;justify-content:space-between;padding:3px 4px;font-family:"Bricolage Grotesque";font-weight:800;position:relative;flex:none}
+.card .r{font-size:15px;line-height:.9}
+.card .s{align-self:flex-end;font-size:14px;line-height:.9}
+.card.red{color:var(--red)}.card.black{color:var(--black)}
+.card.seven{box-shadow:0 0 0 2px var(--accent2)}
+.card.base{outline:3px solid #ffd77a;outline-offset:1px}
+.hand{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:4px;min-height:84px}
+.hand .card{width:54px;height:74px;cursor:pointer;box-shadow:var(--shadow);transition:transform .1s}
+.hand .card .r{font-size:19px}.hand .card .s{font-size:18px}
+.hand .card:active{transform:translateY(-4px)}
+.hand .card.pt::after{content:"★";position:absolute;bottom:2px;left:3px;font-size:9px;color:var(--accent2)}
+.handwrap{position:relative}
+.curtain{position:absolute;inset:0;background:var(--accent);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:#fff;cursor:pointer;text-align:center;padding:14px;box-shadow:var(--shadow)}
+.curtain .t{font-family:"Bricolage Grotesque";font-weight:800;font-size:18px}
+.curtain .d{font-size:12.5px;opacity:.9}
+.turn{text-align:center;font-weight:800;font-size:13px;margin:4px 0;color:var(--accent)}
+.ctrls{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+button.btn{appearance:none;border:1px solid var(--line);background:var(--card);color:var(--ink);font-family:inherit;font-weight:700;font-size:13px;padding:9px 14px;border-radius:12px;cursor:pointer;box-shadow:var(--shadow)}
+button.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.hidden{display:none}
+.overlay{position:fixed;inset:0;background:rgba(15,25,30,.55);display:none;align-items:center;justify-content:center;padding:22px;z-index:100}
+.overlay.on{display:flex}
+.modal{background:var(--paper);border-radius:20px;padding:24px 20px;max-width:360px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.modal h2{font-family:"Bricolage Grotesque";font-weight:800;font-size:26px;margin-bottom:6px}
+.modal p{color:var(--muted);font-size:14px;margin-bottom:16px;line-height:1.5}
+footer{text-align:center;color:var(--muted);font-size:11px;margin-top:16px;opacity:.85;line-height:1.5}
+</style>
+<link rel="manifest" href="manifest.json"><meta name="theme-color" content="#176b63"><link rel="apple-touch-icon" href="icon-192.png">
+<script>if('serviceWorker' in navigator){addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}</script>
+<script src="view.js" defer></script><script src="cookies.js" defer></script>
+</head>
+<body>
+<a class="backlink" href="jocuri.html">← Jocuri</a>
+<div class="wrap">
+  <div class="top">
+    <h1><small>Nostalgia · joc de cărți</small>Septică</h1>
+    <button class="stat" id="rulesBtn">📖 Regulament</button>
+  </div>
+
+  <!-- MODE SELECT -->
+  <div id="pick" class="pick">
+    <h2>Cum vrei să joci?</h2>
+    <p>Alege adversarul 👇</p>
+    <div class="mode">
+      <button class="mbtn" id="mBot"><span class="emo">🤖</span><span><span class="t">Cu botul</span><span class="d">Joci singur, împotriva calculatorului.</span></span></button>
+      <button class="mbtn" id="mPvp"><span class="emo">👫</span><span><span class="t">Cu un prieten</span><span class="d">Pe același telefon, pe rând (pass &amp; play). Cărțile se ascund între ture.</span></span></button>
+    </div>
+    <div class="rules">
+      <h3>🎯 Cum se joacă</h3>
+      Fiecare are 4 cărți. Primul pune o carte („cartea de bătut"). Adversarul o poate <b>tăia</b> cu o carte de <b>aceeași valoare</b> sau cu un <b>7</b> (7 taie orice). Dacă a tăiat, celălalt poate tăia din nou, și tot așa. <b>Cine taie ultimul ia toate cărțile</b> de pe masă. Apoi fiecare trage la loc până are 4 cărți.<br><br>
+      <b>Puncte:</b> fiecare <b>10</b> și fiecare <b>As</b> = 1 punct (★). Ultima mână = 1 punct bonus. Cine adună mai multe puncte câștigă.
+    </div>
+  </div>
+
+  <!-- GAME -->
+  <div id="game" class="hidden">
+    <div class="felt">
+      <div class="pname"><span id="oppName">Bot</span><span class="pts">★ <span id="oppPts">0</span></span></div>
+      <div class="backs" id="oppHand"></div>
+      <div class="center">
+        <div class="pile" id="pile"></div>
+        <div class="msg" id="msg"></div>
+        <div class="stockc" id="stockc"></div>
+      </div>
+      <div class="pname"><span id="meName">Tu</span><span class="pts">★ <span id="mePts">0</span></span></div>
+    </div>
+    <div class="turn" id="turn"></div>
+    <div class="handwrap">
+      <div class="hand" id="hand"></div>
+      <div class="curtain hidden" id="curtain"><div class="t" id="curtName">Rândul tău</div><div class="d">Apasă ca să-ți vezi cărțile</div></div>
+    </div>
+    <div class="ctrls">
+      <button class="btn" id="newBtn">🔄 Joc nou</button>
+      <button class="btn" id="modeBtn">↩ Schimbă modul</button>
+    </div>
+  </div>
+
+  <footer>© 2026 · <b>PlayLudiq</b>™ · versiune beta · <a href="confidentialitate.html" style="color:inherit;text-decoration:underline">Confidențialitate</a></footer>
+</div>
+
+<div class="overlay" id="rulesOv"><div class="modal" style="max-height:86vh;overflow:auto">
+  <h2>📖 Regulament — Septică</h2>
+  <p style="text-align:left">
+  <b>Cărțile:</b> se joacă cu 32 de cărți (de la 7 la As, în 4 culori).<br><br>
+  <b>Împărțirea:</b> fiecare jucător primește <b>4 cărți</b>. Restul formează pachetul (talonul).<br><br>
+  <b>Desfășurarea unei mâini:</b><br>
+  • Primul jucător pune o carte pe masă — <b>cartea de bătut</b>.<br>
+  • Adversarul o poate <b>tăia</b> cu o carte de <b>aceeași valoare</b> (ex. 10 peste 10) sau cu un <b>7</b> — <b>7 taie orice</b>.<br>
+  • Dacă a tăiat, primul poate tăia din nou (tot cu aceeași valoare ca prima carte, sau cu 7), și tot așa, pe rând.<br>
+  • <b>Cine taie ultimul ia toate cărțile</b> de pe masă.<br>
+  • Dacă pui o carte care <b>nu</b> taie, mâna se închide și cel care a tăiat ultimul ia cărțile.<br><br>
+  <b>Tragerea:</b> după fiecare mână, fiecare trage din pachet până are iar 4 cărți (cât mai e pachet). Cine a luat mâna pune primul la mâna următoare.<br><br>
+  <b>Puncte:</b> fiecare <b>10</b> și fiecare <b>As</b> din cărțile luate = <b>1 punct</b> (★). <b>Ultima mână</b> a jocului aduce <b>+1 punct</b>. În total sunt 9 puncte.<br><br>
+  <b>Câștigă</b> cine adună <b>mai multe puncte</b> (5 sau mai multe).
+  </p>
+  <button class="btn primary" id="rulesClose" style="width:100%">Am înțeles</button>
+</div></div>
+
+<div class="overlay" id="endOv"><div class="modal">
+  <h2 id="endT">Final</h2>
+  <p id="endP"></p>
+  <button class="btn primary" id="endNew" style="width:100%">Joc nou</button>
+</div></div>
+
+<script>
+(function(){
+var $=function(i){return document.getElementById(i);};
+var SU=["♠","♥","♦","♣"];
+function red(s){return s===1||s===2;}
+function rl(r){return r===14?"A":r===13?"K":r===12?"Q":r===11?"J":(""+r);}
+function isPt(c){return c.r===10||c.r===14;}
+
+var mode="bot", stock=[], hands=[[],[]], won=[[],[]], pile=[], base=null,
+    leader=0, toAct=0, lastCov=0, names=["Tu","Bot"], busy=false, lastTrickWinner=0, revealed=false;
+// player 0 = human "me" (bottom). player 1 = opponent (top: bot or human2).
+
+function deck(){var d=[];for(var s=0;s<4;s++)for(var r=7;r<=14;r++)d.push({r:r,s:s});
+  for(var i=d.length-1;i>0;i--){var j=Math.random()*(i+1)|0;var t=d[i];d[i]=d[j];d[j]=t;}return d;}
+
+function startGame(m){
+  mode=m; names = m==="bot"?["Tu","Bot"]:["Jucător 1","Jucător 2"];
+  stock=deck(); hands=[[],[]]; won=[[],[]];
+  for(var k=0;k<4;k++){hands[0].push(stock.pop());hands[1].push(stock.pop());}
+  pile=[]; base=null; leader=0; toAct=0; lastCov=0; lastTrickWinner=0; busy=false;
+  $("pick").classList.add("hidden"); $("game").classList.remove("hidden");
+  $("meName").textContent=names[0]; $("oppName").textContent=names[1];
+  beginTrick();
+}
+function humanActor(p){ return mode==="pvp" ? true : p===0; } // in bot mode only p0 is human
+
+function beginTrick(){
+  // ensure leader has cards
+  if(hands[0].length===0 && hands[1].length===0){return finish();}
+  if(hands[leader].length===0){ leader=1-leader; }
+  toAct=leader; lastCov=leader; pile=[]; base=null;
+  render(); promptTurn();
+}
+function promptTurn(){
+  if(busy)return;
+  if(hands[toAct].length===0){ return setTimeout(function(){endTrick(lastCov);}, 400); }
+  if(humanActor(toAct)){
+    if(mode==="pvp"){ // show curtain for whichever human is to act
+      revealed=false; $("curtName").textContent="Rândul: "+names[toAct];
+      $("curtain").classList.remove("hidden");
+    } else { revealed=true; $("curtain").classList.add("hidden"); }
+    render();
+  } else { // bot
+    busy=true; setTimeout(botPlay, 650);
+  }
+}
+function playCard(p, idx){
+  var c=hands[p].splice(idx,1)[0];
+  if(base===null){ base=c.r; pile.push(c); lastCov=p; afterPlay(p,true); return; }
+  pile.push(c);
+  var covered = (c.r===base || c.r===7);
+  if(covered){ lastCov=p; afterPlay(p,true); }
+  else { afterPlay(p,false); }
+}
+function afterPlay(p, covered){
+  render();
+  if(base!==null && pile.length===1){ // leader just set base
+    if(hands[1-leader].length===0){ return setTimeout(function(){endTrick(leader);}, 400); }
+    toAct=1-leader; return cont();
+  }
+  if(!covered){ return setTimeout(function(){endTrick(lastCov);}, 500); }
+  // covered: other acts if has cards, else trick ends
+  var other=1-p;
+  if(hands[other].length===0){ return setTimeout(function(){endTrick(lastCov);}, 500); }
+  toAct=other; cont();
+}
+function cont(){ busy=false; promptTurn(); }
+
+function endTrick(winner){
+  for(var i=0;i<pile.length;i++) won[winner].push(pile[i]);
+  lastTrickWinner=winner; pile=[]; base=null;
+  // draw: winner first then loser
+  [winner,1-winner].forEach(function(p){ while(hands[p].length<4 && stock.length) hands[p].push(stock.pop()); });
+  updatePts();
+  var nm=names[winner], pts=pileNote();
+  $("msg").textContent=nm+" ia mâna"+(pts?(" ("+pts+")"):"");
+  render();
+  if(stock.length===0 && hands[0].length===0 && hands[1].length===0){ return setTimeout(finish, 900); }
+  leader=winner; busy=true;
+  setTimeout(function(){ busy=false; beginTrick(); }, 950);
+}
+var lastWonCount=[0,0];
+function pileNote(){ return ""; }
+function updatePts(){
+  $("mePts").textContent=won[0].filter(isPt).length;
+  $("oppPts").textContent=won[1].filter(isPt).length;
+}
+function finish(){
+  var p0=won[0].filter(isPt).length, p1=won[1].filter(isPt).length;
+  if(lastTrickWinner===0)p0++; else p1++;
+  var t,msg;
+  if(p0>p1){t="🏆 "+(mode==="bot"?"Ai câștigat!":names[0]+" câștigă!");}
+  else if(p1>p0){t=(mode==="bot"?"🤖 Botul a câștigat":"🏆 "+names[1]+" câștigă!");}
+  else {t="🤝 Egal!";}
+  $("endT").textContent=t;
+  $("endP").textContent=names[0]+": "+p0+" puncte · "+names[1]+": "+p1+" puncte  (ultima mână +1).";
+  $("endOv").classList.add("on");
+}
+
+// ---- bot ----
+function botPlay(){
+  var h=hands[1], idx;
+  if(base===null){ idx=botLead(h); }
+  else { idx=botRespond(h); }
+  busy=false; playCard(1, idx);
+}
+function botLead(h){
+  // prefer lowest non-point, non-seven
+  var cand=h.map(function(c,i){return {c:c,i:i};});
+  var plain=cand.filter(function(x){return !isPt(x.c)&&x.c.r!==7;});
+  var pool=plain.length?plain:cand.filter(function(x){return x.c.r!==7;});
+  if(!pool.length)pool=cand;
+  pool.sort(function(a,b){return a.c.r-b.c.r;});
+  return pool[0].i;
+}
+function botRespond(h){
+  var pts=pile.filter(isPt).length;
+  var covers=h.map(function(c,i){return {c:c,i:i};}).filter(function(x){return x.c.r===base||x.c.r===7;});
+  var sameRank=covers.filter(function(x){return x.c.r===base && x.c.r!==7;});
+  var sevens=covers.filter(function(x){return x.c.r===7;});
+  var plain=h.map(function(c,i){return {c:c,i:i};}).filter(function(x){return !isPt(x.c)&&x.c.r!==7;});
+  if(pts>0 && covers.length){ // worth taking -> cover, prefer same-rank non-7
+    if(sameRank.length){sameRank.sort(function(a,b){return a.c.r-b.c.r;});return sameRank[0].i;}
+    return sevens[0].i;
+  }
+  // no points on table: avoid wasting covers -> dump a low plain card
+  if(plain.length){ plain.sort(function(a,b){return a.c.r-b.c.r;}); return plain[0].i; }
+  // only points/sevens left: better cover (take empty pile) than dump a point
+  if(covers.length){ if(sameRank.length)return sameRank[0].i; return sevens[0].i; }
+  // must dump a point: lowest (10 before A)
+  var all=h.map(function(c,i){return {c:c,i:i};}); all.sort(function(a,b){return a.c.r-b.c.r;}); return all[0].i;
+}
+
+// ---- render ----
+function cardHTML(c,extra){
+  return '<div class="card '+(red(c.s)?"red":"black")+(c.r===7?" seven":"")+(extra||"")+'"><span class="r">'+rl(c.r)+'</span><span class="s">'+SU[c.s]+'</span></div>';
+}
+function render(){
+  var actor=toAct, other=1-actor;
+  var bottom = (mode==="bot")?0:actor;   // actor's hand shown at bottom
+  var top = (mode==="bot")?1:other;      // other player's cards (face down) at top
+  // labels + points
+  $("meName").textContent=names[bottom];
+  $("oppName").textContent=names[top];
+  $("mePts").textContent=won[bottom].filter(isPt).length;
+  $("oppPts").textContent=won[top].filter(isPt).length;
+  // opponent (top) backs
+  var ob="";for(var i=0;i<hands[top].length;i++)ob+='<div class="back"></div>';
+  $("oppHand").innerHTML=ob;
+  // pile
+  var ph="";for(var j=0;j<pile.length;j++){ph+=cardHTML(pile[j], (base!==null&&j===0)?" base":"");}
+  $("pile").innerHTML=ph||'<span style="opacity:.6;font-size:12px">—</span>';
+  $("stockc").textContent="Pachet: "+stock.length+" cărți rămase";
+  // turn label
+  $("turn").textContent = busy&&!humanActor(toAct) ? (names[toAct]+" se gândește…") : ("Rândul: "+names[toAct]);
+  if(base!==null) $("msg").textContent = "Taie cu "+rl(base)+" sau cu 7 — altfel închizi mâna.";
+  // bottom hand
+  if(mode==="bot"){
+    var hh="";hands[0].forEach(function(c,i){hh+=cardHTML(c,(isPt(c)?" pt":"")+'" data-i="'+i+'" data-click="1');});
+    $("hand").innerHTML=hh;
+    bindHand(0, toAct===0 && !busy);
+    $("curtain").classList.add("hidden");
+  } else {
+    if(revealed){
+      var hh2="";hands[actor].forEach(function(c,i){hh2+=cardHTML(c,(isPt(c)?" pt":"")+'" data-i="'+i+'" data-click="1');});
+      $("hand").innerHTML=hh2; bindHand(actor, !busy); $("curtain").classList.add("hidden");
+    } else {
+      $("hand").innerHTML="";
+    }
+  }
+}
+function bindHand(p, clickable){
+  [].forEach.call($("hand").querySelectorAll('.card[data-click]'),function(el){
+    if(clickable){ el.onclick=function(){ onPlay(p, +el.getAttribute("data-i")); }; el.style.opacity=""; }
+    else { el.onclick=null; el.style.opacity=".65"; }
+  });
+}
+function onPlay(p, idx){
+  if(busy) return; if(toAct!==p) return;
+  busy=true; $("msg").textContent="";
+  playCard(p, idx);
+}
+
+// curtain tap
+$("curtain").onclick=function(){ revealed=true; $("curtain").classList.add("hidden"); render(); };
+
+$("mBot").onclick=function(){startGame("bot");};
+$("mPvp").onclick=function(){startGame("pvp");};
+$("newBtn").onclick=function(){startGame(mode);};
+$("modeBtn").onclick=function(){$("game").classList.add("hidden");$("pick").classList.remove("hidden");$("endOv").classList.remove("on");};
+$("endNew").onclick=function(){$("endOv").classList.remove("on");startGame(mode);};
+$("rulesBtn").onclick=function(){$("rulesOv").classList.add("on");};
+$("rulesClose").onclick=function(){$("rulesOv").classList.remove("on");};
+$("rulesOv").onclick=function(e){if(e.target.id==="rulesOv")$("rulesOv").classList.remove("on");};
+})();
+</script>
+<!-- Cloudflare Web Analytics --><script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "74c145f1f04942f2879e1c23044be639"}'></script><!-- End Cloudflare Web Analytics -->
+</body></html>
