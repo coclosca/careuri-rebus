@@ -1,5 +1,5 @@
-const C = "jocuri-v28";
-const CORE = ["./","./index.html","./view.js","./cookies.js","./confidentialitate.html","./integrame.html","./piramida.html","./napoleon.html","./ceasul.html","./quiz.html","./jocuri.html","./trivia.html","./cuvantul.html","./scoala.html","./klondike.html","./criptograma.html","./septica.html","./roata.html","./manifest.json","./icon-192.png","./icon-512.png"];
+const C = "jocuri-v29";
+const CORE = ["./","./index.html","./view.js","./cookies.js","./confidentialitate.html","./integrame.html","./piramida.html","./napoleon.html","./ceasul.html","./quiz.html","./jocuri.html","./trivia.html","./cuvantul.html","./scoala.html","./klondike.html","./criptograma.html","./septica.html","./roata.html","./popa.html","./macao.html","./potriviri.html","./manifest.json","./icon-192.png","./icon-512.png"];
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(C).then(c => c.addAll(CORE)).then(() => self.skipWaiting()));
 });
