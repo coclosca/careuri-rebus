@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ro"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Popa Prostul — PlayLudiq</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#f4efe3;--ink:#23303d;--accent:#176b63;--accent2:#c9872a;--card:#fffdf8;--face:#fffdf8;--line:#d9cfba;--red:#c23b3b;--black:#2a3642;--good:#2f8f5b;--bad:#c23b3b;--muted:#6b6454;--shadow:0 5px 15px rgba(20,40,40,.14);--felt:#1f6b5e}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#161d24;--ink:#eef2f4;--accent:#49b3a6;--accent2:#e0a24a;--card:#1f2932;--face:#f3efe6;--line:#36424d;--muted:#9aa4ad;--shadow:0 6px 20px rgba(0,0,0,.4);--felt:#143f38}}
+*{margin:0;box-sizing:border-box}html,body{min-height:100%}
+body{background:var(--paper);color:var(--ink);font-family:"Source Sans 3",system-ui,sans-serif;display:flex;flex-direction:column;align-items:center;padding:8px 10px calc(12px + env(safe-area-inset-bottom))}
+.backlink{align-self:flex-start;color:var(--accent);font-weight:700;text-decoration:none;font-size:13px;background:var(--card);border:1px solid var(--line);padding:6px 12px;border-radius:999px;box-shadow:var(--shadow);margin-bottom:6px}
+.wrap{width:100%;max-width:520px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
+h1{font-family:"Bricolage Grotesque";font-weight:800;font-size:clamp(18px,4.8vw,23px);line-height:1}
+h1 small{display:block;font-weight:700;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:2px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:5px 9px;font-weight:700;font-size:12px;box-shadow:var(--shadow)}
+.pick{text-align:center;padding:10px 0}
+.pick h2{font-family:"Bricolage Grotesque";font-weight:800;font-size:22px;margin:8px 0 4px}
+.pick p{color:var(--muted);font-size:14px;margin-bottom:18px}
+.mode{display:flex;flex-direction:column;gap:12px}
+.mbtn{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;cursor:pointer;box-shadow:var(--shadow);font-family:inherit;color:inherit;text-align:left}
+.mbtn:active{transform:scale(.98)}
+.mbtn .emo{font-size:32px}
+.mbtn .t{font-family:"Bricolage Grotesque";font-weight:800;font-size:18px}
+.mbtn .d{font-size:12.5px;color:var(--muted);margin-top:2px;line-height:1.3}
+.rules{margin-top:16px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;box-shadow:var(--shadow);text-align:left;font-size:13px;line-height:1.55;color:var(--muted)}
+.rules b{color:var(--accent)}
+.rules h3{font-size:13.5px;color:var(--ink);margin-bottom:6px;font-family:"Bricolage Grotesque";font-weight:800}
+.felt{background:var(--felt);border-radius:18px;padding:12px;box-shadow:var(--shadow);margin-bottom:10px;color:#fff}
+.pname{font-weight:800;font-size:13px;display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.pname .pts{background:rgba(255,255,255,.18);border-radius:8px;padding:2px 8px;font-size:12px}
+.backs{display:flex;gap:4px;min-height:58px;flex-wrap:wrap;justify-content:center}
+.back{width:38px;height:54px;border-radius:7px;background:repeating-linear-gradient(45deg,#2a8d7d 0 6px,#17655a 6px 12px);border:1px solid rgba(255,255,255,.25);cursor:default}
+.back.pick{cursor:pointer;animation:bob 1.2s ease-in-out infinite}
+.back.pick:active{transform:translateY(3px)}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.center{min-height:60px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;margin:8px 0}
+.msg{font-size:13px;text-align:center;opacity:.95;min-height:18px;font-weight:600}
+.sub{font-size:11px;opacity:.8;text-align:center}
+.card{width:42px;height:58px;border-radius:7px;background:var(--face);border:1px solid var(--line);display:flex;flex-direction:column;justify-content:space-between;padding:3px 4px;font-family:"Bricolage Grotesque";font-weight:800;flex:none}
+.card .r{font-size:15px;line-height:.9}.card .s{align-self:flex-end;font-size:14px;line-height:.9}
+.card.red{color:var(--red)}.card.black{color:var(--black)}
+.hand{display:flex;gap:5px;justify-content:center;flex-wrap:wrap;margin-top:4px;min-height:84px}
+.hand .card{width:50px;height:70px;box-shadow:var(--shadow)}
+.hand .card .r{font-size:18px}.hand .card .s{font-size:17px}
+.handwrap{position:relative}
+.curtain{position:absolute;inset:0;background:var(--accent);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:#fff;cursor:pointer;text-align:center;padding:14px;box-shadow:var(--shadow)}
+.curtain .t{font-family:"Bricolage Grotesque";font-weight:800;font-size:18px}
+.curtain .d{font-size:12.5px;opacity:.9}
+.turn{text-align:center;font-weight:800;font-size:13px;margin:4px 0;color:var(--accent)}
+.ctrls{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+button.btn{appearance:none;border:1px solid var(--line);background:var(--card);color:var(--ink);font-family:inherit;font-weight:700;font-size:13px;padding:9px 14px;border-radius:12px;cursor:pointer;box-shadow:var(--shadow)}
+button.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.hidden{display:none}
+.overlay{position:fixed;inset:0;background:rgba(15,25,30,.55);display:none;align-items:center;justify-content:center;padding:22px;z-index:100}
+.overlay.on{display:flex}
+.modal{background:var(--paper);border-radius:20px;padding:24px 20px;max-width:360px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.modal h2{font-family:"Bricolage Grotesque";font-weight:800;font-size:26px;margin-bottom:6px}
+.modal p{color:var(--muted);font-size:14px;margin-bottom:16px;line-height:1.5}
+footer{text-align:center;color:var(--muted);font-size:11px;margin-top:16px;opacity:.85;line-height:1.5}
+</style>
+<link rel="manifest" href="manifest.json"><meta name="theme-color" content="#176b63"><link rel="apple-touch-icon" href="icon-192.png">
+<script>if('serviceWorker' in navigator){addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}</script>
+<script src="view.js" defer></script><script src="cookies.js" defer></script>
+</head>
+<body>
+<a class="backlink" href="jocuri.html">← Jocuri</a>
+<div class="wrap">
+  <div class="top">
+    <h1><small>Nostalgia · joc de cărți</small>Popa Prostul</h1>
+    <button class="stat" id="rulesBtn">📖 Reguli</button>
+  </div>
+
+  <div id="pick" class="pick">
+    <h2>Cum vrei să joci?</h2>
+    <p>Alege adversarul 👇</p>
+    <div class="mode">
+      <button class="mbtn" id="mBot"><span class="emo">🤖</span><span><span class="t">Cu botul</span><span class="d">Joci singur, împotriva calculatorului.</span></span></button>
+      <button class="mbtn" id="mPvp"><span class="emo">👫</span><span><span class="t">Cu un prieten</span><span class="d">Pe același telefon, pe rând (pass &amp; play).</span></span></button>
+    </div>
+    <div class="rules">
+      <h3>🎯 Cum se joacă</h3>
+      Se scoate un poparol (rege) din pachet, așa că un <b>singur rege rămâne fără pereche</b> — acela e „Popa Prostul". Cărțile se împart tuturor. Formezi <b>perechi de aceeași valoare</b> (doi de 7, doi de 10…) și le arunci. Pe rând, <b>tragi o carte, pe nevăzute, din mâna adversarului</b>; dacă face pereche, o arunci. <b>Pierde cel care rămâne cu Popa Prostul</b> (regele fără pereche) în mână la final.
+    </div>
+  </div>
+
+  <div id="game" class="hidden">
+    <div class="felt">
+      <div class="pname"><span id="oppName">Bot</span><span class="pts">🗂️ perechi: <span id="oppPairs">0</span></span></div>
+      <div class="backs" id="oppHand"></div>
+      <div class="center">
+        <div class="msg" id="msg"></div>
+        <div class="sub" id="sub"></div>
+      </div>
+      <div class="pname"><span id="meName">Tu</span><span class="pts">🗂️ perechi: <span id="mePairs">0</span></span></div>
+    </div>
+    <div class="turn" id="turn"></div>
+    <div class="handwrap">
+      <div class="hand" id="hand"></div>
+      <div class="curtain hidden" id="curtain"><div class="t" id="curtName">Rândul tău</div><div class="d">Apasă ca să-ți vezi cărțile</div></div>
+    </div>
+    <div class="ctrls">
+      <button class="btn primary" id="newBtn">🔄 Joc nou</button>
+      <button class="btn" id="modeBtn">↩ Schimbă modul</button>
+    </div>
+  </div>
+
+  <footer>© 2026 · <b>PlayLudiq</b>™ · versiune beta · <a href="confidentialitate.html" style="color:inherit;text-decoration:underline">Confidențialitate</a></footer>
+</div>
+
+<div class="overlay" id="rulesOv"><div class="modal" style="max-height:86vh;overflow:auto">
+  <h2>📖 Reguli — Popa Prostul</h2>
+  <p style="text-align:left">Din pachet se scot 3 regi, rămânând unul singur — <b>Popa Prostul</b>, care nu va avea pereche.<br><br>
+  Cărțile se împart. Fiecare aruncă din mână <b>perechile</b> (două cărți de aceeași valoare).<br><br>
+  Pe rând, fiecare <b>trage o carte pe nevăzute</b> din mâna celuilalt. Dacă noua carte face pereche cu una din mână, perechea se aruncă.<br><br>
+  Jocul continuă până rămâne o singură carte: <b>Popa Prostul</b>. Cine o ține în mână la final <b>pierde</b>.</p>
+  <button class="btn primary" id="rulesClose" style="width:100%">Am înțeles</button>
+</div></div>
+
+<div class="overlay" id="endOv"><div class="modal">
+  <h2 id="endT">Final</h2>
+  <p id="endP"></p>
+  <button class="btn primary" id="endNew" style="width:100%">Joc nou</button>
+</div></div>
+
+<script>
+(function(){
+var $=function(i){return document.getElementById(i);};
+var SU=["♠","♥","♦","♣"];
+function red(s){return s===1||s===2;}
+function rl(r){return r===14?"A":r===13?"K":r===12?"Q":r===11?"J":(""+r);}
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.random()*(i+1)|0;var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+
+var mode="bot", hands=[[],[]], pairs=[0,0], names=["Tu","Bot"], toAct=0, busy=false, revealed=false, over=false;
+
+function deck(){var d=[];for(var s=0;s<4;s++)for(var r=7;r<=14;r++)d.push({r:r,s:s});
+  // scoate 3 regi, lasa doar K de pica (popa prostul)
+  d=d.filter(function(c){return !(c.r===13 && c.s!==0);});
+  return shuffle(d);}
+
+function normalize(hand){
+  var by={}; hand.forEach(function(c){(by[c.r]=by[c.r]||[]).push(c);});
+  var out=[],pr=0;
+  Object.keys(by).forEach(function(r){var arr=by[r];pr+=Math.floor(arr.length/2);if(arr.length%2===1)out.push(arr[arr.length-1]);});
+  return {hand:shuffle(out),pairs:pr};
+}
+function startGame(m){
+  mode=m; names = m==="bot"?["Tu","Bot"]:["Jucător 1","Jucător 2"];
+  var d=deck(); hands=[[],[]];
+  for(var i=0;i<d.length;i++) hands[i%2].push(d[i]);
+  var n0=normalize(hands[0]), n1=normalize(hands[1]);
+  hands[0]=n0.hand; hands[1]=n1.hand; pairs=[n0.pairs,n1.pairs];
+  toAct=0; busy=false; over=false;
+  $("pick").classList.add("hidden"); $("game").classList.remove("hidden");
+  $("meName").textContent=names[0]; $("oppName").textContent=names[1];
+  beginTurn();
+}
+function humanActor(p){ return mode==="pvp" ? true : p===0; }
+
+function beginTurn(){
+  if(over)return;
+  $("msg").textContent = names[toAct]+" trage o carte de la "+names[1-toAct]+".";
+  $("sub").textContent = "Cărțile se iau pe nevăzute.";
+  promptTurn();
+}
+function promptTurn(){
+  if(busy||over)return;
+  shuffle(hands[1-toAct]); // reshuffle source so pozitia nu poate fi memorata
+  if(humanActor(toAct)){
+    if(mode==="pvp"){ revealed=false; $("curtName").textContent="Rândul: "+names[toAct]; $("curtain").classList.remove("hidden"); }
+    else { revealed=true; $("curtain").classList.add("hidden"); }
+    render();
+  } else { busy=true; setTimeout(botDraw, 800); }
+}
+function botDraw(){
+  var src=hands[1-toAct];
+  var i=Math.random()*src.length|0;
+  doDraw(i);
+}
+function doDraw(i){
+  var src=hands[1-toAct], me=hands[toAct];
+  var card=src.splice(i,1)[0];
+  me.push(card);
+  var n=normalize(me); hands[toAct]=n.hand; pairs[toAct]=n.pairs;
+  busy=false;
+  render();
+  // end check
+  if(hands[0].length===0 || hands[1].length===0){ return setTimeout(finish, 500); }
+  toAct=1-toAct; setTimeout(beginTurn, 350);
+}
+function finish(){
+  over=true;
+  // cel cu carti (popa prostul) pierde
+  var loser = hands[0].length>0 ? 0 : 1;
+  var win = 1-loser;
+  var t, msg;
+  if(mode==="bot"){ t = loser===1 ? "🏆 Ai câștigat!" : "😅 Ai rămas cu Popa Prostul!"; }
+  else { t = "🏆 "+names[win]+" câștigă!"; }
+  $("endT").textContent=t;
+  $("endP").textContent = names[loser]+" a rămas cu Popa Prostul 🤴 (regele fără pereche).";
+  $("endOv").classList.add("on");
+}
+function render(){
+  $("mePairs").textContent=pairs[0]; $("oppPairs").textContent=pairs[1];
+  var actor=toAct, other=1-actor;
+  var bottom = mode==="bot"?0:actor, top = mode==="bot"?1:other;
+  $("meName").textContent=names[bottom]; $("oppName").textContent=names[top];
+  $("mePairs").textContent=pairs[bottom]; $("oppPairs").textContent=pairs[top];
+  // top = opponent backs; pickable if it's the bottom player's turn to draw and bottom is the human acting
+  var canPick = !busy && !over && (mode==="bot" ? toAct===0 : revealed) && (top===(1-toAct));
+  var ob="";for(var i=0;i<hands[top].length;i++) ob+='<div class="back'+(canPick?" pick":"")+'" data-i="'+i+'"></div>';
+  $("oppHand").innerHTML=ob;
+  if(canPick){ [].forEach.call($("oppHand").querySelectorAll(".back"),function(el){ el.onclick=function(){ if(busy||over)return; busy=true; doDraw(+el.getAttribute("data-i")); }; }); }
+  $("turn").textContent = busy&&!humanActor(toAct) ? (names[toAct]+" trage…") : ("Rândul: "+names[toAct]);
+  // bottom hand
+  if(mode==="bot"){
+    var hh="";hands[0].forEach(function(c){hh+=cardHTML(c);});
+    $("hand").innerHTML=hh; $("curtain").classList.add("hidden");
+  } else {
+    if(revealed){ var h2="";hands[actor].forEach(function(c){h2+=cardHTML(c);}); $("hand").innerHTML=h2; $("curtain").classList.add("hidden"); }
+    else { $("hand").innerHTML=""; }
+  }
+}
+function cardHTML(c){ return '<div class="card '+(red(c.s)?"red":"black")+'"><span class="r">'+rl(c.r)+'</span><span class="s">'+SU[c.s]+'</span></div>'; }
+
+$("curtain").onclick=function(){ revealed=true; $("curtain").classList.add("hidden"); render(); };
+$("mBot").onclick=function(){startGame("bot");};
+$("mPvp").onclick=function(){startGame("pvp");};
+$("newBtn").onclick=function(){startGame(mode);};
+$("modeBtn").onclick=function(){$("game").classList.add("hidden");$("pick").classList.remove("hidden");$("endOv").classList.remove("on");};
+$("endNew").onclick=function(){$("endOv").classList.remove("on");startGame(mode);};
+$("rulesBtn").onclick=function(){$("rulesOv").classList.add("on");};
+$("rulesClose").onclick=function(){$("rulesOv").classList.remove("on");};
+$("rulesOv").onclick=function(e){if(e.target.id==="rulesOv")$("rulesOv").classList.remove("on");};
+$("endOv").onclick=function(e){if(e.target.id==="endOv")$("endOv").classList.remove("on");};
+})();
+</script>
+<!-- Cloudflare Web Analytics --><script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "74c145f1f04942f2879e1c23044be639"}'></script><!-- End Cloudflare Web Analytics -->
+</body></html>
