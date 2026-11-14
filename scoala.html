@@ -126,9 +126,10 @@ function setBack(mode){const b=$("back");if(mode==="menu"){b.textContent="← Me
 function roman(n){return ["","I","II","III","IV","V"][n]||n;}
 
 // ---- clase (taburi) -> materii -> module ----
+const EXTRA=[{"clasa": "I", "subject": "Limba engleză · Integrame", "info": "7 integrame cu imagini", "manual": "Culori, numere, animale, fructe, jucării, familia, corpul", "href": "integrame.html?d=%F0%9F%87%AC%F0%9F%87%A7%20Englez%C4%83%20%C2%B7%20clasa%20I"}];
 let classes=[], curClass=0;
-function distinctClasses(){var s={},a=[];COURSES.forEach(c=>{if(!s[c.clasa]){s[c.clasa]=1;a.push(c.clasa);}});return a;}
-function subjIcon(n){return /muzic/i.test(n)?"🎵":/matemat/i.test(n)?"➗":/rom[aâ]n/i.test(n)?"📖":/istor/i.test(n)?"🏛️":/geograf/i.test(n)?"🌍":/biolog/i.test(n)?"🌿":"📘";}
+function distinctClasses(){var s={},a=[];EXTRA.concat(COURSES).forEach(c=>{if(!s[c.clasa]){s[c.clasa]=1;a.push(c.clasa);}});return a;}
+function subjIcon(n){return /engl/i.test(n)?"🇬🇧":/muzic/i.test(n)?"🎵":/matemat/i.test(n)?"➗":/rom[aâ]n/i.test(n)?"📖":/istor/i.test(n)?"🏛️":/geograf/i.test(n)?"🌍":/biolog/i.test(n)?"🌿":"📘";}
 function buildTabs(){
   classes=distinctClasses();
   const box=$("tabs");box.innerHTML="";
@@ -148,6 +149,11 @@ function showSubjects(){
     const b=document.createElement("button");b.className="mbtn";
     b.innerHTML='<span class="n">'+subjIcon(c.subject)+'</span><span><span class="tt">'+c.subject+'</span><span class="mt">'+c.modules.length+' module · '+nTeste+' teste</span><span class="per">📘 '+c.manual+'</span></span><span class="go">→</span>';
     b.onclick=()=>openSubject(c);box.appendChild(b);
+  });
+  EXTRA.forEach(c=>{ if(c.clasa!==classes[curClass])return;
+    const b=document.createElement("a");b.className="mbtn";b.href=c.href;b.style.textDecoration="none";b.style.color="inherit";
+    b.innerHTML='<span class="n">'+subjIcon(c.subject)+'</span><span><span class="tt">'+c.subject+'</span><span class="mt">'+c.info+'</span><span class="per">🧩 '+c.manual+'</span></span><span class="go">→</span>';
+    box.appendChild(b);
   });
   setBack("menu");show("pickMod");
 }
