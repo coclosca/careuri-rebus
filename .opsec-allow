@@ -4,3 +4,6 @@ PlayLudiq
 playludiq.com
 # Cloudflare Web Analytics beacon token: public by design (it is in every page's HTML).
 74c145f1f04942f2879e1c23044be639
+# Fictitious device-name examples inside the OPSEC scanner's own documentation (not real data).
+anna's macbook
+marcos-macbook-pro
