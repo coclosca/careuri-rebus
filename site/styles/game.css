@@ -1,0 +1,277 @@
+/* ==========================================================================
+   PlayLudiq game layer - the parts every game shares, designed once:
+   page frame, title block, stat chips, buttons, mode choice, rules panel,
+   result dialog, quiz options, hidden state.
+   Loaded after components.css and before features/<game>/<game>.styles.css.
+   A game's own stylesheet styles its BOARD only; never these pieces.
+   Everything is scoped to .game-root so games never touch the site chrome.
+   ========================================================================== */
+
+/* --- Family colour: set on the root by the page (data-family) ---------- */
+.game-root { --family: var(--color-accent); }
+.game-root[data-family="words"]     { --family: var(--color-family-words); }
+.game-root[data-family="quiz"]      { --family: var(--color-family-quiz); }
+.game-root[data-family="solitaire"] { --family: var(--color-family-solitaire); }
+.game-root[data-family="cards"]     { --family: var(--color-family-cards); }
+.game-root[data-family="school"]    { --family: var(--color-family-school); }
+
+/* --- Frame ------------------------------------------------------------- */
+.game-root {
+  display: block;
+  padding: var(--space-4) var(--gutter) var(--space-6);
+}
+.game-root .wrap { width: 100%; }
+.game-root .hidden { display: none !important; }
+
+/* --- Title block: name first, a plain description under it ------------ */
+.game-root .top,
+.game-root > .wrap > header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+.game-root h1 {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: var(--space-1);
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-display);
+  line-height: var(--leading-tight);
+  text-wrap: balance;
+}
+.game-root h1 small {
+  color: var(--color-ink-muted);
+  font: var(--weight-regular) var(--text-sm) / 1.3 var(--font-body);
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+/* --- Stat chips: read-only numbers (time, score, moves) ---------------- */
+.game-root .stats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-2);
+}
+.game-root .stat {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-height: var(--chip-height);
+  padding: 0 var(--space-3);
+  border: var(--border-width) solid var(--color-line);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  color: var(--color-ink);
+  font: var(--weight-semibold) var(--text-sm) / 1 var(--font-body);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.game-root .stat b { font-weight: var(--weight-bold); }
+.game-root .stat .icon { color: var(--family); }
+/* A chip that is also a button (e.g. "Regulament") gets a real tap target. */
+.game-root button.stat {
+  min-height: var(--tap-target);
+  cursor: pointer;
+  transition: border-color var(--duration-fast) var(--ease-out);
+}
+.game-root button.stat:hover { border-color: var(--family); }
+
+/* --- Buttons ----------------------------------------------------------- */
+.game-root .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: var(--tap-target);
+  padding: 0 var(--space-5);
+  border: var(--border-width) solid var(--color-line);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-ink);
+  font: var(--weight-bold) var(--text-md) / 1 var(--font-body);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-out),
+              border-color var(--duration-fast) var(--ease-out),
+              transform var(--duration-fast) var(--ease-out);
+}
+.game-root .btn:hover { border-color: var(--color-ink-muted); }
+.game-root .btn:active { transform: translateY(1px) scale(0.99); }
+.game-root .btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+.game-root .btn.primary {
+  border-color: var(--color-accent);
+  background: var(--color-accent);
+  color: var(--color-ink-on-accent);
+  box-shadow: var(--shadow-raised);
+}
+.game-root .btn.primary:hover { background: var(--color-accent-hover); border-color: var(--color-accent-hover); }
+.game-root .ctrls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+}
+
+/* --- Mode choice ("Cu botul" / "Cu un prieten") ------------------------ */
+.game-root .mbtn {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  align-items: center;
+  column-gap: var(--space-4);
+  width: 100%;
+  min-height: 88px;
+  padding: var(--space-4);
+  border: var(--border-width) solid var(--color-line);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  color: var(--color-ink);
+  font: var(--weight-regular) var(--text-sm) / 1.4 var(--font-body);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color var(--duration-fast) var(--ease-out),
+              transform var(--duration-fast) var(--ease-out);
+}
+.game-root .mbtn + .mbtn { margin-top: var(--space-3); }
+.game-root .mbtn:hover { border-color: var(--family); }
+.game-root .mbtn:active { transform: scale(0.99); }
+.game-root .mbtn b,
+.game-root .mbtn strong {
+  display: block;
+  margin-bottom: var(--space-1);
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-display);
+}
+.game-root .mbtn .emo {
+  grid-row: span 2;
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-md);
+  background: var(--family);
+  color: var(--color-on-family);
+}
+.game-root .mbtn .emo .icon { width: 28px; height: 28px; }
+
+/* --- Rules / help panel ------------------------------------------------ */
+.game-root .help,
+.game-root .rules {
+  margin-top: var(--space-4);
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--family) 8%, var(--color-surface));
+  color: var(--color-ink);
+  font-size: var(--text-md);
+  line-height: var(--leading-body);
+}
+.game-root .help h2,
+.game-root .help h3,
+.game-root .rules h2,
+.game-root .rules h3 {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+}
+.game-root .help b,
+.game-root .rules b { color: var(--color-ink); font-weight: var(--weight-bold); }
+
+/* --- Result / rules dialog --------------------------------------------- */
+.game-root .overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--layer-modal);
+  display: grid;
+  place-items: center;
+  padding: var(--space-4);
+  background: rgba(10, 15, 20, 0.55);
+}
+/* Games open a dialog by adding .on (see each game.js). */
+.game-root .overlay:not(.on) { display: none; }
+@media (prefers-reduced-motion: no-preference) {
+  .game-root .overlay.on { animation: fade-in 200ms var(--ease-out) both; }
+  .game-root .overlay.on .modal { animation: pop-in 260ms var(--ease-out) both; }
+}
+.game-root .modal {
+  width: 100%;
+  max-width: 420px;
+  max-height: 88dvh;
+  overflow: auto;
+  padding: var(--space-6) var(--space-5) var(--space-5);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  color: var(--color-ink);
+  text-align: center;
+  box-shadow: 0 16px 48px rgba(10, 15, 20, 0.28);
+}
+.game-root .modal h2 {
+  margin-bottom: var(--space-2);
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+}
+.game-root .modal .big {
+  font-family: var(--font-display);
+  font-size: var(--text-3xl);
+  font-weight: var(--weight-display);
+  color: var(--family);
+  font-variant-numeric: tabular-nums;
+}
+.game-root .modal .btn { width: 100%; margin-top: var(--space-3); }
+
+/* --- Quiz answer options ----------------------------------------------- */
+.game-root .opts { display: grid; gap: var(--space-2); }
+.game-root .opt {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  min-height: 56px;
+  padding: var(--space-3) var(--space-4);
+  border: 2px solid var(--color-line);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-ink);
+  font: var(--weight-semibold) var(--text-md) / 1.35 var(--font-body);
+  text-align: left;
+  cursor: pointer;
+}
+.game-root .opt:hover { border-color: var(--family); }
+.game-root .opt.ok,
+.game-root .opt.correct { border-color: var(--color-correct); background: var(--color-correct-soft); }
+.game-root .opt.bad,
+.game-root .opt.wrong { border-color: var(--color-wrong); background: var(--color-wrong-soft); }
+
+/* --- Feedback card: how-to tip + like / report ------------------------ */
+.game-root .feedback-card {
+  display: grid;
+  gap: var(--space-3);
+  margin-top: var(--space-5);
+  padding: var(--space-4);
+  border: var(--border-width) solid var(--color-line);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-raised);
+}
+.game-root .feedback-card__tip {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  color: var(--color-ink-muted);
+  font-size: var(--text-sm);
+}
+.game-root .feedback-card__tip .icon { margin-top: 0.15em; color: var(--family); }
+.game-root .feedback-card__actions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--space-2);
+}
+.game-root .feedback-card__actions .btn { width: 100%; padding: 0 var(--space-3); }
+
+/* .icon lives in components.css (shared by every page). */

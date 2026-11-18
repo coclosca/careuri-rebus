@@ -1,0 +1,135 @@
+/* PlayLudiq · Criptograma · board styles
+   Board only: frame, title, stat chips, buttons and the help panel come
+   from styles/game.css. Colours are tokens from styles/tokens.css. */
+
+/* --- Board geometry: fixed sizes the quote and keyboard are built on --- */
+.game-root {
+  --board-box-width: 23px;      /* one letter slot; long quotes must wrap on phones */
+  --board-box-height: 30px;
+  --board-box-rule: 2.5px;      /* underline under each letter slot */
+  --board-key-width: 34px;      /* 9 keys per row fit a 320px screen */
+  --board-key-wide: 60px;       /* backspace */
+  --board-key-height: 42px;
+}
+
+/* --- Solved banner and author line ------------------------------------- */
+.game-root .win {
+  margin-bottom: var(--space-3);
+  padding: var(--space-3);
+  border: var(--border-width) solid var(--color-correct);
+  border-radius: var(--radius-lg);
+  background: var(--color-correct-soft);
+  text-align: center;
+}
+.game-root .win .t {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-correct);
+  font: var(--weight-display) var(--text-xl) / 1.2 var(--font-display);
+}
+.game-root .author {
+  min-height: var(--space-5);
+  margin: var(--space-1) 0 var(--space-3);
+  color: var(--color-accent);
+  font-size: var(--text-md);
+  font-weight: var(--weight-bold);
+  text-align: center;
+}
+.game-root .author span { color: var(--color-ink-muted); font-weight: var(--weight-semibold); }
+
+/* --- Quote ------------------------------------------------------------- */
+.game-root .puzzle {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-2) var(--space-3);
+  margin-bottom: var(--space-3);
+  padding: var(--space-4) var(--space-3);
+  border: var(--border-width) solid var(--color-line);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-raised);
+}
+.game-root .word { display: flex; gap: var(--space-1); }
+.game-root .punc {
+  display: flex;
+  align-items: flex-end;
+  padding-bottom: var(--space-4);
+  color: var(--color-ink-muted);
+  font: var(--weight-display) var(--text-xl) / 1 var(--font-display);
+}
+/* .cell also exists in components.css: reset the box it draws. */
+.game-root .cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  width: auto;
+  height: auto;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  font: inherit;
+  text-transform: none;
+  cursor: pointer;
+}
+.game-root .cell .box {
+  display: grid;
+  place-items: center;
+  width: var(--board-box-width);
+  height: var(--board-box-height);
+  border-bottom: var(--board-box-rule) solid var(--color-line);
+  font: var(--weight-display) var(--text-lg) / 1 var(--font-display);
+}
+.game-root .cell .code {
+  color: var(--color-ink-muted);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-display);
+  letter-spacing: 0.02em;
+}
+.game-root .cell.sel .box {
+  border-bottom-color: var(--family);
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  background: var(--color-hint);
+  color: var(--color-ink);
+}
+.game-root .cell.same .box { border-bottom-color: var(--color-accent); }
+.game-root .cell.lock .box,
+.game-root .cell.done .box { color: var(--color-correct); }
+.game-root .cell.bad .box { border-bottom-color: var(--color-wrong); color: var(--color-wrong); }
+
+.game-root .hintrow {
+  min-height: var(--space-4);
+  margin-bottom: var(--space-3);
+  color: var(--color-ink-muted);
+  font-size: var(--text-sm);
+  text-align: center;
+}
+.game-root .hintrow b { color: var(--color-accent); }
+
+/* --- On-screen keyboard ------------------------------------------------ */
+.game-root .kb {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+}
+.game-root .krow { display: flex; justify-content: center; gap: var(--space-1); width: 100%; }
+.game-root .key {
+  flex: 1;
+  max-width: var(--board-key-width);
+  height: var(--board-key-height);
+  padding: 0;
+  border: var(--border-width) solid var(--color-line);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  color: var(--color-ink);
+  font: var(--weight-display) var(--text-md) / 1 var(--font-body);
+  cursor: pointer;
+  box-shadow: var(--shadow-raised);
+}
+.game-root .key.wide { max-width: var(--board-key-wide); font-size: var(--text-sm); }
+.game-root .key:active { transform: translateY(var(--border-width)); }
+.game-root .key.used { opacity: 0.4; }

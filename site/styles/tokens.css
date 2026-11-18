@@ -1,0 +1,254 @@
+/* ==========================================================================
+   PlayLudiq design tokens - the ONE source of truth for every visual value.
+   Every page and every game imports this file first. No raw colours, sizes
+   or shadows anywhere else: use these variables. To change the look, change
+   it here, once.
+   ========================================================================== */
+
+/* --- Fonts: self-hosted (SIL Open Font License), so no visitor data goes
+   to a font service. "latin" covers English, "latin-ext" adds ă ș ț. ----- */
+@font-face {
+  font-family: "Bricolage Grotesque";
+  src: url("../assets/fonts/bricolage-grotesque-latin.woff2") format("woff2");
+  font-weight: 700 800;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Bricolage Grotesque";
+  src: url("../assets/fonts/bricolage-grotesque-latin-ext.woff2") format("woff2");
+  font-weight: 700 800;
+  font-display: swap;
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "Source Sans 3";
+  src: url("../assets/fonts/source-sans-3-latin.woff2") format("woff2");
+  font-weight: 400 700;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Source Sans 3";
+  src: url("../assets/fonts/source-sans-3-latin-ext.woff2") format("woff2");
+  font-weight: 400 700;
+  font-display: swap;
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+:root {
+  color-scheme: light dark;
+
+  /* --- Colour: surfaces ------------------------------------------------ */
+  --color-page: #f4efe3;          /* page background (warm paper)        */
+  --color-surface: #fffdf8;       /* cards, sheets, bars                 */
+  --color-surface-sunken: #ebe4d3;/* wells, empty cells, input fields    */
+  --color-line: #d9cfba;          /* hairlines and borders               */
+
+  /* --- Colour: text ---------------------------------------------------- */
+  --color-ink: #23303d;           /* main text                           */
+  --color-ink-muted: #5f584a;     /* secondary text (AA on page+surface) */
+  --color-ink-on-accent: #ffffff; /* text on accent fills                */
+
+  /* --- Colour: brand and sections -------------------------------------- */
+  --color-accent: #176b63;        /* primary actions, links, focus       */
+  --color-accent-hover: #12564f;
+  --color-games: #c9872a;         /* Jocuri section (fill only, never text) */
+  --color-school: #2563a8;        /* Școală section                      */
+
+  /* --- Colour: feedback ------------------------------------------------ */
+  --color-correct: #2f7d4a;
+  --color-correct-soft: #dcefe1;
+  --color-wrong: #b3362f;
+  --color-wrong-soft: #f6dcd9;
+  --color-hint: #f2d48a;          /* highlighted / active cell           */
+  --color-on-correct: #ffffff;    /* text on a --color-correct fill      */
+  --color-on-wrong: #ffffff;      /* text on a --color-wrong fill        */
+  --color-on-family: #ffffff;     /* icons on family / section fills     */
+
+  /* --- Colour: playing cards (stay light in dark mode too) ------------ */
+  --color-card-face: #fffdf8;
+  --color-card-back: #176b63;
+  --color-suit-red: #b3362f;
+  --color-suit-black: #23303d;
+
+  /* --- Colour: home page hall with the two 3D doors (same in dark) ---- */
+  --color-hall: #23303d;           /* wall, lower part                  */
+  --color-hall-top: #1a242e;       /* wall, ceiling shadow              */
+  --color-hall-floor: #2c3a48;     /* floor near the wall               */
+  --color-hall-floor-near: #1d2731;/* floor near the viewer             */
+  --color-hall-trim: #3b4b5b;      /* baseboard and door frames         */
+  --color-door-games: #1d7a70;
+  --color-door-school: #2d6cb5;
+  --color-door-glow-games: #ffd98f;
+  --color-door-glow-school: #b9d6ff;
+  --color-door-knob: #e0a24a;
+  --color-door-text: #ffffff;
+  --color-door-caption: #c9d3dc;
+
+  /* --- Colour: game families (hub icons, game headers) ----------------- */
+  --color-family-words: #c9872a;      /* integrame, cuvântul, criptogramă, roata, potriviri */
+  --color-family-quiz: #7a3aa0;       /* quiz, trivia, fotbal                              */
+  --color-family-solitaire: #1f6b5e;  /* piramida, napoleon, ceasul, klondike              */
+  --color-family-cards: #b3362f;      /* septică, popa prostul, macao                      */
+  --color-family-school: #2563a8;     /* teste școlare                                     */
+
+  /* --- Colour: game boards ------------------------------------------- */
+  --color-felt: #1f6b5e;              /* card table                                        */
+  --color-felt-deep: #17544a;         /* card table edge / slots                           */
+  --color-on-felt: #eef7f4;           /* text and outlines on the table                    */
+  --color-star: #e0a24a;              /* points, stars, streaks                            */
+  --color-on-star: #23303d;
+  --color-cell-block: #23303d;        /* black squares in crosswords                       */           /* text on a --color-star fill                       */
+  --color-card-edge: color-mix(in srgb, #23303d 15%, transparent); /* playing-card border */
+  --color-timer-low: #b3362f;         /* timer about to run out                            */
+
+  /* --- Typography ------------------------------------------------------ */
+  --font-display: "Bricolage Grotesque", system-ui, sans-serif;
+  --font-body: "Source Sans 3", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --text-2xs: 0.6875rem;/* 11px  tiny uppercase labels on boards only     */
+  --text-xs: 0.75rem;   /* 12px  small labels, counters                    */
+  --text-sm: 0.875rem;  /* 14px  secondary text, captions                */
+  --text-md: 1rem;      /* 16px  body, buttons, inputs (never smaller on mobile inputs) */
+  --text-lg: 1.125rem;  /* 18px  card titles                             */
+  --text-xl: 1.375rem;  /* 22px  section titles                          */
+  --text-2xl: 1.75rem;  /* 28px  page titles on mobile                   */
+  --text-3xl: 2.25rem;  /* 36px  home title                              */
+  --weight-regular: 400;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+  --weight-display: 800;
+  --leading-tight: 1.1;
+  --leading-body: 1.5;
+
+  /* --- Spacing (4px grid) ---------------------------------------------- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;  /* page side gutter on mobile                         */
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  /* --- Shape ----------------------------------------------------------- */
+  --radius-sm: 8px;    /* cells, tiles, small controls                    */
+  --radius-md: 12px;   /* buttons, inputs                                  */
+  --radius-lg: 16px;   /* cards, sheets                                    */
+  --radius-pill: 999px;/* stat chips only                                  */
+  --border-width: 1px;
+  --shadow-raised: 0 2px 8px rgba(20, 40, 40, 0.10); /* cards, buttons  */
+  --shadow-deep: 0 10px 24px -14px rgba(20, 30, 40, 0.30); /* the home hall */
+  --color-shade: rgba(10, 15, 20, 0.55); /* cast shadows inside the hall */
+
+  /* --- Sizing ---------------------------------------------------------- */
+  --tap-target: 44px;          /* minimum height/width of anything tappable */
+  --chip-height: 36px;         /* stat chips (read-only, not for tapping)  */
+  --icon-size: 1.25em;         /* inline icons follow the text size        */
+  --width-page: 760px;         /* THE content width: header, pages, games, footer all align to it */
+  --width-game: var(--width-page);
+  --width-hub: var(--width-page);
+  --width-text: var(--width-page);
+  --gutter: max(var(--space-4), calc((100% - var(--width-page)) / 2)); /* side padding that centres the column */
+
+  /* --- Motion ---------------------------------------------------------- */
+  --duration-fast: 120ms;
+  --duration-base: 220ms;
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --duration-door: 900ms;
+  --duration-page: 260ms;          /* page-to-page transition */
+  --duration-loader: 2400ms;       /* page loader bar crawl while the next page loads */
+  --delay-loader-tiles: 450ms;     /* tiles appear only when a page is slow */
+  --loader-height: 3px;
+  --loader-tile: 10px;
+  --ease-door: cubic-bezier(0.22, 0.9, 0.24, 1); /* a heavy door: quick start, long soft finish */
+
+  /* --- Layers ---------------------------------------------------------- */
+  --layer-header: 10;
+  --layer-modal: 100;
+  --layer-consent: 200;
+  --layer-toast: 300;
+
+  /* --- Focus ----------------------------------------------------------- */
+  --focus-ring: 0 0 0 3px color-mix(in srgb, var(--color-accent) 45%, transparent);
+}
+
+/* --- Dark theme: follows the system unless the page forces light ------- */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-page: #161d24;
+    --color-surface: #1f2932;
+    --color-surface-sunken: #18222a;
+    --color-line: #36424d;
+    --color-ink: #eef2f4;
+    --color-ink-muted: #a3adb6;
+    --color-ink-on-accent: #09211d;
+    --color-accent: #49b3a6;
+    --color-accent-hover: #63c4b8;
+    --color-games: #e0a24a;
+    --color-school: #5b9be0;
+    --color-correct: #5cc07e;
+    --color-correct-soft: #1d3a28;
+    --color-wrong: #e06a62;
+    --color-wrong-soft: #3d2120;
+    --color-hint: #6b5a24;
+  --color-on-correct: #0b1f12;
+  --color-on-wrong: #2a0d0b;
+    --color-on-correct: #0b1f12;
+    --color-on-wrong: #2a0d0b;
+    --shadow-raised: 0 2px 10px rgba(0, 0, 0, 0.35);
+  }
+}
+:root[data-theme="dark"] {
+  --color-page: #161d24;
+  --color-surface: #1f2932;
+  --color-surface-sunken: #18222a;
+  --color-line: #36424d;
+  --color-ink: #eef2f4;
+  --color-ink-muted: #a3adb6;
+  --color-ink-on-accent: #09211d;
+  --color-accent: #49b3a6;
+  --color-accent-hover: #63c4b8;
+  --color-games: #e0a24a;
+  --color-school: #5b9be0;
+  --color-correct: #5cc07e;
+  --color-correct-soft: #1d3a28;
+  --color-wrong: #e06a62;
+  --color-wrong-soft: #3d2120;
+  --color-hint: #6b5a24;
+  --color-on-correct: #0b1f12;
+  --color-on-wrong: #2a0d0b;
+  --shadow-raised: 0 2px 10px rgba(0, 0, 0, 0.35);
+}
+
+/* --- Colour themes (chosen in the header, shared/theme/theme.js) -------
+   Each theme only re-points colour tokens. theme.js also sets data-theme
+   (light / dark) so the right base palette sits underneath.             */
+:root[data-skin="clasic"] { --color-page:#eceef0; --color-surface:#ffffff; --color-surface-sunken:#e2e5e8; --color-cell-block:#161616; --color-ink:#161616; --color-ink-muted:#5c636b; --color-line:#c6ccd2; --color-accent:#1b1b1b; --color-accent-hover:#000000; --color-ink-on-accent:#ffffff; --color-hint:#ffd23f; --color-correct:#1f8a4c; --color-wrong:#c62828; color-scheme:light; }
+:root[data-skin="noapte"] { --color-page:#12161b; --color-surface:#1b2127; --color-surface-sunken:#161b21; --color-cell-block:#0a0f14; --color-ink:#e8e3d6; --color-ink-muted:#9aa2ab; --color-line:#2e3740; --color-accent:#56b7cf; --color-accent-hover:#74c6da; --color-ink-on-accent:#0a1a20; --color-hint:#caa23f; --color-correct:#5cc083; --color-wrong:#e2695d; color-scheme:dark; }
+:root[data-skin="azur"]   { --color-page:#e6f0f8; --color-surface:#f5fafe; --color-surface-sunken:#dce8f2; --color-cell-block:#163a56; --color-ink:#13293d; --color-ink-muted:#5a7183; --color-line:#cfe0ec; --color-accent:#1769aa; --color-accent-hover:#125688; --color-ink-on-accent:#ffffff; --color-hint:#ffcf5c; --color-correct:#2f8f57; --color-wrong:#c84a3f; color-scheme:light; }
+:root[data-skin="sepia"]  { --color-page:#ece0cb; --color-surface:#f8efdd; --color-surface-sunken:#e4d6bc; --color-cell-block:#5b4327; --color-ink:#3f3321; --color-ink-muted:#7a6c52; --color-line:#d9c9a8; --color-accent:#9a6a2b; --color-accent-hover:#7f5722; --color-ink-on-accent:#ffffff; --color-hint:#e9c46a; --color-correct:#5a7a3a; --color-wrong:#b5503a; color-scheme:light; }
+
+/* Theme previews for the header picker (two halves of each swatch). */
+:root {
+  --preview-hartie-a: #f4efe3; --preview-hartie-b: #23303d;
+  --preview-clasic-a: #ffffff; --preview-clasic-b: #161616;
+  --preview-noapte-a: #1b2127; --preview-noapte-b: #56b7cf;
+  --preview-azur-a: #eaf2fa;   --preview-azur-b: #163a56;
+  --preview-sepia-a: #f3e8d2;  --preview-sepia-b: #5b4327;
+}
+
+/* Breakpoints (CSS variables cannot be used inside @media, so they are
+   fixed here and must be used exactly):
+     small  : up to 599px   (phones)       - one column
+     medium : 600px-999px   (tablets)      - two-column hubs
+     large  : 1000px and up (desktop)      - three-column hubs, centred board */
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 0ms;
+    --duration-base: 0ms;
+    --duration-door: 0ms;
+    --duration-page: 0ms;
+  }
+}

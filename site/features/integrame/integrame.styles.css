@@ -1,0 +1,357 @@
+/* PlayLudiq · Integrame & Rebus · board styles
+   Board only: frame, title, stat chips, buttons, dialogs and the help panel
+   come from styles/game.css. Colours are tokens from styles/tokens.css. */
+
+/* --- Board geometry: fixed sizes the crossword grid is built on -------- */
+.game-root {
+  --board-grid-gap: 2px;                      /* hairline between grid cells     */
+  --board-cell-radius: 2px;                   /* cells sit edge to edge          */
+  --board-cell-font: clamp(13px, 4.6vw, 23px);/* letter scales with grid width   */
+  --board-num-font: 9px;                      /* clue number in the cell corner  */
+  --board-num-inset: 2px;
+  /* Proposed token --color-cell-block; falls back to the closest token. */
+  --board-block: var(--color-cell-block, var(--color-hall-top));
+  --board-soft-accent: color-mix(in srgb, var(--color-accent) 15%, var(--color-surface));
+  --board-soft-hint: color-mix(in srgb, var(--color-hint) 45%, var(--color-surface));
+}
+
+
+/* --- Skin picker ------------------------------------------------------- */
+
+/* --- Domain and level picker ------------------------------------------- */
+.game-root .nav2 { margin-bottom: var(--space-3); }
+.game-root .nav-row { margin-bottom: var(--space-3); }
+.game-root .nav-row > label {
+  display: block;
+  margin-bottom: var(--space-2);
+  color: var(--color-accent);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.game-root .sel { position: relative; }
+.game-root .sel::after {
+  content: "▾";
+  position: absolute;
+  top: 50%;
+  right: var(--space-4);
+  transform: translateY(-50%);
+  color: var(--color-accent);
+  font-size: var(--text-sm);
+  pointer-events: none;
+}
+.game-root #domain {
+  width: 100%;
+  min-height: var(--tap-target);
+  padding: var(--space-3) var(--space-7) var(--space-3) var(--space-4);
+  border: var(--border-width) solid var(--color-line);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-ink);
+  font: var(--weight-bold) var(--text-md) / 1.2 var(--font-body);
+  appearance: none;
+  cursor: pointer;
+  box-shadow: var(--shadow-raised);
+}
+.game-root .levels { display: flex; gap: var(--space-2); }
+.game-root .lvl,
+.game-root .chip {
+  min-height: var(--tap-target);
+  border: var(--border-width) solid var(--color-line);
+  background: var(--color-surface);
+  color: var(--color-ink);
+  font: var(--weight-bold) var(--text-sm) / 1 var(--font-body);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-out);
+}
+.game-root .lvl { flex: 1; padding: 0 var(--space-2); border-radius: var(--radius-md); }
+.game-root .lvl:active { transform: translateY(var(--border-width)); }
+.game-root .chips { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-3); }
+.game-root .chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  min-width: var(--tap-target);
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-sm);
+}
+.game-root .lvl.on,
+.game-root .chip.on { border-color: var(--color-accent); background: var(--color-accent); color: var(--color-ink-on-accent); }
+
+/* --- Random / share row ------------------------------------------------ */
+.game-root .actions { display: flex; gap: var(--space-2); margin-bottom: var(--space-3); }
+.game-root .act {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: var(--tap-target);
+  padding: 0 var(--space-2);
+  border: var(--border-width) solid var(--color-line);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-ink);
+  font: var(--weight-bold) var(--text-sm) / 1.2 var(--font-body);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-out);
+}
+.game-root .act .icon { color: var(--color-accent); }
+.game-root .act:active { transform: translateY(var(--border-width)); background: var(--board-soft-accent); }
+
+/* --- Clue bar ---------------------------------------------------------- */
+.game-root .cluebar {
+  display: flex;
+  align-items: stretch;
+  min-height: var(--tap-target);
+  margin-bottom: var(--space-3);
+  overflow: hidden;
+  border: var(--border-width) solid var(--color-line);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-raised);
+}
+.game-root .cluebar button {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: var(--tap-target);
+  border: 0;
+  background: transparent;
+  color: var(--color-accent);
+  font-size: var(--text-lg);
+  cursor: pointer;
+}
+.game-root .cluebar button:active { background: var(--board-soft-accent); }
+.game-root .clue {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  padding: var(--space-2);
+  border-inline: var(--border-width) solid var(--color-line);
+}
+.game-root .clue .meta {
+  color: var(--color-accent);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.game-root .clue .txt {
+  font-size: var(--text-md);
+  font-weight: var(--weight-semibold);
+  line-height: 1.25;
+  text-wrap: balance;
+}
+
+/* --- Grid -------------------------------------------------------------- */
+.game-root .gridwrap { display: flex; justify-content: center; }
+.game-root #grid {
+  display: grid;
+  gap: var(--board-grid-gap);
+  width: 100%;
+  padding: var(--board-grid-gap);
+  border-radius: var(--radius-sm);
+  background: var(--color-line);
+  box-shadow: var(--shadow-raised);
+  touch-action: manipulation;
+}
+/* .cell also exists in components.css: reset the parts that do not apply. */
+.game-root .cell {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: auto;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  border: 0;
+  border-radius: var(--board-cell-radius);
+  background: var(--color-surface);
+  color: var(--color-ink);
+  font: var(--weight-bold) var(--board-cell-font) / 1 var(--font-display);
+  text-transform: uppercase;
+  cursor: pointer;
+  user-select: none;
+}
+.game-root .cell.block { background: var(--board-block); cursor: default; }
+.game-root .cell .num {
+  position: absolute;
+  top: var(--board-num-inset);
+  left: var(--board-num-inset);
+  color: var(--color-ink-muted);
+  font: var(--weight-bold) var(--board-num-font) / 1 var(--font-body);
+}
+.game-root .cell.hl { background: var(--board-soft-hint); }
+.game-root .cell.cur,
+.game-root .cell.cur .num { color: var(--color-suit-black); }
+.game-root .cell.cur { background: var(--family); }
+.game-root .cell.good { color: var(--color-correct); }
+.game-root .cell.bad { color: var(--color-wrong); }
+.game-root .cell.bad::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: calc(var(--border-width) * 2) solid var(--color-wrong);
+  border-radius: var(--board-cell-radius);
+}
+
+/* Off-screen input that keeps the phone keyboard open while typing. */
+.game-root #hiddenInput {
+  position: fixed;
+  top: calc(var(--space-8) * -2);
+  left: 0;
+  width: var(--border-width);
+  height: var(--border-width);
+  font-size: var(--text-md); /* 16px stops iOS from zooming in */
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* --- Check / hint / reveal / clear ------------------------------------- */
+.game-root .controls {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-2);
+  margin: var(--space-3) 0 var(--space-2);
+}
+.game-root .controls button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  min-height: var(--tap-target);
+  padding: var(--space-2) var(--space-1);
+  border: var(--border-width) solid var(--color-line);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-ink);
+  font: var(--weight-bold) var(--text-xs) / 1.2 var(--font-body);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-out);
+}
+.game-root .controls button .icon { color: var(--color-accent); }
+.game-root .controls button:active { transform: translateY(var(--border-width)); background: var(--board-soft-accent); }
+
+.game-root .hintbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  margin: var(--space-1) 0;
+  color: var(--color-ink-muted);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-bold);
+}
+.game-root .hintbar .icon { color: var(--family); }
+.game-root .hintbar b { color: var(--color-accent); font-size: var(--text-md); }
+
+/* --- Clue lists -------------------------------------------------------- */
+.game-root .lists {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+  margin-top: var(--space-4);
+}
+@media (min-width: 600px) {
+  .game-root .lists { grid-template-columns: 1fr 1fr; }
+}
+.game-root .lists h2 {
+  margin-bottom: var(--space-2);
+  padding-bottom: var(--space-1);
+  border-bottom: calc(var(--border-width) * 2) solid var(--color-line);
+  color: var(--color-accent);
+  font-size: var(--text-sm);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.game-root .lists ol { margin: 0; padding: 0; list-style: none; }
+.game-root .lists li {
+  display: flex;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-sm);
+  line-height: 1.25;
+  cursor: pointer;
+}
+.game-root .lists li:active { background: var(--board-soft-accent); }
+.game-root .lists li.activeclue {
+  background: var(--board-soft-hint);
+  outline: var(--border-width) solid var(--color-hint);
+}
+.game-root .lists li b {
+  flex: none;
+  min-width: 2ch;
+  color: var(--color-accent);
+  font-weight: var(--weight-bold);
+  text-align: right;
+}
+.game-root .lists li.solved {
+  color: var(--color-ink-muted);
+  text-decoration: line-through;
+  text-decoration-color: var(--color-line);
+}
+
+/* --- Feedback card (shared, game.css): liked heart colour only ------- */
+.game-root #bLike .icon--filled { color: var(--color-family-cards); }
+
+/* --- Dialogs: the JS opens them with .on (game.css draws them) --------- */
+.game-root .modal p { margin-bottom: var(--space-4); color: var(--color-ink-muted); }
+.game-root .modal .big { margin: var(--space-2) 0 var(--space-3); }
+.game-root .modal .row { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.game-root .modal .row .btn { flex: 1; }
+.game-root .modal .row + .row { margin-top: var(--space-2); }
+
+/* --- Hint ad box ------------------------------------------------------- */
+.game-root .adbox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  margin-bottom: var(--space-4);
+  padding: var(--space-5);
+  border: var(--border-width) dashed var(--color-line);
+  border-radius: var(--radius-lg);
+  background: var(--board-soft-accent);
+}
+.game-root .adlabel {
+  color: var(--color-ink-muted);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-display);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.game-root .adcount {
+  color: var(--color-accent);
+  font: var(--weight-display) var(--text-3xl) / 1 var(--font-display);
+  font-variant-numeric: tabular-nums;
+}
+.game-root .adnote { color: var(--color-ink-muted); font-size: var(--text-xs); }
+
+/* --- Toast ------------------------------------------------------------- */
+.game-root #toast {
+  position: fixed;
+  bottom: calc(var(--space-5) + env(safe-area-inset-bottom));
+  left: 50%;
+  z-index: var(--layer-toast);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--color-ink);
+  color: var(--color-page);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-bold);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-50%) translateY(var(--space-5));
+  transition: opacity var(--duration-base) var(--ease-out),
+              transform var(--duration-base) var(--ease-out);
+}
+.game-root #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script src="shared/theme/theme.js"></script>
+<script src="shared/page-loader/page-loader.js" defer></script>
+<title>Potriviri · PlayLudiq</title>
+<meta name="description" content="Grupează 16 cuvinte în 4 categorii ascunse. Ai 4 vieți.">
+<link rel="canonical" href="https://playludiq.com/potriviri.html">
+<meta name="theme-color" content="#176b63">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="assets/icons/icon-192.png">
+<link rel="apple-touch-icon" href="assets/icons/icon-192.png">
+<link rel="stylesheet" href="styles/tokens.css">
+<link rel="stylesheet" href="styles/base.css">
+<link rel="stylesheet" href="styles/components.css">
+<link rel="stylesheet" href="styles/game.css">
+<link rel="stylesheet" href="shared/consent/consent.css">
+<link rel="stylesheet" href="features/potriviri/potriviri.styles.css">
+<script src="shared/consent/consent.js" defer></script>
+<script src="shared/pwa/register-service-worker.js" defer></script>
+<script src="features/potriviri/potriviri.game.js" defer></script>
+<script type="text/plain" data-consent="statistics" data-src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "74c145f1f04942f2879e1c23044be639"}'></script>
+</head>
+<body>
+<header class="top-bar">
+  <a class="top-bar__brand" href="index.html" aria-label="PlayLudiq, pagina de start"><img src="assets/icons/icon-192.png" alt="" width="28" height="28"><span>PlayLudiq</span></a>
+</header>
+<div class="game-root" data-family="words">
+<div class="wrap">
+  <a class="back-link" href="jocuri.html"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#arrow-left"/></svg> Jocuri</a>
+  <div class="top">
+    <h1><small>Perspicacitate</small>Potriviri</h1>
+    <div class="stat"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#heart"/></svg> <b id="lives">4</b></div>
+  </div>
+  <div class="sub">Grupează cele 16 cuvinte în <b>4 categorii</b> de câte 4.</div>
+
+  <div class="solved" id="solved"></div>
+  <div class="grid" id="grid"></div>
+  <div class="hint" id="hint"></div>
+
+  <div class="ctrls">
+    <button class="btn primary" id="checkBtn" disabled><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#check"/></svg> Verifică</button>
+    <button class="btn" id="shuffleBtn"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#shuffle"/></svg> Amestecă</button>
+    <button class="btn" id="clearBtn"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#x"/></svg> Deselectează</button>
+    <button class="btn" id="newBtn"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#restart"/></svg> Alt joc</button>
+  </div>
+
+  <div class="help">Alege <b>4 cuvinte</b> care crezi că merg împreună, apoi apasă <b>Verifică</b>. Ai <b>4 vieți</b> (greșeli). Categoriile au dificultăți diferite: <span class="swatch g0" aria-hidden="true"></span> ușor → <span class="swatch g1" aria-hidden="true"></span> → <span class="swatch g2" aria-hidden="true"></span> → <span class="swatch g3" aria-hidden="true"></span> greu.</div>
+</div>
+
+<div class="overlay" id="endOv"><div class="modal">
+  <h2 id="endT"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#trophy"/></svg> Rezolvat!</h2>
+  <p id="endP"></p>
+  <button class="btn primary" id="endNew">Alt joc</button>
+</div></div>
+</div>
+<footer class="site-footer">
+  <nav>
+    <a href="confidentialitate.html">Confidențialitate</a>
+    <a href="cookies.html">Cookies</a>
+    <a href="termeni.html">Termeni</a>
+    <button type="button" data-consent-open>Setări cookies</button>
+  </nav>
+  <span class="site-footer__brand"><img src="assets/icons/icon-192.png" alt="" width="24" height="24">© 2026 PlayLudiq</span>
+</footer>
+</body>
+</html>

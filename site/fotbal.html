@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script src="shared/theme/theme.js"></script>
+<script src="shared/page-loader/page-loader.js" defer></script>
+<title>Quiz Fotbal · PlayLudiq</title>
+<meta name="description" content="Istoria fotbalului românesc și mondial. Nivel greu.">
+<link rel="canonical" href="https://playludiq.com/fotbal.html">
+<meta name="theme-color" content="#176b63">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="assets/icons/icon-192.png">
+<link rel="apple-touch-icon" href="assets/icons/icon-192.png">
+<link rel="stylesheet" href="styles/tokens.css">
+<link rel="stylesheet" href="styles/base.css">
+<link rel="stylesheet" href="styles/components.css">
+<link rel="stylesheet" href="styles/game.css">
+<link rel="stylesheet" href="shared/consent/consent.css">
+<link rel="stylesheet" href="features/fotbal/fotbal.styles.css">
+<script src="shared/consent/consent.js" defer></script>
+<script src="shared/pwa/register-service-worker.js" defer></script>
+<script src="features/fotbal/fotbal.data.js" defer></script>
+<script src="features/fotbal/fotbal.game.js" defer></script>
+<script type="text/plain" data-consent="statistics" data-src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "74c145f1f04942f2879e1c23044be639"}'></script>
+</head>
+<body>
+<header class="top-bar">
+  <a class="top-bar__brand" href="index.html" aria-label="PlayLudiq, pagina de start"><img src="assets/icons/icon-192.png" alt="" width="28" height="28"><span>PlayLudiq</span></a>
+</header>
+<div class="game-root" data-family="quiz">
+<div class="wrap">
+  <a class="back-link" href="jocuri.html"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#arrow-left"/></svg> Jocuri</a>
+  <header>
+    <h1><small>Istorie · Nivel greu</small>Quiz Fotbal</h1>
+    <div class="stats" id="hud">
+      <div class="stat"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#zap"/></svg> <b id="streak">0</b></div>
+      <div class="stat" id="scoreWrap"><b id="score">0</b> p</div>
+    </div>
+  </header>
+  <div class="timebar" id="timewrap"><i id="time"></i></div>
+
+  <div id="start" class="panel">
+    <div class="big"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#trophy"/></svg></div>
+    <h2>Quiz Fotbal</h2>
+    <p>Întrebări grele din istoria fotbalului românesc și a marilor naționale. Răspunzi repede = mai multe puncte.</p>
+    <div class="lenrow" id="catrow">
+      <button data-c="all" class="on">Toate</button>
+      <button data-c="🇷🇴 România">România</button>
+      <button data-c="🌍 Internațional">Internațional</button>
+    </div>
+    <div class="lenrow" id="lenrow">
+      <button data-n="8">8 întrebări</button>
+      <button data-n="12" class="on">12 întrebări</button>
+      <button data-n="20">20 întrebări</button>
+    </div>
+    <button class="btn primary" id="startBtn"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#play"/></svg> Start</button>
+  </div>
+
+  <div id="game" class="hidden">
+    <div class="cat" id="cat"></div>
+    <div class="qbox"><div class="qt" id="qt"></div></div>
+    <div class="opts" id="opts"></div>
+    <div class="factb hidden" id="fact"><div class="bl"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#lightbulb"/></svg> Știați că…?</div><div class="bt" id="factText"></div></div>
+    <div class="foot"><button class="btn primary hidden" id="next">Următoarea <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#arrow-right"/></svg></button></div>
+  </div>
+
+  <div id="end" class="panel hidden">
+    <div class="big" id="endEmo"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#sparkles"/></svg></div>
+    <div class="score" id="finalScore">0</div>
+    <div class="lbl">puncte</div>
+    <h2 id="endMsg"></h2>
+    <p id="endSub"></p>
+    <div class="ctrls">
+      <button class="btn primary" id="again"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#restart"/></svg> Din nou</button>
+      <a class="btn" href="index.html">Meniu</a>
+    </div>
+  </div>
+</div>
+<div class="flash" id="flash"></div>
+</div>
+<footer class="site-footer">
+  <nav>
+    <a href="confidentialitate.html">Confidențialitate</a>
+    <a href="cookies.html">Cookies</a>
+    <a href="termeni.html">Termeni</a>
+    <button type="button" data-consent-open>Setări cookies</button>
+  </nav>
+  <span class="site-footer__brand"><img src="assets/icons/icon-192.png" alt="" width="24" height="24">© 2026 PlayLudiq</span>
+</footer>
+</body>
+</html>

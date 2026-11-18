@@ -1,0 +1,126 @@
+/* PlayLudiq · Potriviri · board styles
+   Frame, title, stat chip, buttons, help panel and dialog come from
+   styles/game.css. This file styles the board only: solved bands,
+   word grid, status line and the difficulty legend. */
+
+/* --- Board geometry and group colours ---------------------------------- */
+.game-root {
+  --board-tile-min-height: 60px; /* four rows of words stay readable on a phone */
+  --board-shake-time: 400ms;     /* the JS clears the selection after 450ms     */
+  /* Difficulty order: easy, then green, blue, hardest. */
+  --board-group-0: var(--color-family-words);
+  --board-group-1: var(--color-family-solitaire);
+  --board-group-2: var(--color-family-school);
+  --board-group-3: var(--color-family-quiz);
+  --board-on-group: var(--color-card-face); /* light text, same in both themes */
+}
+
+/* --- Intro line -------------------------------------------------------- */
+.game-root .sub {
+  margin-bottom: var(--space-3);
+  color: var(--color-ink-muted);
+  font-size: var(--text-sm);
+  text-align: center;
+}
+
+/* --- Solved groups ----------------------------------------------------- */
+.game-root .solved {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+}
+.game-root .band {
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  color: var(--board-on-group);
+  text-align: center;
+  animation: potriviri-pop var(--duration-base) var(--ease-out);
+}
+.game-root .band .c {
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-display);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.game-root .band .w {
+  margin-top: var(--space-1);
+  font-size: var(--text-sm);
+}
+.game-root .band.g0 { background: var(--board-group-0); }
+.game-root .band.g1 { background: var(--board-group-1); }
+.game-root .band.g2 { background: var(--board-group-2); }
+.game-root .band.g3 { background: var(--board-group-3); }
+
+/* --- Word grid --------------------------------------------------------- */
+.game-root .grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-2);
+  margin-block: var(--space-2) var(--space-3);
+}
+/* Overrides the fixed letter-cell size from components.css. */
+.game-root .cell {
+  width: auto;
+  height: auto;
+  min-height: var(--board-tile-min-height);
+  padding: var(--space-1);
+  border: var(--border-width) solid var(--color-line);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-ink);
+  font: var(--weight-display) clamp(var(--text-xs), 3.2vw, var(--text-sm)) / var(--leading-tight) var(--font-body);
+  text-align: center;
+  cursor: pointer;
+  user-select: none;
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+.game-root .cell:hover { border-color: var(--family); }
+.game-root .cell:active { transform: scale(0.95); }
+.game-root .cell.sel {
+  border-color: var(--color-ink);
+  background: var(--color-ink);
+  color: var(--color-page);
+}
+.game-root .cell.shake { animation: potriviri-shake var(--board-shake-time); }
+
+/* --- Status line under the grid ---------------------------------------- */
+.game-root .hint {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  min-height: calc(var(--text-sm) * var(--leading-body));
+  color: var(--color-ink-muted);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+}
+.game-root .hint .icon { color: var(--color-correct); }
+.game-root .hint.warn { color: var(--color-wrong); }
+
+/* --- Difficulty legend inside the help panel --------------------------- */
+.game-root .swatch {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  border-radius: var(--radius-sm);
+  vertical-align: -0.15em;
+}
+.game-root .swatch.g0 { background: var(--board-group-0); }
+.game-root .swatch.g1 { background: var(--board-group-1); }
+.game-root .swatch.g2 { background: var(--board-group-2); }
+.game-root .swatch.g3 { background: var(--board-group-3); }
+
+/* --- Result dialog: the JS opens it with .on ---------------------------- */
+.game-root .modal p { color: var(--color-ink-muted); }
+
+@keyframes potriviri-pop {
+  from { transform: scale(0.9); opacity: 0.4; }
+  to   { transform: scale(1); opacity: 1; }
+}
+@keyframes potriviri-shake {
+  0%, 100% { transform: translateX(0); }
+  25%      { transform: translateX(calc(var(--space-1) * -1)); }
+  75%      { transform: translateX(var(--space-1)); }
+}

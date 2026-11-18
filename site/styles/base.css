@@ -1,0 +1,87 @@
+/* ==========================================================================
+   PlayLudiq base - page reset, typography and layout shells.
+   Loaded second, right after tokens.css. Uses tokens only.
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  /* Column layout so the footer sits at the bottom of short pages. */
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  background: var(--color-page);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-size: var(--text-md);
+  line-height: var(--leading-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: var(--weight-display);
+  line-height: var(--leading-tight);
+  letter-spacing: -0.01em;
+}
+h1 { font-size: clamp(var(--text-2xl), 6vw, var(--text-3xl)); }
+h2 { font-size: var(--text-xl); }
+h3 { font-size: var(--text-lg); font-weight: var(--weight-bold); }
+
+p + p { margin-top: var(--space-3); }
+
+a {
+  color: var(--color-accent);
+  text-underline-offset: 3px;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* The hidden attribute always wins over component display rules. */
+[hidden] { display: none !important; }
+
+/* Browser surfaces carry the palette too. */
+::selection { background: color-mix(in srgb, var(--color-accent) 28%, transparent); color: var(--color-ink); }
+html { scrollbar-color: var(--color-line) var(--color-page); }
+input, textarea { caret-color: var(--color-accent); }
+table, time, .tabular { font-variant-numeric: tabular-nums; }
+
+:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+  border-radius: var(--radius-sm);
+}
+
+/* --- Layout shells: pick one per page ---------------------------------- */
+.page {
+  width: 100%;
+  padding: var(--space-5) var(--gutter) calc(var(--space-7) + env(safe-area-inset-bottom));
+}
+/* Every page uses the same column (--width-page) through --gutter. */
+
+.stack > * + * { margin-top: var(--space-4); }
+.stack--loose > * + * { margin-top: var(--space-6); }
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

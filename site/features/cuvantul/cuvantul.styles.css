@@ -1,0 +1,163 @@
+/* PlayLudiq · Cuvântul zilei · board styles
+   Board only: frame, title, buttons, dialogs and the help panel come from
+   styles/game.css. Colours are tokens from styles/tokens.css. */
+
+/* --- Board geometry: fixed sizes the 6 x 5 grid and keyboard use ------- */
+.game-root {
+  --board-width: 400px;                        /* grid and keyboard column     */
+  --board-gap: 6px;                            /* between tiles and key rows   */
+  --board-tile-font: clamp(22px, 7vw, 30px);   /* letter scales with the grid  */
+  --board-key-height: 52px;
+  --board-legend-tile: 42px;                   /* sample tiles in the rules    */
+  --board-key-fill: color-mix(in srgb, var(--color-line) 60%, var(--color-surface));
+}
+
+.game-root h1 .accent { color: var(--color-accent); }
+.game-root .top-actions { display: flex; gap: var(--space-1); }
+
+/* --- Grid -------------------------------------------------------------- */
+.game-root .grid,
+.game-root .kb {
+  width: 100%;
+  max-width: var(--board-width);
+  margin-inline: auto;
+}
+.game-root .grid {
+  display: grid;
+  grid-template-rows: repeat(6, 1fr);
+  gap: var(--board-gap);
+  padding: var(--space-2) 0;
+}
+.game-root .row { display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--board-gap); }
+/* .cell also exists in components.css: reset the fixed size it sets. */
+.game-root .cell {
+  display: grid;
+  place-items: center;
+  width: auto;
+  height: auto;
+  aspect-ratio: 1;
+  border: calc(var(--border-width) * 2) solid var(--color-line);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  color: var(--color-ink);
+  font: var(--weight-display) var(--board-tile-font) / 1 var(--font-display);
+  text-transform: uppercase;
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+.game-root .cell.fill { border-color: var(--color-ink-muted); }
+.game-root .cell.pop { transform: scale(1.08); }
+
+/* Letter states, shared by tiles, keys and the rules legend. */
+.game-root :is(.cell, .key, .exc).good   { border-color: var(--color-correct);   background: var(--color-correct);   color: var(--color-ink-on-accent); }
+.game-root :is(.cell, .key, .exc).warn   { border-color: var(--color-games);     background: var(--color-games);     color: var(--color-suit-black); }
+.game-root :is(.cell, .key, .exc).absent { border-color: var(--color-ink-muted); background: var(--color-ink-muted); color: var(--color-page); }
+
+@keyframes cuvantul-shake {
+  0%, 100% { transform: translateX(0); }
+  18% { transform: translateX(calc(var(--space-2) * -1)); }
+  36% { transform: translateX(var(--space-2)); }
+  54% { transform: translateX(calc(var(--space-1) * -1)); }
+  72% { transform: translateX(var(--space-1)); }
+  90% { transform: translateX(calc(var(--space-1) / -2)); }
+}
+.game-root .row.shake { animation: cuvantul-shake 0.4s; }
+
+/* --- On-screen keyboard ------------------------------------------------ */
+.game-root .kb { display: flex; flex-direction: column; gap: var(--space-2); padding-bottom: var(--space-1); }
+.game-root .kr { display: flex; justify-content: center; gap: var(--space-1); }
+.game-root .key {
+  display: grid;
+  flex: 1;
+  place-items: center;
+  min-width: 0;
+  height: var(--board-key-height);
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: var(--board-key-fill);
+  color: var(--color-ink);
+  font: var(--weight-display) var(--text-md) / 1 var(--font-body);
+  text-transform: uppercase;
+  cursor: pointer;
+  user-select: none;
+  box-shadow: var(--shadow-raised);
+}
+.game-root .key.wide { flex: 1.5; font-size: var(--text-xs); }
+.game-root .key:active { transform: translateY(var(--border-width)); }
+.game-root .key.enter { background: var(--color-accent); color: var(--color-ink-on-accent); letter-spacing: 0.02em; }
+
+/* --- Dialogs: the JS opens them with .on (game.css draws them) --------- */
+.game-root .modal h2 { display: flex; align-items: center; justify-content: center; gap: var(--space-2); }
+.game-root .modal p {
+  margin-bottom: var(--space-2);
+  color: var(--color-ink-muted);
+  font-size: var(--text-md);
+  line-height: var(--leading-body);
+}
+.game-root .modal .big { margin: var(--space-2) 0; }
+.game-root .modal .btn { margin-top: var(--space-2); }
+.game-root .modal--rules { text-align: left; }
+
+/* Played / won / streak numbers in the result and stats dialogs. */
+.game-root .summary { display: flex; justify-content: space-around; margin: var(--space-4) 0; }
+.game-root .summary-item b {
+  display: block;
+  font: var(--weight-display) var(--text-2xl) / 1.1 var(--font-display);
+  font-variant-numeric: tabular-nums;
+}
+.game-root .summary-item span { color: var(--color-ink-muted); font-size: var(--text-xs); }
+
+.game-root .cd { margin-top: var(--space-3); color: var(--color-ink-muted); font-size: var(--text-sm); }
+.game-root .cd b { color: var(--color-ink); font-variant-numeric: tabular-nums; }
+
+/* Rules legend: one sample tile per colour. */
+.game-root .legend { display: flex; flex-direction: column; gap: var(--space-3); margin: var(--space-4) 0; }
+.game-root .legend-row { display: flex; align-items: center; gap: var(--space-3); }
+.game-root .exc {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: var(--board-legend-tile);
+  height: var(--board-legend-tile);
+  border: calc(var(--border-width) * 2) solid var(--color-line);
+  border-radius: var(--radius-sm);
+  font: var(--weight-display) var(--text-xl) / 1 var(--font-display);
+}
+
+/* --- Past days list ---------------------------------------------------- */
+.game-root #archList { max-height: 52vh; margin-bottom: var(--space-2); overflow: auto; }
+.game-root .archive-empty { color: var(--color-ink-muted); text-align: center; }
+.game-root .archrow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-height: var(--tap-target);
+  margin-bottom: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  border: var(--border-width) solid var(--color-line);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-ink);
+  font: var(--weight-bold) var(--text-md) / 1.2 var(--font-body);
+  cursor: pointer;
+  box-shadow: var(--shadow-raised);
+}
+.game-root .archrow:active { transform: scale(0.99); }
+.game-root .archrow .ok,
+.game-root .archrow .ko,
+.game-root .archrow .np { display: inline-flex; align-items: center; gap: var(--space-1); font-size: var(--text-sm); }
+.game-root .archrow .ok { color: var(--color-correct); }
+.game-root .archrow .ko { color: var(--color-wrong); }
+.game-root .archrow .np { color: var(--color-accent); }
+
+/* --- Toast: components.css draws it; here it sits above the grid ------- */
+.game-root .toast {
+  top: var(--space-8);
+  bottom: auto;
+  font-size: var(--text-sm);
+  opacity: 0;
+  pointer-events: none;
+  box-shadow: var(--shadow-raised);
+  transition: opacity var(--duration-base) var(--ease-out);
+}
+.game-root .toast.on { opacity: 1; }

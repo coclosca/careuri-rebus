@@ -1,0 +1,6 @@
+# Public brand facts the OPSEC scanner may see without flagging.
+# Only public, intentional things belong here. Never personal names or e-mails.
+PlayLudiq
+playludiq.com
+# Cloudflare Web Analytics beacon token: public by design (it is in every page's HTML).
+74c145f1f04942f2879e1c23044be639

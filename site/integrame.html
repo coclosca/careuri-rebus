@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script src="shared/theme/theme.js"></script>
+<script src="shared/page-loader/page-loader.js" defer></script>
+<title>Integrame &amp; Rebus · PlayLudiq</title>
+<meta name="description" content="Careuri pe domenii și niveluri, cu rebus și capcane.">
+<link rel="canonical" href="https://playludiq.com/integrame.html">
+<meta name="theme-color" content="#176b63">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="assets/icons/icon-192.png">
+<link rel="apple-touch-icon" href="assets/icons/icon-192.png">
+<link rel="stylesheet" href="styles/tokens.css">
+<link rel="stylesheet" href="styles/base.css">
+<link rel="stylesheet" href="styles/components.css">
+<link rel="stylesheet" href="styles/game.css">
+<link rel="stylesheet" href="shared/consent/consent.css">
+<link rel="stylesheet" href="features/integrame/integrame.styles.css">
+<script src="shared/consent/consent.js" defer></script>
+<script src="shared/pwa/register-service-worker.js" defer></script>
+<script src="features/integrame/integrame.data.js" defer></script>
+<script src="features/integrame/integrame.game.js" defer></script>
+<script type="text/plain" data-consent="statistics" data-src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "74c145f1f04942f2879e1c23044be639"}'></script>
+</head>
+<body>
+<header class="top-bar">
+  <a class="top-bar__brand" href="index.html" aria-label="PlayLudiq, pagina de start"><img src="assets/icons/icon-192.png" alt="" width="28" height="28"><span>PlayLudiq</span></a>
+</header>
+<div class="game-root" data-family="words">
+<div class="wrap">
+  <a class="back-link" href="jocuri.html"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#arrow-left"/></svg> Jocuri</a>
+  
+  <header>
+    <h1><small>Jocuri de minte · și altele</small>Integrame &amp; Rebus</h1>
+    <div class="stats"><div class="stat"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#timer"/></svg><span id="timer">00:00</span></div></div>
+  </header>
+
+  <div class="nav2">
+    <div class="nav-row">
+      <label for="domain">Domeniu</label>
+      <div class="sel"><select id="domain" aria-label="Alege domeniul"></select></div>
+    </div>
+    <div class="nav-row">
+      <label id="lvlLabel">Dificultate</label>
+      <div class="levels" id="levels"></div>
+    </div>
+    <div class="chips" id="chips"></div>
+  </div>
+  <div class="actions">
+    <button id="bRandom" class="act"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#shuffle"/></svg> Careu la întâmplare</button>
+    <button id="bShare" class="act"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#share"/></svg> Trimite prietenilor</button>
+  </div>
+
+  <div class="cluebar">
+    <button id="prevClue" aria-label="Definiția anterioară"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#arrow-left"/></svg></button>
+    <div class="clue"><span class="meta" id="clueMeta">Orizontal 1</span><span class="txt" id="clueTxt">—</span></div>
+    <button id="nextClue" aria-label="Definiția următoare"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#arrow-right"/></svg></button>
+  </div>
+
+  <div class="gridwrap"><div id="grid"></div></div>
+  <input id="hiddenInput" inputmode="text" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" aria-hidden="true">
+
+  <div class="controls">
+    <button id="bCheck"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#check"/></svg>Verifică</button>
+    <button id="bHint"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#lightbulb"/></svg>Un indiciu</button>
+    <button id="bReveal"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#eye"/></svg>Dezvăluie</button>
+    <button id="bClear"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#restart"/></svg>Șterge</button>
+  </div>
+
+  <div class="hintbar" id="hintbar"></div>
+
+  <div class="lists">
+    <div><h2>Orizontal</h2><ol id="listA"></ol></div>
+    <div><h2>Vertical</h2><ol id="listD"></ol></div>
+  </div>
+
+  <section class="feedback-card" aria-label="Ajutor și părerea ta">
+    <p class="feedback-card__tip"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#info"/></svg><span>Atinge o căsuță și scrie literele. Atinge din nou ca să schimbi orizontal / vertical.</span></p>
+    <div class="feedback-card__actions">
+      <button class="btn" id="bLike"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#heart"/></svg> Îmi place</button>
+      <button class="btn" id="bReport"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#alert"/></svg> Raportează o greșeală</button>
+    </div>
+  </section>
+</div>
+
+<div class="overlay" id="overlay"><div class="modal">
+  <h2 id="mTitle">Felicitări!</h2>
+  <p id="mSub">Ai completat careul.</p>
+  <div class="big" id="mTime">00:00</div>
+  <div class="row">
+    <button class="btn primary" id="mNext">Careul următor</button>
+    <button class="btn" id="mClose">Închide</button>
+  </div>
+</div></div>
+
+<div class="overlay" id="adOverlay"><div class="modal">
+  <h2>Mai vrei indicii?</h2>
+  <p>Ai folosit cele 3 indicii gratuite de azi.</p>
+  <div class="adbox">
+    <span class="adlabel">Reclamă</span>
+    <div class="adcount" id="adCount">5</div>
+    <span class="adnote">Recompensă după vizionare</span>
+  </div>
+  <div class="row">
+    <button class="btn primary" id="adClaim" disabled>Așteaptă…</button>
+  </div>
+  <div class="row">
+    <button class="btn" id="adPremium"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#sparkles"/></svg> Premium — fără reclame</button>
+    <button class="btn" id="adClose">Închide</button>
+  </div>
+</div></div>
+
+<div id="toast"></div>
+</div>
+<footer class="site-footer">
+  <nav>
+    <a href="confidentialitate.html">Confidențialitate</a>
+    <a href="cookies.html">Cookies</a>
+    <a href="termeni.html">Termeni</a>
+    <button type="button" data-consent-open>Setări cookies</button>
+  </nav>
+  <span class="site-footer__brand"><img src="assets/icons/icon-192.png" alt="" width="24" height="24">© 2026 PlayLudiq</span>
+</footer>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script src="shared/theme/theme.js"></script>
+<script src="shared/page-loader/page-loader.js" defer></script>
+<title>Quiz · PlayLudiq</title>
+<meta name="description" content="Cultură generală pe teme, cu niveluri de la începător la expert.">
+<link rel="canonical" href="https://playludiq.com/quiz.html">
+<meta name="theme-color" content="#176b63">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="assets/icons/icon-192.png">
+<link rel="apple-touch-icon" href="assets/icons/icon-192.png">
+<link rel="stylesheet" href="styles/tokens.css">
+<link rel="stylesheet" href="styles/base.css">
+<link rel="stylesheet" href="styles/components.css">
+<link rel="stylesheet" href="styles/game.css">
+<link rel="stylesheet" href="shared/consent/consent.css">
+<link rel="stylesheet" href="features/quiz/quiz.styles.css">
+<script src="shared/consent/consent.js" defer></script>
+<script src="shared/pwa/register-service-worker.js" defer></script>
+<script src="features/quiz/quiz.data.js" defer></script>
+<script src="features/quiz/quiz.game.js" defer></script>
+<script type="text/plain" data-consent="statistics" data-src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "74c145f1f04942f2879e1c23044be639"}'></script>
+</head>
+<body>
+<header class="top-bar">
+  <a class="top-bar__brand" href="index.html" aria-label="PlayLudiq, pagina de start"><img src="assets/icons/icon-192.png" alt="" width="28" height="28"><span>PlayLudiq</span></a>
+</header>
+<div class="game-root" data-family="quiz">
+<div class="wrap">
+  <a class="back-link" href="jocuri.html"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#arrow-left"/></svg> Jocuri</a>
+  <header>
+    <h1><small>Joc de minte</small>Quiz</h1>
+    <div class="stat" id="scoreWrap">Scor <b id="score">0</b></div>
+  </header>
+  <div class="bar"><i id="bar"></i></div>
+
+  <div id="pick">
+    <div class="pick-h">Alege dificultatea și tema</div>
+    <div class="levelsel" id="levelsel">
+      <button data-l="Începător">Începător</button>
+      <button data-l="Mediu" class="on">Mediu</button>
+      <button data-l="Avansat">Avansat</button>
+      <button data-l="Expert">Expert <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#zap"/></svg></button>
+    </div>
+    <div class="themes" id="themes"></div>
+  </div>
+
+  <div id="game" class="hidden">
+    <div class="qbox"><div class="qn" id="qn"></div><div class="qt" id="qt"></div></div>
+    <div class="opts" id="opts"></div>
+    <div class="factbox hidden" id="fact"><div class="fl"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#lightbulb"/></svg> Știați că…?</div><div class="ft" id="factText"></div></div>
+    <div class="foot"><button class="btn primary hidden" id="next">Următoarea <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#arrow-right"/></svg></button></div>
+  </div>
+
+  <div id="end" class="result hidden">
+    <div class="big" id="finalScore">0/10</div>
+    <div class="msg" id="finalMsg"></div>
+    <div class="sub" id="finalSub"></div>
+    <div class="foot"><button class="btn primary" id="again">Altă rundă</button></div>
+  </div>
+</div>
+</div>
+<footer class="site-footer">
+  <nav>
+    <a href="confidentialitate.html">Confidențialitate</a>
+    <a href="cookies.html">Cookies</a>
+    <a href="termeni.html">Termeni</a>
+    <button type="button" data-consent-open>Setări cookies</button>
+  </nav>
+  <span class="site-footer__brand"><img src="assets/icons/icon-192.png" alt="" width="24" height="24">© 2026 PlayLudiq</span>
+</footer>
+</body>
+</html>

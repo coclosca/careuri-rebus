@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script src="shared/theme/theme.js"></script>
+<script src="shared/page-loader/page-loader.js" defer></script>
+<title>Cuvântul zilei · PlayLudiq</title>
+<meta name="description" content="Ghicește cuvântul zilei în 6 încercări. Un cuvânt nou în fiecare zi.">
+<link rel="canonical" href="https://playludiq.com/cuvantul.html">
+<meta name="theme-color" content="#176b63">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="assets/icons/icon-192.png">
+<link rel="apple-touch-icon" href="assets/icons/icon-192.png">
+<link rel="stylesheet" href="styles/tokens.css">
+<link rel="stylesheet" href="styles/base.css">
+<link rel="stylesheet" href="styles/components.css">
+<link rel="stylesheet" href="styles/game.css">
+<link rel="stylesheet" href="shared/consent/consent.css">
+<link rel="stylesheet" href="features/cuvantul/cuvantul.styles.css">
+<script src="shared/consent/consent.js" defer></script>
+<script src="shared/pwa/register-service-worker.js" defer></script>
+<script src="features/cuvantul/cuvantul.data.js" defer></script>
+<script src="features/cuvantul/cuvantul.game.js" defer></script>
+<script type="text/plain" data-consent="statistics" data-src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "74c145f1f04942f2879e1c23044be639"}'></script>
+</head>
+<body>
+<header class="top-bar">
+  <a class="top-bar__brand" href="index.html" aria-label="PlayLudiq, pagina de start"><img src="assets/icons/icon-192.png" alt="" width="28" height="28"><span>PlayLudiq</span></a>
+</header>
+<div class="game-root" data-family="words">
+<div class="wrap">
+  <a class="back-link" href="jocuri.html"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#arrow-left"/></svg> Jocuri</a>
+  <div class="top">
+    <h1><span>Cuvântul <span class="accent">zilei</span></span></h1>
+    <div class="top-actions"><button class="icon-button" id="archBtn" title="Zile trecute" aria-label="Zile trecute"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#calendar"/></svg></button><button class="icon-button" id="helpBtn" title="Cum se joacă" aria-label="Cum se joacă"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#help"/></svg></button><button class="icon-button" id="statsBtn" title="Statistici" aria-label="Statistici"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#chart"/></svg></button></div>
+  </div>
+  <div class="grid" id="grid"></div>
+  <div class="kb" id="kb"></div>
+</div>
+<div class="toast" id="toast"></div>
+
+<div class="overlay" id="endOvl"><div class="modal">
+  <h2 id="endTitle"></h2>
+  <div class="big" id="endWord"></div>
+  <p id="endMsg"></p>
+  <div class="summary" id="statsEnd">
+    <div class="summary-item"><b id="sPlayed">0</b><span>jucate</span></div>
+    <div class="summary-item"><b id="sWin">0%</b><span>câștigate</span></div>
+    <div class="summary-item"><b id="sStreak">0</b><span>serie</span></div>
+    <div class="summary-item"><b id="sMax">0</b><span>serie max</span></div>
+  </div>
+  <button class="btn primary" id="shareBtn"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#share"/></svg> Partajează rezultatul</button>
+  <button class="btn" id="playPastBtn"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#calendar"/></svg> Joacă din zilele trecute</button>
+  <button class="btn" id="backDaily" style="display:none"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#arrow-left"/></svg> Înapoi la cuvântul de azi</button>
+  <div class="cd" id="cdWrap">Cuvânt nou în <b id="cd">--:--:--</b></div>
+</div></div>
+
+<div class="overlay" id="statsOvl"><div class="modal">
+  <h2><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#chart"/></svg> Statistici</h2>
+  <div class="summary">
+    <div class="summary-item"><b id="s2Played">0</b><span>jucate</span></div>
+    <div class="summary-item"><b id="s2Win">0%</b><span>câștigate</span></div>
+    <div class="summary-item"><b id="s2Streak">0</b><span>serie</span></div>
+    <div class="summary-item"><b id="s2Max">0</b><span>serie max</span></div>
+  </div>
+  <p>Un cuvânt nou în fiecare zi. Ghicește-l în 6 încercări!</p>
+  <button class="btn" id="closeStats">Închide</button>
+</div></div>
+
+<div class="overlay" id="archOvl"><div class="modal">
+  <h2><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#calendar"/></svg> Zile trecute</h2>
+  <p>Joacă cuvintele din zilele trecute — prinde din urmă sau reia o zi pierdută.</p>
+  <div id="archList"></div>
+  <button class="btn" id="closeArch">Închide</button>
+</div></div>
+<div class="overlay" id="helpOvl"><div class="modal modal--rules">
+  <h2><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#type"/></svg> Cum se joacă</h2>
+  <p>Ghicește <b>cuvântul zilei</b> (5 litere) în maximum <b>6 încercări</b>. Scrie orice cuvânt românesc de 5 litere și apasă <b>↵</b>.</p>
+  <p>După fiecare încercare, culorile îți spun cât de aproape ești:</p>
+  <div class="legend">
+    <div class="legend-row"><span class="exc good">A</span><span>litera e <b>corectă și pe locul potrivit</b></span></div>
+    <div class="legend-row"><span class="exc warn">R</span><span>litera e <b>în cuvânt, dar pe alt loc</b></span></div>
+    <div class="legend-row"><span class="exc absent">Z</span><span>litera <b>nu e deloc</b> în cuvânt</span></div>
+  </div>
+  <p>Un cuvânt nou apare în fiecare zi. Spor!</p>
+  <button class="btn primary" id="closeHelp">Am înțeles — hai să joc!</button>
+</div></div>
+</div>
+<footer class="site-footer">
+  <nav>
+    <a href="confidentialitate.html">Confidențialitate</a>
+    <a href="cookies.html">Cookies</a>
+    <a href="termeni.html">Termeni</a>
+    <button type="button" data-consent-open>Setări cookies</button>
+  </nav>
+  <span class="site-footer__brand"><img src="assets/icons/icon-192.png" alt="" width="24" height="24">© 2026 PlayLudiq</span>
+</footer>
+</body>
+</html>

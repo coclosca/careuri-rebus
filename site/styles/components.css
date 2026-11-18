@@ -1,0 +1,775 @@
+/* ==========================================================================
+   PlayLudiq components - every reusable piece, one block each.
+   Loaded third. A game adds its own <game>.styles.css for its board only.
+   Order: header, buttons, tiles, quiz, cells, playing card, sheet, toast,
+   field, footer.
+   ========================================================================== */
+
+/* --- Top bar: brand on the left, colour picker on the right, every page -------------------------- */
+.top-bar {
+  position: sticky;
+  top: 0;
+  z-index: var(--layer-header);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 56px;
+  padding: var(--space-2) var(--gutter);
+  padding-top: calc(var(--space-2) + env(safe-area-inset-top));
+  view-transition-name: site-header; /* stays still while pages change */
+  background: color-mix(in srgb, var(--color-page) 86%, transparent);
+  backdrop-filter: saturate(1.4) blur(12px);
+  -webkit-backdrop-filter: saturate(1.4) blur(12px);
+  border-bottom: var(--border-width) solid color-mix(in srgb, var(--color-line) 70%, transparent);
+}
+.top-bar__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-ink);
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-display);
+  text-decoration: none;
+}
+.top-bar__brand img { width: 32px; height: 32px; border-radius: var(--radius-sm); }
+
+/* --- Theme picker (built by shared/theme/theme.js) ---------------------- */
+.theme-picker { position: relative; }
+.theme-picker__toggle {
+  display: grid;
+  place-items: center;
+  width: var(--tap-target);
+  height: var(--tap-target);
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--color-ink);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-out);
+}
+.theme-picker__toggle:hover,
+.theme-picker__toggle[aria-expanded="true"] { background: var(--color-surface); }
+.theme-picker__toggle .icon { width: 22px; height: 22px; }
+.theme-picker__menu {
+  position: absolute;
+  top: calc(100% + var(--space-2));
+  right: 0;
+  display: flex;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border: var(--border-width) solid var(--color-line);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-raised);
+}
+.theme-picker__swatch {
+  --swatch-a: var(--preview-hartie-a);
+  --swatch-b: var(--preview-hartie-b);
+  width: var(--tap-target);
+  height: var(--tap-target);
+  border: 2px solid var(--color-line);
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--swatch-a) 0 50%, var(--swatch-b) 50% 100%);
+  cursor: pointer;
+}
+.theme-picker__swatch[data-preview="clasic"] { --swatch-a: var(--preview-clasic-a); --swatch-b: var(--preview-clasic-b); }
+.theme-picker__swatch[data-preview="noapte"] { --swatch-a: var(--preview-noapte-a); --swatch-b: var(--preview-noapte-b); }
+.theme-picker__swatch[data-preview="azur"]   { --swatch-a: var(--preview-azur-a);   --swatch-b: var(--preview-azur-b); }
+.theme-picker__swatch[data-preview="sepia"]  { --swatch-a: var(--preview-sepia-a);  --swatch-b: var(--preview-sepia-b); }
+.theme-picker__swatch[aria-checked="true"] { outline: 3px solid var(--color-accent); outline-offset: 2px; }
+
+/* --- Back link: small, above the page title ----------------------------- */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin-bottom: var(--space-2);
+  padding: var(--space-1) 0;
+  color: var(--color-ink-muted);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  text-decoration: none;
+  transition: color var(--duration-fast) var(--ease-out);
+}
+.back-link:hover { color: var(--color-accent); }
+
+/* --- Buttons ----------------------------------------------------------- */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: var(--tap-target);
+  padding: 0 var(--space-5);
+  border: var(--border-width) solid transparent;
+  border-radius: var(--radius-md);
+  font: var(--weight-bold) var(--text-md) / 1 var(--font-body);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-out),
+              transform var(--duration-fast) var(--ease-out);
+}
+.button:active { transform: translateY(1px); }
+.button:disabled { opacity: 0.5; cursor: not-allowed; }
+.button svg { width: 20px; height: 20px; }
+
+.button--primary { background: var(--color-accent); color: var(--color-ink-on-accent); }
+.button--primary:hover { background: var(--color-accent-hover); }
+.button--secondary {
+  background: var(--color-surface);
+  color: var(--color-ink);
+  border-color: var(--color-line);
+}
+.button--secondary:hover { border-color: var(--color-ink-muted); }
+.button--quiet { background: transparent; color: var(--color-accent); padding: 0 var(--space-3); }
+.button--quiet:hover { color: var(--color-accent-hover); }
+.button--block { width: 100%; }
+
+.icon-button {
+  display: inline-grid;
+  place-items: center;
+  width: var(--tap-target);
+  height: var(--tap-target);
+  border: 0;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--color-ink);
+  cursor: pointer;
+}
+.icon-button:hover { background: var(--color-surface-sunken); }
+.icon-button svg { width: 22px; height: 22px; }
+
+/* --- Section heading (hub groups) -------------------------------------- */
+.section-heading {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+.section-heading__count { color: var(--color-ink-muted); font-size: var(--text-sm); }
+
+/* --- Game tile (hub grid) ---------------------------------------------- */
+.tile-grid {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: 1fr;
+}
+@media (min-width: 600px)  { .tile-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1000px) { .tile-grid { grid-template-columns: repeat(3, 1fr); } }
+
+.tile {
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  gap: var(--space-3);
+  align-items: center;
+  padding: var(--space-4);
+  background: var(--color-surface);
+  border: var(--border-width) solid var(--color-line);
+  border-radius: var(--radius-lg);
+  color: var(--color-ink);
+  text-decoration: none;
+  transition: border-color var(--duration-fast) var(--ease-out),
+              transform var(--duration-fast) var(--ease-out);
+}
+.tile:hover { border-color: var(--tile-family, var(--color-accent)); }
+.tile:active { transform: scale(0.99); }
+.tile:hover .tile__icon { transform: rotate(-6deg) scale(1.05); }
+.tile__icon {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  background: var(--tile-family, var(--color-surface-sunken));
+  color: var(--color-on-family);
+  transition: transform var(--duration-base) var(--ease-out);
+}
+.tile__icon svg { width: 26px; height: 26px; }
+/* Each game family has its own colour, so the hub reads like a game shelf. */
+.tile[data-family="words"]     { --tile-family: var(--color-family-words); }
+.tile[data-family="quiz"]      { --tile-family: var(--color-family-quiz); }
+.tile[data-family="solitaire"] { --tile-family: var(--color-family-solitaire); }
+.tile[data-family="cards"]     { --tile-family: var(--color-family-cards); }
+.tile[data-family="school"]    { --tile-family: var(--color-family-school); }
+.tile[data-family="words"] .tile__icon { color: var(--color-suit-black); }
+.tile__title { font-weight: var(--weight-bold); font-size: var(--text-lg); line-height: 1.2; }
+.tile__text  { color: var(--color-ink-muted); font-size: var(--text-sm); }
+
+/* Big entry tile for the two sections on the home page */
+.tile--door {
+  grid-template-columns: 1fr;
+  padding: var(--space-5);
+  min-height: 180px;
+  align-content: end;
+}
+.tile--door .tile__icon { width: 56px; height: 56px; }
+.tile--door .tile__title { font-family: var(--font-display); font-size: var(--text-2xl); font-weight: var(--weight-display); }
+
+/* --- Home hall: the two 3D doors (Jocuri / Școală) --------------------- */
+/* Layout: the hall is a 3-row grid shared by both doors (subgrid):
+   row 1 = lit sign, row 2 = doorway standing on the floor line,
+   row 3 = floor with the light spill and the caption.            */
+.hall {
+  --hall-pad-x: var(--space-4);
+  --hall-pad-bottom: var(--space-5);
+  position: relative;
+  max-width: 100%;
+  overflow: hidden;
+  padding: var(--space-6) var(--hall-pad-x) var(--hall-pad-bottom);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(180deg, var(--color-hall-top), var(--color-hall));
+  box-shadow: var(--shadow-deep);
+  isolation: isolate;
+}
+.hall__doors {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto auto;
+  column-gap: var(--space-4);
+}
+.hall__doors::before { /* the floor, edge to edge, starting exactly at the door sills */
+  content: "";
+  grid-row: 3;
+  grid-column: 1 / -1;
+  margin: 0 calc(-1 * var(--hall-pad-x)) calc(-1 * var(--hall-pad-bottom));
+  border-top: 3px solid var(--color-hall-trim);
+  background: linear-gradient(180deg, var(--color-hall-floor), var(--color-hall-floor-near));
+  z-index: -1;
+}
+
+/* One number drives the whole door: --door-open, 0 = closed, 1 = open.
+   The swing, the shading of the leaf, the room light, the shadow the leaf
+   throws into the room and the light on the floor all read it, so they
+   always move together. Registered so it can be animated. */
+@property --door-open {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+/* Doors swing OUT toward the visitor, inviting them in: closed at rest,
+   a short peek on touch screens, wide open on hover/focus/tap. */
+.door {
+  --door-glow: var(--color-door-glow-games);
+  --door-color: var(--color-door-games);
+  --door-angle-open: -62deg;
+  --door-hinge: left center;
+  --door-shade-direction: to right;
+  --door-open: 0;
+  grid-column: 1;
+  grid-row: 1 / span 3;
+  display: grid;
+  grid-template-rows: subgrid;
+  justify-items: center;
+  color: var(--color-door-text);
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: --door-open var(--duration-door) var(--ease-door);
+}
+.door--school {
+  --door-glow: var(--color-door-glow-school);
+  --door-color: var(--color-door-school);
+  --door-angle-open: 62deg;
+  --door-hinge: right center;
+  --door-shade-direction: to left;
+  grid-column: 2;
+}
+.door:hover,
+.door:focus-visible,
+.door:active { --door-open: 1; }
+.door:focus-visible { box-shadow: none; }
+/* Touch screens have no hover: the doors peek open once, so people see what is inside. */
+@media (hover: none) {
+  .door { animation: door-peek var(--duration-door) var(--ease-door) 600ms both; }
+}
+@keyframes door-peek {
+  to { --door-open: 0.42; }
+}
+
+/* Row 1: a plaque above the doorway, brighter as its door opens */
+.door__sign {
+  margin-bottom: var(--space-6); /* room for the leaf's top edge as it swings out */
+  padding: var(--space-2) var(--space-4);
+  border: var(--border-width) solid var(--color-hall-trim);
+  border-radius: var(--radius-sm);
+  background: linear-gradient(180deg, var(--color-hall-top), color-mix(in srgb, var(--door-glow) 22%, var(--color-hall)));
+  box-shadow: var(--shadow-raised);
+  color: var(--door-glow);
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: var(--weight-display);
+  letter-spacing: 0.01em;
+  filter: brightness(calc(0.85 + 0.25 * var(--door-open)));
+}
+.door:focus-visible .door__sign { outline: 3px solid var(--door-glow); outline-offset: 3px; }
+
+/* Row 2: doorway. Layers, back to front: room, leaf, light seam.
+   No preserve-3d on purpose: the leaf always paints in front of the room.
+   The eye sits level with the sill, so the swinging leaf keeps its bottom
+   edge on the floor and grows only upward (the plaque leaves room for it). */
+.door__frame {
+  position: relative;
+  width: clamp(112px, 30vw, 168px);
+  aspect-ratio: 5 / 8;
+  align-self: end;
+  border: 6px solid var(--color-hall-trim);
+  border-bottom: 0;
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  background: radial-gradient(120% 90% at 50% 100%, var(--door-glow), color-mix(in srgb, var(--door-glow) 70%, var(--color-hall)));
+  box-shadow: inset 0 8px 10px -6px var(--color-shade); /* the lintel shades the top of the doorway */
+  perspective: 1300px;
+  perspective-origin: 50% 100%;
+}
+.door__frame::before { /* light leaking under the closed door, fading as it opens */
+  content: "";
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: -3px;
+  z-index: 3;
+  height: 3px;
+  border-radius: var(--radius-sm);
+  background: var(--door-glow);
+  opacity: calc(1 - var(--door-open));
+}
+
+/* What waits behind the door: the section's games, brighter as it opens. */
+.door__room {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-content: center;
+  justify-items: center;
+  gap: var(--space-4) var(--space-2);
+  padding: 0 14%;
+  opacity: calc(0.2 + 0.8 * var(--door-open));
+  transform: scale(calc(0.92 + 0.08 * var(--door-open)));
+}
+.door__room .icon {
+  width: clamp(22px, 7vw, 32px);
+  height: clamp(22px, 7vw, 32px);
+  stroke-width: 2.2;
+}
+.door--games .door__room .icon:nth-child(1) { color: var(--color-family-words); }
+.door--games .door__room .icon:nth-child(2) { color: var(--color-family-quiz); }
+.door--games .door__room .icon:nth-child(3) { color: var(--color-family-solitaire); }
+.door--games .door__room .icon:nth-child(4) { color: var(--color-family-cards); }
+.door--school .door__room .icon { color: var(--color-family-school); }
+
+.door__leaf {
+  position: absolute;
+  inset: 2px 2px 0; /* a thin seam of light round the closed door */
+  z-index: 2;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  gap: 8%;
+  padding: 12% 12% 14%;
+  border-radius: 3px 3px 0 0;
+  /* the free edge shows the door's thickness */
+  border-right: 4px solid color-mix(in srgb, var(--door-color) 62%, var(--color-hall-top));
+  background: linear-gradient(90deg, color-mix(in srgb, var(--door-color) 82%, var(--color-hall-top)), var(--door-color));
+  transform-origin: var(--door-hinge);
+  transform: rotateY(calc(var(--door-angle-open) * var(--door-open)));
+  /* swinging out of the room light, the face falls slightly into shade */
+  filter: brightness(calc(1 - 0.15 * var(--door-open)));
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08), calc(6px * var(--door-open)) calc(8px * var(--door-open)) calc(16px * var(--door-open)) var(--color-shade);
+}
+.door--school .door__leaf {
+  border-right: 0;
+  border-left: 4px solid color-mix(in srgb, var(--door-color) 62%, var(--color-hall-top));
+  background: linear-gradient(270deg, color-mix(in srgb, var(--door-color) 82%, var(--color-hall-top)), var(--door-color));
+}
+.door__panel { /* two raised panels so it reads as a real door */
+  display: grid;
+  place-items: center;
+  border-radius: 3px;
+  box-shadow: inset 2px 2px 0 rgba(255, 255, 255, 0.12), inset -2px -2px 0 rgba(0, 0, 0, 0.22);
+}
+.door__panel svg { width: 52%; max-width: 44px; color: var(--color-door-text); opacity: 0.95; }
+.door__knob {
+  position: absolute;
+  top: 54%;
+  right: 9%;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, var(--color-door-glow-games), var(--color-door-knob) 60%);
+  box-shadow: 1px 2px 3px var(--color-shade);
+}
+.door--school .door__knob { right: auto; left: 9%; }
+
+/* Row 3: light falling on the floor (grows as the door opens) + caption */
+.door__spill {
+  grid-row: 3;
+  grid-column: 1;
+  width: clamp(112px, 30vw, 168px);
+  height: 72px;
+  align-self: start;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--door-glow) 60%, transparent), transparent);
+  clip-path: polygon(4% 0, 96% 0, 130% 100%, -30% 100%);
+  transform-origin: top;
+  transform: scaleY(calc(0.35 + 0.65 * var(--door-open)));
+  opacity: calc(0.25 + 0.75 * var(--door-open));
+}
+.door__caption {
+  grid-row: 3;
+  grid-column: 1;
+  max-width: 190px;
+  padding-top: var(--space-5);
+  color: var(--color-door-caption);
+  font-size: var(--text-sm);
+  line-height: 1.35;
+  text-align: center;
+}
+
+/* --- Quiz answer options ----------------------------------------------- */
+.options { display: grid; gap: var(--space-2); }
+.option {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  min-height: 52px;
+  padding: var(--space-3) var(--space-4);
+  border: 2px solid var(--color-line);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-ink);
+  font: var(--weight-semibold) var(--text-md) / 1.3 var(--font-body);
+  text-align: left;
+  cursor: pointer;
+}
+.option:hover { border-color: var(--color-ink-muted); }
+.option__letter {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-sunken);
+  font-weight: var(--weight-bold);
+  font-size: var(--text-sm);
+}
+.option[data-state="correct"] { border-color: var(--color-correct); background: var(--color-correct-soft); }
+.option[data-state="wrong"]   { border-color: var(--color-wrong);   background: var(--color-wrong-soft); }
+.option[data-state="correct"] .option__letter { background: var(--color-correct); color: var(--color-on-correct); }
+.option[data-state="wrong"] .option__letter   { background: var(--color-wrong);   color: var(--color-on-wrong); }
+
+.explanation {
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--color-accent) 9%, var(--color-surface));
+}
+
+/* --- Letter cells (integrame, cuvântul zilei, criptogramă) ------------- */
+.cell-row { display: flex; gap: var(--space-1); }
+.cell {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 2px solid var(--color-line);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  font: var(--weight-bold) var(--text-xl) / 1 var(--font-body);
+  text-transform: uppercase;
+}
+.cell[data-state="empty"]   { background: var(--color-surface-sunken); }
+.cell[data-state="active"]  { border-color: var(--color-accent); background: var(--color-hint); }
+.cell[data-state="correct"] { border-color: var(--color-correct); background: var(--color-correct); color: var(--color-on-correct); }
+.cell[data-state="present"] { border-color: var(--color-games); background: var(--color-games); color: var(--color-suit-black); }
+.cell[data-state="wrong"]   { border-color: var(--color-ink-muted); background: var(--color-ink-muted); color: var(--color-page); }
+.cell[data-state="clue"] {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  line-height: 1.1;
+  padding: 2px;
+  text-transform: none;
+  background: var(--color-school);
+  color: var(--color-on-family);
+  border-color: var(--color-school);
+}
+
+/* --- Playing card ------------------------------------------------------ */
+.playing-card {
+  position: relative;
+  width: 64px;
+  aspect-ratio: 5 / 7;
+  border: var(--border-width) solid var(--color-line);
+  border-radius: var(--radius-sm);
+  background: var(--color-card-face);
+  color: var(--color-suit-black);
+  box-shadow: var(--shadow-raised);
+  font: var(--weight-bold) var(--text-md) / 1 var(--font-body);
+}
+.playing-card[data-suit="hearts"],
+.playing-card[data-suit="diamonds"] { color: var(--color-suit-red); }
+.playing-card__corner { position: absolute; top: 6px; left: 6px; display: grid; justify-items: center; gap: 2px; }
+.playing-card__pip { position: absolute; inset: 0; display: grid; place-items: center; font-size: var(--text-2xl); }
+.playing-card[data-face="down"] {
+  background: repeating-linear-gradient(45deg, var(--color-card-back) 0 6px,
+              color-mix(in srgb, var(--color-card-back) 80%, var(--color-on-family)) 6px 12px);
+}
+.playing-card[data-face="down"] > * { display: none; }
+.playing-card[data-selected="true"] { outline: 3px solid var(--color-accent); outline-offset: 2px; }
+
+/* --- Bottom sheet / modal ---------------------------------------------- */
+.sheet-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: var(--layer-modal);
+  display: grid;
+  align-items: end;
+  justify-items: center;
+  background: rgba(10, 15, 20, 0.5);
+}
+.sheet {
+  width: 100%;
+  max-width: var(--width-game);
+  max-height: 85dvh;
+  overflow: auto;
+  padding: var(--space-5) var(--space-4) calc(var(--space-5) + env(safe-area-inset-bottom));
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  background: var(--color-surface);
+}
+@media (min-width: 600px) {
+  .sheet-backdrop { align-items: center; }
+  .sheet { border-radius: var(--radius-lg); }
+}
+
+/* --- Toast ------------------------------------------------------------- */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(var(--space-5) + env(safe-area-inset-bottom));
+  z-index: var(--layer-toast);
+  transform: translateX(-50%);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--color-ink);
+  color: var(--color-page);
+  font-weight: var(--weight-semibold);
+}
+
+/* --- Form field -------------------------------------------------------- */
+.field { display: grid; gap: var(--space-1); }
+.field__label { font-weight: var(--weight-semibold); font-size: var(--text-sm); }
+.field__input {
+  min-height: var(--tap-target);
+  padding: 0 var(--space-3);
+  border: var(--border-width) solid var(--color-line);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-ink);
+  font: var(--weight-regular) var(--text-md) / 1 var(--font-body);
+}
+.field__input:focus-visible { border-color: var(--color-accent); }
+
+/* --- Brand lockup (home) ----------------------------------------------- */
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-display);
+  color: var(--color-ink);
+}
+.brand__mark { width: 40px; height: 40px; border-radius: var(--radius-md); }
+
+/* --- Inline icon (from assets/icons/icons.svg) ------------------------- */
+.icon {
+  display: inline-block;
+  flex: none;
+  width: var(--icon-size);
+  height: var(--icon-size);
+  vertical-align: -0.2em;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.icon--filled { fill: currentColor; }
+
+/* --- Page intro (home and hub headings) -------------------------------- */
+.page-intro { margin-bottom: var(--space-5); }
+.page-intro h1 { text-wrap: balance; }
+.page-intro__lead { margin-top: var(--space-2); color: var(--color-ink-muted); }
+.page-intro__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+}
+
+/* --- Numbered steps (offline install sheet) ---------------------------- */
+.steps { padding-left: var(--space-5); }
+.steps li + li { margin-top: var(--space-1); }
+.sheet__close { position: absolute; top: var(--space-2); right: var(--space-2); }
+.sheet { position: relative; }
+
+/* --- Footer ------------------------------------------------------------ */
+/* Full width, always at the bottom (body is a flex column, margin-top: auto).
+   Brand and year on one side, plain text links on the other. */
+.site-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-5);
+  width: 100%;
+  margin-top: auto;
+  padding: var(--space-4) var(--gutter) calc(var(--space-4) + env(safe-area-inset-bottom));
+  view-transition-name: site-footer;
+  border-top: var(--border-width) solid var(--color-line);
+  color: var(--color-ink-muted);
+  font-size: var(--text-sm);
+}
+.site-footer__brand { display: inline-flex; align-items: center; gap: var(--space-2); order: -1; }
+.site-footer__brand img { width: 20px; height: 20px; border-radius: var(--radius-sm); }
+.site-footer nav { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-4); }
+/* Links and the "Setări cookies" button: identical plain text links. */
+.site-footer nav a,
+.site-footer nav button {
+  padding: var(--space-1) 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  line-height: var(--leading-body);
+  text-decoration: none;
+  cursor: pointer;
+  transition: color var(--duration-fast) var(--ease-out);
+}
+.site-footer nav a:hover,
+.site-footer nav button:hover { color: var(--color-ink); }
+@media (max-width: 599px) {
+  .site-footer { flex-direction: column; text-align: center; }
+  .site-footer nav { justify-content: center; }
+}
+
+/* --- Home: everything centred: title, hall, then the two actions ------- */
+.page--home .page-intro,
+.page--home .home-note { text-align: center; }
+.page--home .hall { margin-inline: auto; }
+.page--home .page-intro__actions { justify-content: center; }
+.home-actions { margin-top: var(--space-5); }
+.home-note { margin-top: var(--space-3); }
+
+/* ==========================================================================
+   Motion - one calm language for the whole site. Nothing moves for people
+   who ask for reduced motion (the durations are 0 there, see tokens.css).
+   ========================================================================== */
+
+/* Between pages: the page rises in softly; header and footer stay still.
+   Browsers without view transitions just change page normally. */
+@view-transition { navigation: auto; }
+::view-transition-old(root) { animation: page-out var(--duration-page) var(--ease-out) both; }
+::view-transition-new(root) { animation: page-in var(--duration-page) var(--ease-out) both; }
+@keyframes page-out { to { opacity: 0; transform: translateY(-6px); } }
+@keyframes page-in { from { opacity: 0; transform: translateY(10px); } }
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Hub tiles arrive one after another. */
+  .tile-grid > * { animation: rise-in 420ms var(--ease-out) both; }
+  .tile-grid > :nth-child(2) { animation-delay: 40ms; }
+  .tile-grid > :nth-child(3) { animation-delay: 80ms; }
+  .tile-grid > :nth-child(4) { animation-delay: 120ms; }
+  .tile-grid > :nth-child(5) { animation-delay: 160ms; }
+
+  /* Sheets slide up, the cookie bar and toasts rise in. */
+  .sheet-backdrop:not([hidden]) { animation: fade-in 200ms var(--ease-out) both; }
+  .sheet-backdrop:not([hidden]) .sheet { animation: sheet-up 320ms var(--ease-out) both; }
+  .consent-bar { animation: bar-up 360ms var(--ease-out) both; }
+  .toast { animation: toast-up 240ms var(--ease-out) both; }
+  .theme-picker__menu:not([hidden]) { animation: pop-in 180ms var(--ease-out) both; transform-origin: top right; }
+}
+@keyframes rise-in { from { opacity: 0; transform: translateY(12px); } }
+@keyframes fade-in { from { opacity: 0; } }
+@keyframes sheet-up { from { opacity: 0; transform: translateY(40px); } }
+@keyframes bar-up { from { opacity: 0; transform: translate(-50%, 24px); } }
+@keyframes toast-up { from { opacity: 0; transform: translate(-50%, 12px); } }
+@keyframes pop-in { from { opacity: 0; transform: scale(0.94); } }
+
+/* ==========================================================================
+   Page loader - shared/page-loader/page-loader.js sets data-page-loader.
+   "leaving": a bar in the four game-family colours crawls along the top
+   edge; if the next page is slow, four tiles (like the logo) bounce in the
+   middle. "arriving": the new page finishes the bar and fades it out.
+   Hidden for people who ask for reduced motion.
+   ========================================================================== */
+.page-loader {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: var(--layer-toast);
+  pointer-events: none;
+  view-transition-name: page-loader; /* keeps running across the page change */
+}
+.page-loader__bar {
+  height: var(--loader-height);
+  background: linear-gradient(90deg,
+    var(--color-family-words), var(--color-family-quiz),
+    var(--color-family-solitaire), var(--color-family-school));
+  transform: scaleX(0);
+  transform-origin: left center;
+  opacity: 0;
+}
+.page-loader__tiles {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  display: none;
+  grid-template-columns: repeat(2, var(--loader-tile));
+  gap: var(--space-1);
+  padding: var(--space-3);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-raised);
+  transform: translate(-50%, -50%);
+}
+.page-loader__tiles span {
+  width: var(--loader-tile);
+  height: var(--loader-tile);
+  border-radius: var(--radius-sm);
+  background: var(--color-family-words);
+}
+.page-loader__tiles span:nth-child(2) { background: var(--color-family-quiz); animation-delay: 120ms; }
+.page-loader__tiles span:nth-child(3) { background: var(--color-family-school); animation-delay: 360ms; }
+.page-loader__tiles span:nth-child(4) { background: var(--color-family-solitaire); animation-delay: 240ms; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .page-loader[data-page-loader="leaving"] .page-loader__bar {
+    opacity: 1;
+    animation: loader-crawl var(--duration-loader) var(--ease-out) forwards;
+  }
+  .page-loader[data-page-loader="leaving"] .page-loader__tiles {
+    display: grid;
+    animation: fade-in var(--duration-base) var(--ease-out) var(--delay-loader-tiles) both;
+  }
+  .page-loader[data-page-loader="leaving"] .page-loader__tiles span {
+    animation: loader-hop 720ms var(--ease-out) infinite;
+  }
+  .page-loader[data-page-loader="arriving"] .page-loader__bar {
+    animation: loader-finish 520ms var(--ease-out) forwards;
+  }
+}
+@keyframes loader-crawl {
+  0% { transform: scaleX(0); }
+  30% { transform: scaleX(0.45); }
+  100% { transform: scaleX(0.85); }
+}
+@keyframes loader-finish {
+  0% { opacity: 1; transform: scaleX(0.6); }
+  60% { opacity: 1; transform: scaleX(1); }
+  100% { opacity: 0; transform: scaleX(1); }
+}
+@keyframes loader-hop {
+  0%, 60%, 100% { transform: translateY(0) scale(1); }
+  30% { transform: translateY(-4px) scale(1.08); }
+}

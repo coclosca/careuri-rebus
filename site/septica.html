@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script src="shared/theme/theme.js"></script>
+<script src="shared/page-loader/page-loader.js" defer></script>
+<title>Septică · PlayLudiq</title>
+<meta name="description" content="Joc românesc de cărți, cu botul sau cu un prieten pe același telefon.">
+<link rel="canonical" href="https://playludiq.com/septica.html">
+<meta name="theme-color" content="#176b63">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="assets/icons/icon-192.png">
+<link rel="apple-touch-icon" href="assets/icons/icon-192.png">
+<link rel="stylesheet" href="styles/tokens.css">
+<link rel="stylesheet" href="styles/base.css">
+<link rel="stylesheet" href="styles/components.css">
+<link rel="stylesheet" href="styles/game.css">
+<link rel="stylesheet" href="shared/consent/consent.css">
+<link rel="stylesheet" href="features/septica/septica.styles.css">
+<script src="shared/consent/consent.js" defer></script>
+<script src="shared/pwa/register-service-worker.js" defer></script>
+<script src="features/septica/septica.game.js" defer></script>
+<script type="text/plain" data-consent="statistics" data-src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "74c145f1f04942f2879e1c23044be639"}'></script>
+</head>
+<body>
+<header class="top-bar">
+  <a class="top-bar__brand" href="index.html" aria-label="PlayLudiq, pagina de start"><img src="assets/icons/icon-192.png" alt="" width="28" height="28"><span>PlayLudiq</span></a>
+</header>
+<div class="game-root" data-family="cards">
+<div class="wrap">
+  <a class="back-link" href="jocuri.html"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#arrow-left"/></svg> Jocuri</a>
+  <div class="top">
+    <h1><small>Nostalgia · joc de cărți</small>Septică</h1>
+    <button class="stat" id="rulesBtn"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#book"/></svg> Regulament</button>
+  </div>
+
+  <!-- MODE SELECT -->
+  <div id="pick" class="pick">
+    <h2>Cum vrei să joci?</h2>
+    <p>Alege adversarul</p>
+    <div class="mode">
+      <button class="mbtn" id="mBot"><span class="emo"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#bot"/></svg></span><span><span class="t">Cu botul</span><span class="d">Joci singur, împotriva calculatorului.</span></span></button>
+      <button class="mbtn" id="mPvp"><span class="emo"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#users"/></svg></span><span><span class="t">Cu un prieten</span><span class="d">Pe același telefon, pe rând (pass &amp; play). Cărțile se ascund între ture.</span></span></button>
+    </div>
+    <div class="rules">
+      <h3><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#target"/></svg> Cum se joacă</h3>
+      Fiecare are 4 cărți. Primul pune o carte („cartea de bătut"). Adversarul o poate <b>tăia</b> cu o carte de <b>aceeași valoare</b> sau cu un <b>7</b> (7 taie orice). Dacă a tăiat, celălalt poate tăia din nou, și tot așa. <b>Cine taie ultimul ia toate cărțile</b> de pe masă. Apoi fiecare trage la loc până are 4 cărți.<br><br>
+      <b>Puncte:</b> fiecare <b>10</b> și fiecare <b>As</b> = 1 punct (★). Ultima mână = 1 punct bonus. Cine adună mai multe puncte câștigă.
+    </div>
+  </div>
+
+  <!-- GAME -->
+  <div id="game" class="hidden">
+    <div class="felt">
+      <div class="pname"><span id="oppName">Bot</span><span class="pts"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#star"/></svg> <span id="oppPts">0</span></span></div>
+      <div class="backs" id="oppHand"></div>
+      <div class="center">
+        <div class="pile" id="pile"></div>
+        <div class="msg" id="msg"></div>
+        <div class="stockc" id="stockc"></div>
+      </div>
+      <div class="pname"><span id="meName">Tu</span><span class="pts"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#star"/></svg> <span id="mePts">0</span></span></div>
+    </div>
+    <div class="turn" id="turn"></div>
+    <div class="handwrap">
+      <div class="hand" id="hand"></div>
+      <div class="curtain hidden" id="curtain"><div class="t" id="curtName">Rândul tău</div><div class="d">Apasă ca să-ți vezi cărțile</div></div>
+    </div>
+    <div class="ctrls">
+      <button class="btn" id="newBtn"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#restart"/></svg> Joc nou</button>
+      <button class="btn" id="modeBtn"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#arrow-left"/></svg> Schimbă modul</button>
+    </div>
+  </div>
+
+  
+</div>
+
+<div class="overlay" id="rulesOv"><div class="modal">
+  <h2><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#book"/></svg> Regulament — Septică</h2>
+  <p class="rules-text">
+  <b>Cărțile:</b> se joacă cu 32 de cărți (de la 7 la As, în 4 culori).<br><br>
+  <b>Împărțirea:</b> fiecare jucător primește <b>4 cărți</b>. Restul formează pachetul (talonul).<br><br>
+  <b>Desfășurarea unei mâini:</b><br>
+  • Primul jucător pune o carte pe masă — <b>cartea de bătut</b>.<br>
+  • Adversarul o poate <b>tăia</b> cu o carte de <b>aceeași valoare</b> (ex. 10 peste 10) sau cu un <b>7</b> — <b>7 taie orice</b>.<br>
+  • Dacă a tăiat, primul poate tăia din nou (tot cu aceeași valoare ca prima carte, sau cu 7), și tot așa, pe rând.<br>
+  • <b>Cine taie ultimul ia toate cărțile</b> de pe masă.<br>
+  • Dacă pui o carte care <b>nu</b> taie, mâna se închide și cel care a tăiat ultimul ia cărțile.<br><br>
+  <b>Tragerea:</b> după fiecare mână, fiecare trage din pachet până are iar 4 cărți (cât mai e pachet). Cine a luat mâna pune primul la mâna următoare.<br><br>
+  <b>Puncte:</b> fiecare <b>10</b> și fiecare <b>As</b> din cărțile luate = <b>1 punct</b> (★). <b>Ultima mână</b> a jocului aduce <b>+1 punct</b>. În total sunt 9 puncte.<br><br>
+  <b>Câștigă</b> cine adună <b>mai multe puncte</b> (5 sau mai multe).
+  </p>
+  <button class="btn primary" id="rulesClose">Am înțeles</button>
+</div></div>
+
+<div class="overlay" id="endOv"><div class="modal">
+  <h2 id="endT">Final</h2>
+  <p id="endP"></p>
+  <button class="btn primary" id="endNew">Joc nou</button>
+</div></div>
+</div>
+<footer class="site-footer">
+  <nav>
+    <a href="confidentialitate.html">Confidențialitate</a>
+    <a href="cookies.html">Cookies</a>
+    <a href="termeni.html">Termeni</a>
+    <button type="button" data-consent-open>Setări cookies</button>
+  </nav>
+  <span class="site-footer__brand"><img src="assets/icons/icon-192.png" alt="" width="24" height="24">© 2026 PlayLudiq</span>
+</footer>
+</body>
+</html>

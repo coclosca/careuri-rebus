@@ -1,0 +1,45 @@
+/* PlayLudiq legal pages (confidențialitate, cookies, termeni): reading layout. */
+
+.legal h1 { margin-bottom: var(--space-1); }
+.legal h2 { margin: var(--space-6) 0 var(--space-2); font-size: var(--text-lg); }
+.legal p,
+.legal li { max-width: 68ch; }
+.legal p + p { margin-top: var(--space-3); }
+.legal ul { padding-left: var(--space-5); }
+.legal li + li { margin-top: var(--space-1); }
+
+.legal__updated {
+  margin-bottom: var(--space-5);
+  color: var(--color-ink-muted);
+  font-size: var(--text-sm);
+}
+
+/* Tables scroll sideways on phones instead of squeezing the text. */
+.legal__table {
+  display: block;
+  overflow-x: auto;
+  margin: var(--space-3) 0;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+}
+.legal__table th,
+.legal__table td {
+  min-width: 140px;
+  padding: var(--space-2) var(--space-3);
+  border-bottom: var(--border-width) solid var(--color-line);
+  text-align: left;
+  vertical-align: top;
+}
+.legal__table th { color: var(--color-ink-muted); font-weight: var(--weight-semibold); }
+.legal__table code { font-size: var(--text-xs); }
+
+.legal__inline-button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--color-accent);
+  font: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}

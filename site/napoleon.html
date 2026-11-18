@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script src="shared/theme/theme.js"></script>
+<script src="shared/page-loader/page-loader.js" defer></script>
+<title>Napoleon · PlayLudiq</title>
+<meta name="description" content="Pasiență: construiește pe 6 și pe 5, cu 52 de cărți.">
+<link rel="canonical" href="https://playludiq.com/napoleon.html">
+<meta name="theme-color" content="#176b63">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="assets/icons/icon-192.png">
+<link rel="apple-touch-icon" href="assets/icons/icon-192.png">
+<link rel="stylesheet" href="styles/tokens.css">
+<link rel="stylesheet" href="styles/base.css">
+<link rel="stylesheet" href="styles/components.css">
+<link rel="stylesheet" href="styles/game.css">
+<link rel="stylesheet" href="shared/consent/consent.css">
+<link rel="stylesheet" href="features/napoleon/napoleon.styles.css">
+<script src="shared/consent/consent.js" defer></script>
+<script src="shared/pwa/register-service-worker.js" defer></script>
+<script src="features/napoleon/napoleon.game.js" defer></script>
+<script type="text/plain" data-consent="statistics" data-src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "74c145f1f04942f2879e1c23044be639"}'></script>
+</head>
+<body>
+<header class="top-bar">
+  <a class="top-bar__brand" href="index.html" aria-label="PlayLudiq, pagina de start"><img src="assets/icons/icon-192.png" alt="" width="28" height="28"><span>PlayLudiq</span></a>
+</header>
+<div class="game-root" data-family="solitaire">
+<div class="wrap">
+  <a class="back-link" href="jocuri.html"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#arrow-left"/></svg> Jocuri</a>
+<header>
+  <h1><small>Pasiență · 52 de cărți</small>Napoleon</h1>
+  <div class="stats">
+    <div class="stat">Așezate <b id="sDone">0</b>/52</div>
+    <div class="stat">Treceri <b id="sPass">3</b></div>
+    <div class="stat"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#timer"/></svg> <b id="sTime">0:00</b></div>
+  </div>
+</header>
+<div class="legend">4 <b>Dame</b> în centru. Pe <b>6</b> construiești crescător (6·7·8·9·10·J), pe <b>5</b> descrescător (5·4·3·2·A·K) — pe aceeași culoare. Atinge cartea activă ca s-o așezi.</div>
+
+<div class="felt">
+  <div class="rowlab">Crescător pe 6 → J</div>
+  <div class="prow" id="rowSix"></div>
+  <div class="rowlab">Damele</div>
+  <div class="mid" id="rowQ"></div>
+  <div class="rowlab">Descrescător pe 5 → K</div>
+  <div class="prow" id="rowFive"></div>
+  <div class="bottom">
+    <div class="pile-wrap"><div id="deck"><div class="c" id="deckCnt">52</div><small>trage</small></div><div class="lbl">Pachet</div></div>
+    <div class="pile-wrap"><div id="active"><div class="ph">carte<br>activă</div></div><div class="lbl">Activă</div></div>
+  </div>
+</div>
+
+<div class="hint-txt" id="hint"></div>
+<div class="ctrls">
+  <button class="btn primary" id="bDraw">Trage o carte</button>
+  <button class="btn" id="bNew">Joc nou</button>
+  <button class="btn" id="bRules"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#book"/></svg> Regulament</button>
+</div>
+</div>
+
+<div class="overlay" id="rules"><div class="modal modal--rules">
+  <h2><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#book"/></svg> Regulament</h2>
+  <p class="rules-lead"><b>Pasiența lui Napoleon</b> (varianta geometrică)</p>
+  <p><b>Scop:</b> așază toate cele 52 de cărți pe masă.</p>
+  <ul>
+    <li>Cele <b>4 Dame (D)</b> se pun în centru.</li>
+    <li>Pe fiecare <b>6</b> clădești <b>crescător</b>: 6·7·8·9·10·J, pe aceeași culoare/semn.</li>
+    <li>Pe fiecare <b>5</b> clădești <b>descrescător</b>: 5·4·3·2·A·K, pe aceeași culoare/semn.</li>
+    <li>Tragi cărți din pachet. Cartea pe care nu o poți așeza rămâne „activă" și merge în pachet la o nouă tragere.</li>
+    <li>Poți folosi doar cartea <b>activă</b> (ultima trasă).</li>
+    <li>Ai <b>3 treceri</b> prin pachet.</li>
+  </ul>
+  <p><b>Câștigi</b> când toate cărțile sunt așezate — în jurul Damelor rămân Valeții și Popii.</p>
+  <button class="btn primary" id="rulesClose">Am înțeles</button>
+</div></div>
+
+<div class="overlay" id="ov"><div class="modal">
+  <h2 id="ovT">Felicitări!</h2>
+  <p id="ovP"></p>
+  <button class="btn primary" id="ovNew">Joc nou</button>
+</div></div>
+</div>
+<footer class="site-footer">
+  <nav>
+    <a href="confidentialitate.html">Confidențialitate</a>
+    <a href="cookies.html">Cookies</a>
+    <a href="termeni.html">Termeni</a>
+    <button type="button" data-consent-open>Setări cookies</button>
+  </nav>
+  <span class="site-footer__brand"><img src="assets/icons/icon-192.png" alt="" width="24" height="24">© 2026 PlayLudiq</span>
+</footer>
+</body>
+</html>

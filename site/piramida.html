@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script src="shared/theme/theme.js"></script>
+<script src="shared/page-loader/page-loader.js" defer></script>
+<title>Piramida · PlayLudiq</title>
+<meta name="description" content="Pasiență: elimină perechi de cărți care fac 13.">
+<link rel="canonical" href="https://playludiq.com/piramida.html">
+<meta name="theme-color" content="#176b63">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="assets/icons/icon-192.png">
+<link rel="apple-touch-icon" href="assets/icons/icon-192.png">
+<link rel="stylesheet" href="styles/tokens.css">
+<link rel="stylesheet" href="styles/base.css">
+<link rel="stylesheet" href="styles/components.css">
+<link rel="stylesheet" href="styles/game.css">
+<link rel="stylesheet" href="shared/consent/consent.css">
+<link rel="stylesheet" href="features/piramida/piramida.styles.css">
+<script src="shared/consent/consent.js" defer></script>
+<script src="shared/pwa/register-service-worker.js" defer></script>
+<script src="features/piramida/piramida.game.js" defer></script>
+<script type="text/plain" data-consent="statistics" data-src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "74c145f1f04942f2879e1c23044be639"}'></script>
+</head>
+<body>
+<header class="top-bar">
+  <a class="top-bar__brand" href="index.html" aria-label="PlayLudiq, pagina de start"><img src="assets/icons/icon-192.png" alt="" width="28" height="28"><span>PlayLudiq</span></a>
+</header>
+<div class="game-root" data-family="solitaire">
+<div class="wrap">
+  <a class="back-link" href="jocuri.html"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#arrow-left"/></svg> Jocuri</a>
+<header>
+  <h1><small>Pasiență · joc de cărți</small>Piramida</h1>
+  <div class="stats">
+    <div class="stat">Perechi <b id="sPairs">0</b>/28</div>
+    <div class="stat">Treceri <b id="sPass">3</b></div>
+    <div class="stat"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#timer"/></svg> <b id="sTime">0:00</b></div>
+  </div>
+</header>
+
+<div class="legend">Elimină perechi de cărți care însumează <b>13</b>. Popul (K)=13 iese singur. A=1, J=11, D=12. Poți folosi doar cărțile <b>libere</b> (neacoperite).</div>
+
+<div id="board">
+  <div id="pyramid"></div>
+  <div class="pile">
+    <div id="stock" class="slot"><div><div class="cnt" id="stockCnt">24</div><small>trage</small></div><div class="lbl">Pachet</div></div>
+    <div id="waste" class="slot"><div class="lbl">Descartat</div></div>
+  </div>
+</div>
+
+<div class="hint-txt" id="hint"></div>
+<div class="ctrls">
+  <button class="btn primary" id="bNew">Joc nou</button>
+  <button class="btn" id="bHint">Indiciu</button>
+  <button class="btn" id="bUndo">Înapoi</button>
+  <button class="btn" id="bRules"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#book"/></svg> Regulament</button>
+</div>
+</div>
+
+<div class="overlay" id="rules"><div class="modal modal--rules">
+  <h2><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#book"/></svg> Regulament</h2>
+  <p class="rules-lead">Pasiența <b>Piramida</b></p>
+  <div>
+    <p><b>Scop:</b> demolează toată piramida, eliminând perechi de cărți care însumează <b>13</b>.</p>
+    <p><b>Valori:</b> A = 1 · cărțile 2–10 = valoarea lor · J = 11 · D (Dama) = 12 · K (Popul) = 13.</p>
+    <p><b>Cum joci:</b></p>
+    <ul>
+      <li>Folosești doar cărțile <b>libere</b> (neacoperite de altele).</li>
+      <li>Atingi două cărți libere care fac <b>13</b> → dispar (ex. 8 + 5, 9 + 4, 10 + 3, D + A).</li>
+      <li><b>Popul (K)</b> face 13 singur → iese dintr-o atingere.</li>
+      <li>Fără mutări? Trage din <b>Pachet</b> în „Descartat" și folosește cartea de deasupra.</li>
+      <li>Ai <b>3 treceri</b> prin pachet (când se golește, se reciclează).</li>
+    </ul>
+    <p><b>Butoane:</b> Indiciu (îți arată o pereche) · Înapoi (anulează) · Joc nou.</p>
+    <p><b>Câștigi</b> când ai eliminat toată piramida. Spune legenda că „se împlinește dorința"!</p>
+  </div>
+  <button class="btn primary" id="rulesClose">Am înțeles</button>
+</div></div>
+
+<div class="overlay" id="ov"><div class="modal">
+  <h2 id="ovT">Felicitări!</h2>
+  <p id="ovP">Ai demolat toată piramida.</p>
+  <button class="btn primary" id="ovNew">Joc nou</button>
+</div></div>
+</div>
+<footer class="site-footer">
+  <nav>
+    <a href="confidentialitate.html">Confidențialitate</a>
+    <a href="cookies.html">Cookies</a>
+    <a href="termeni.html">Termeni</a>
+    <button type="button" data-consent-open>Setări cookies</button>
+  </nav>
+  <span class="site-footer__brand"><img src="assets/icons/icon-192.png" alt="" width="24" height="24">© 2026 PlayLudiq</span>
+</footer>
+</body>
+</html>

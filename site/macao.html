@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script src="shared/theme/theme.js"></script>
+<script src="shared/page-loader/page-loader.js" defer></script>
+<title>Macao · PlayLudiq</title>
+<meta name="description" content="Joc de cărți: scapă primul de cărți, cu 7, Valet și As.">
+<link rel="canonical" href="https://playludiq.com/macao.html">
+<meta name="theme-color" content="#176b63">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="assets/icons/icon-192.png">
+<link rel="apple-touch-icon" href="assets/icons/icon-192.png">
+<link rel="stylesheet" href="styles/tokens.css">
+<link rel="stylesheet" href="styles/base.css">
+<link rel="stylesheet" href="styles/components.css">
+<link rel="stylesheet" href="styles/game.css">
+<link rel="stylesheet" href="shared/consent/consent.css">
+<link rel="stylesheet" href="features/macao/macao.styles.css">
+<script src="shared/consent/consent.js" defer></script>
+<script src="shared/pwa/register-service-worker.js" defer></script>
+<script src="features/macao/macao.game.js" defer></script>
+<script type="text/plain" data-consent="statistics" data-src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "74c145f1f04942f2879e1c23044be639"}'></script>
+</head>
+<body>
+<header class="top-bar">
+  <a class="top-bar__brand" href="index.html" aria-label="PlayLudiq, pagina de start"><img src="assets/icons/icon-192.png" alt="" width="28" height="28"><span>PlayLudiq</span></a>
+</header>
+<div class="game-root" data-family="cards">
+<div class="wrap">
+  <a class="back-link" href="jocuri.html"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#arrow-left"/></svg> Jocuri</a>
+  <div class="top">
+    <h1><small>Nostalgia · joc de cărți</small>Macao</h1>
+    <button class="stat" id="rulesBtn"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#book"/></svg> Reguli</button>
+  </div>
+
+  <div id="pick" class="pick">
+    <h2>Cum vrei să joci?</h2>
+    <p>Alege adversarul</p>
+    <div class="mode">
+      <button class="mbtn" id="mBot"><span class="emo"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#bot"/></svg></span><span><span class="t">Cu botul</span><span class="d">Joci singur, împotriva calculatorului.</span></span></button>
+      <button class="mbtn" id="mPvp"><span class="emo"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#users"/></svg></span><span><span class="t">Cu un prieten</span><span class="d">Pe același telefon, pe rând (pass &amp; play).</span></span></button>
+    </div>
+    <div class="rules">
+      <h3><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#target"/></svg> Cum se joacă</h3>
+      Scapi primul de toate cărțile! Pui o carte de <b>aceeași culoare</b> (simbol) sau de <b>aceeași valoare</b> cu cea de pe masă. Dacă nu poți, <b>tragi o carte</b>.<br><br>
+      <b>Cărți speciale:</b> <b>7</b> = următorul trage 2 cărți (poate pune alt 7 ca să treacă mai departe) · <b>Valetul (J)</b> = îl pui peste orice și <b>schimbi culoarea</b> · <b>Asul (A)</b> = <b>sari adversarul</b> (mai joci o dată).
+    </div>
+  </div>
+
+  <div id="game" class="hidden">
+    <div class="felt">
+      <div class="pname"><span id="oppName">Bot</span><span class="pts"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#layers"/></svg> <span id="oppCount">0</span></span></div>
+      <div class="backs" id="oppHand"></div>
+      <div class="center">
+        <div class="pilebox"><div class="lbl">Pachet</div><div class="stockpile" id="stock">0</div></div>
+        <div class="pilebox"><div class="lbl">Pe masă</div><div id="topCard"></div><div class="suitbadge" id="suitBadge"></div></div>
+      </div>
+      <div class="msg" id="msg"></div>
+      <div class="pname"><span id="meName">Tu</span><span class="pts"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#layers"/></svg> <span id="meCount">0</span></span></div>
+    </div>
+    <div class="turn" id="turn"></div>
+    <div class="handwrap">
+      <div class="hand" id="hand"></div>
+      <div class="curtain hidden" id="curtain"><div class="t" id="curtName">Rândul tău</div><div class="d">Apasă ca să-ți vezi cărțile</div></div>
+    </div>
+    <div class="ctrls">
+      <button class="btn primary" id="drawBtn"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#layers"/></svg> Trage o carte</button>
+      <button class="btn" id="newBtn"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#restart"/></svg> Joc nou</button>
+      <button class="btn" id="modeBtn"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#arrow-left"/></svg> Mod</button>
+    </div>
+  </div>
+  
+</div>
+
+<div class="overlay" id="rulesOv"><div class="modal">
+  <h2><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#book"/></svg> Reguli — Macao</h2>
+  <p class="rules-text"><b>Scop:</b> scapi primul de toate cărțile.<br><br>
+  La rând, pui o carte care are <b>aceeași culoare (♠♥♦♣)</b> sau <b>aceeași valoare</b> cu cea de pe masă. Dacă nu ai ce pune, apeși <b>Trage o carte</b> și rândul trece.<br><br>
+  <b>Cărți speciale:</b><br>
+  • <b>7</b> — următorul jucător trage <b>2 cărți</b>. Poate scăpa punând el însuși un 7 (se adună: 2, 4, 6…).<br>
+  • <b>Valetul (J)</b> — se pune <b>peste orice carte</b> și alegi tu <b>noua culoare</b>.<br>
+  • <b>Asul (A)</b> — <b>sari adversarul</b>; în doi, înseamnă că mai joci încă o dată.<br><br>
+  Cine rămâne fără cărți primul <b>câștigă</b>.</p>
+  <button class="btn primary" id="rulesClose">Am înțeles</button>
+</div></div>
+
+<div class="overlay" id="suitOv"><div class="modal">
+  <h2>Alege culoarea</h2>
+  <p>Ai pus un Valet — alege noua culoare:</p>
+  <div class="suits">
+    <button class="bk" data-s="0">♠</button>
+    <button class="rd" data-s="1">♥</button>
+    <button class="rd" data-s="2">♦</button>
+    <button class="bk" data-s="3">♣</button>
+  </div>
+</div></div>
+
+<div class="overlay" id="endOv"><div class="modal">
+  <h2 id="endT">Final</h2>
+  <p id="endP"></p>
+  <button class="btn primary" id="endNew">Joc nou</button>
+</div></div>
+</div>
+<footer class="site-footer">
+  <nav>
+    <a href="confidentialitate.html">Confidențialitate</a>
+    <a href="cookies.html">Cookies</a>
+    <a href="termeni.html">Termeni</a>
+    <button type="button" data-consent-open>Setări cookies</button>
+  </nav>
+  <span class="site-footer__brand"><img src="assets/icons/icon-192.png" alt="" width="24" height="24">© 2026 PlayLudiq</span>
+</footer>
+</body>
+</html>

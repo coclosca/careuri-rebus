@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script src="shared/theme/theme.js"></script>
+<script src="shared/page-loader/page-loader.js" defer></script>
+<title>Popa Prostul · PlayLudiq</title>
+<meta name="description" content="Joc românesc de cărți: nu rămâne tu cu regele fără pereche.">
+<link rel="canonical" href="https://playludiq.com/popa.html">
+<meta name="theme-color" content="#176b63">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="assets/icons/icon-192.png">
+<link rel="apple-touch-icon" href="assets/icons/icon-192.png">
+<link rel="stylesheet" href="styles/tokens.css">
+<link rel="stylesheet" href="styles/base.css">
+<link rel="stylesheet" href="styles/components.css">
+<link rel="stylesheet" href="styles/game.css">
+<link rel="stylesheet" href="shared/consent/consent.css">
+<link rel="stylesheet" href="features/popa/popa.styles.css">
+<script src="shared/consent/consent.js" defer></script>
+<script src="shared/pwa/register-service-worker.js" defer></script>
+<script src="features/popa/popa.game.js" defer></script>
+<script type="text/plain" data-consent="statistics" data-src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "74c145f1f04942f2879e1c23044be639"}'></script>
+</head>
+<body>
+<header class="top-bar">
+  <a class="top-bar__brand" href="index.html" aria-label="PlayLudiq, pagina de start"><img src="assets/icons/icon-192.png" alt="" width="28" height="28"><span>PlayLudiq</span></a>
+</header>
+<div class="game-root" data-family="cards">
+<div class="wrap">
+  <a class="back-link" href="jocuri.html"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#arrow-left"/></svg> Jocuri</a>
+  <div class="top">
+    <h1><small>Nostalgia · joc de cărți</small>Popa Prostul</h1>
+    <button class="stat" id="rulesBtn"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#book"/></svg> Reguli</button>
+  </div>
+
+  <div id="pick" class="pick">
+    <h2>Cum vrei să joci?</h2>
+    <p>Alege adversarul</p>
+    <div class="mode">
+      <button class="mbtn" id="mBot"><span class="emo"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#bot"/></svg></span><span><span class="t">Cu botul</span><span class="d">Joci singur, împotriva calculatorului.</span></span></button>
+      <button class="mbtn" id="mPvp"><span class="emo"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#users"/></svg></span><span><span class="t">Cu un prieten</span><span class="d">Pe același telefon, pe rând (pass &amp; play).</span></span></button>
+    </div>
+    <div class="rules">
+      <h3><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#target"/></svg> Cum se joacă</h3>
+      Se scoate un poparol (rege) din pachet, așa că un <b>singur rege rămâne fără pereche</b> — acela e „Popa Prostul". Cărțile se împart tuturor. Formezi <b>perechi de aceeași valoare</b> (doi de 7, doi de 10…) și le arunci. Pe rând, <b>tragi o carte, pe nevăzute, din mâna adversarului</b>; dacă face pereche, o arunci. <b>Pierde cel care rămâne cu Popa Prostul</b> (regele fără pereche) în mână la final.
+    </div>
+  </div>
+
+  <div id="game" class="hidden">
+    <div class="felt">
+      <div class="pname"><span id="oppName">Bot</span><span class="pts"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#layers"/></svg> perechi: <span id="oppPairs">0</span></span></div>
+      <div class="backs" id="oppHand"></div>
+      <div class="center">
+        <div class="msg" id="msg"></div>
+        <div class="sub" id="sub"></div>
+      </div>
+      <div class="pname"><span id="meName">Tu</span><span class="pts"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#layers"/></svg> perechi: <span id="mePairs">0</span></span></div>
+    </div>
+    <div class="turn" id="turn"></div>
+    <div class="handwrap">
+      <div class="hand" id="hand"></div>
+      <div class="curtain hidden" id="curtain"><div class="t" id="curtName">Rândul tău</div><div class="d">Apasă ca să-ți vezi cărțile</div></div>
+    </div>
+    <div class="ctrls">
+      <button class="btn primary" id="newBtn"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#restart"/></svg> Joc nou</button>
+      <button class="btn" id="modeBtn"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#arrow-left"/></svg> Schimbă modul</button>
+    </div>
+  </div>
+
+  
+</div>
+
+<div class="overlay" id="rulesOv"><div class="modal">
+  <h2><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#book"/></svg> Reguli — Popa Prostul</h2>
+  <p class="rules-text">Din pachet se scot 3 regi, rămânând unul singur — <b>Popa Prostul</b>, care nu va avea pereche.<br><br>
+  Cărțile se împart. Fiecare aruncă din mână <b>perechile</b> (două cărți de aceeași valoare).<br><br>
+  Pe rând, fiecare <b>trage o carte pe nevăzute</b> din mâna celuilalt. Dacă noua carte face pereche cu una din mână, perechea se aruncă.<br><br>
+  Jocul continuă până rămâne o singură carte: <b>Popa Prostul</b>. Cine o ține în mână la final <b>pierde</b>.</p>
+  <button class="btn primary" id="rulesClose">Am înțeles</button>
+</div></div>
+
+<div class="overlay" id="endOv"><div class="modal">
+  <h2 id="endT">Final</h2>
+  <p id="endP"></p>
+  <button class="btn primary" id="endNew">Joc nou</button>
+</div></div>
+</div>
+<footer class="site-footer">
+  <nav>
+    <a href="confidentialitate.html">Confidențialitate</a>
+    <a href="cookies.html">Cookies</a>
+    <a href="termeni.html">Termeni</a>
+    <button type="button" data-consent-open>Setări cookies</button>
+  </nav>
+  <span class="site-footer__brand"><img src="assets/icons/icon-192.png" alt="" width="24" height="24">© 2026 PlayLudiq</span>
+</footer>
+</body>
+</html>

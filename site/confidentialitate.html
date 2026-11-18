@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script src="shared/theme/theme.js"></script>
+<script src="shared/page-loader/page-loader.js" defer></script>
+<title>Politica de confidențialitate · PlayLudiq</title>
+<meta name="description" content="Ce date folosește PlayLudiq, de ce și ce drepturi ai.">
+<link rel="canonical" href="https://playludiq.com/confidentialitate.html">
+<link rel="icon" href="assets/icons/icon-192.png">
+<link rel="stylesheet" href="styles/tokens.css">
+<link rel="stylesheet" href="styles/base.css">
+<link rel="stylesheet" href="styles/components.css">
+<link rel="stylesheet" href="shared/consent/consent.css">
+<link rel="stylesheet" href="styles/legal.css">
+<script src="shared/consent/consent.js" defer></script>
+</head>
+<body>
+<header class="top-bar">
+  <a class="top-bar__brand" href="index.html" aria-label="PlayLudiq, pagina de start"><img src="assets/icons/icon-192.png" alt="" width="28" height="28"><span>PlayLudiq</span></a>
+</header>
+
+<main class="page page--text legal">
+  <a class="back-link" href="index.html"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#arrow-left"/></svg> Acasă</a>
+  <h1>Politica de confidențialitate</h1>
+  <p class="legal__updated">Ultima actualizare: {{DATA_ACTUALIZARII}}</p>
+
+  <p><b>Pe scurt:</b> pentru a te juca pe PlayLudiq nu ai nevoie de cont și nu ne dai nume, e-mail sau telefon. Progresul din jocuri rămâne pe dispozitivul tău. Mai jos găsești toate detaliile.</p>
+
+  <h2>1. Cine răspunde de date</h2>
+  <p>Site-ul playludiq.com este administrat de <b>{{OPERATOR_NUME}}</b>{{OPERATOR_DETALII}}. Ne poți scrie oricând la <a href="mailto:{{EMAIL_CONTACT}}">{{EMAIL_CONTACT}}</a>.</p>
+
+  <h2>2. Ce date folosim și de ce</h2>
+  <table class="legal__table">
+    <thead><tr><th>Ce</th><th>De ce</th><th>Temei legal</th><th>Cât timp</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>Progresul în jocuri, setările și alegerea ta despre cookies, salvate în memoria browserului (localStorage)</td>
+        <td>Ca jocurile să funcționeze și să-și amintească unde ai rămas</td>
+        <td>Strict necesar pentru serviciul cerut de tine</td>
+        <td>Până le ștergi din browser</td>
+      </tr>
+      <tr>
+        <td>Adresa IP și datele tehnice ale cererii (tip de browser, pagina cerută)</td>
+        <td>Ca site-ul să ajungă la tine și să fie protejat; le procesează găzduirea</td>
+        <td>Interes legitim (art. 6 alin. 1 lit. f GDPR)</td>
+        <td>Conform politicii furnizorului de găzduire</td>
+      </tr>
+      <!-- STATISTICI: rândul de mai jos rămâne doar dacă site-ul folosește Cloudflare Web Analytics -->
+      <tr>
+        <td>Statistici de vizitare, fără cookies: pagina vizitată, de unde ai venit, țara, tipul de dispozitiv</td>
+        <td>Ca să știm ce jocuri sunt folosite și ce merită îmbunătățit</td>
+        <td>{{STATISTICI_TEMEI}}</td>
+        <td>Conform Cloudflare; noi vedem doar totaluri</td>
+      </tr>
+      <!-- FORMULAR: rândul de mai jos rămâne doar dacă există formularul de raportare greșeli -->
+      <tr>
+        <td>Ce scrii în formularul de raportare a unei greșeli (Google Forms)</td>
+        <td>Ca să corectăm întrebarea sau careul semnalat</td>
+        <td>Consimțământ, prin trimiterea formularului</td>
+        <td>Până rezolvăm semnalarea, apoi ștergem</td>
+      </tr>
+    </tbody>
+  </table>
+  <p>Nu vindem date, nu facem profiluri și nu luăm decizii automate despre tine.</p>
+
+  <h2>3. Copiii</h2>
+  <p>PlayLudiq are și teste școlare, deci îl folosesc și copii. De aceea nu cerem nicio dată personală pentru joc sau teste. Formularul de raportare cere doar descrierea greșelii; rugăm copiii sub 16 ani să-l completeze împreună cu un părinte și să nu scrie acolo nume, adrese sau telefoane. Dacă ești părinte și crezi că ne-a ajuns o informație despre copilul tău, scrie-ne și o ștergem.</p>
+
+  <h2>4. Cine mai primește date</h2>
+  <ul>
+    <li><b>{{GAZDUIRE_NUME}}</b>: găzduiește site-ul și primește datele tehnice ale fiecărei vizite.</li>
+    <!-- STATISTICI --><li><b>Cloudflare, Inc.</b>: numără vizitele pentru statistici, fără cookies.</li>
+    <!-- FORMULAR --><li><b>Google</b>: găzduiește formularul de raportare (Google Forms).</li>
+  </ul>
+  <p>Unii dintre acești furnizori sunt în Statele Unite. Transferul se face pe baza Cadrului UE-SUA privind protecția datelor (Data Privacy Framework) sau a clauzelor contractuale standard aprobate de Comisia Europeană.</p>
+  <!-- RECLAME: secțiunea de mai jos se adaugă doar când site-ul afișează reclame Google AdSense -->
+  <!--
+  <h2>Reclame</h2>
+  <p>Afișăm reclame prin Google AdSense. Google și partenerii lui pot folosi cookies pentru reclame, doar cu acordul tău, cerut prin fereastra de consimțământ Google. Pe paginile pentru copii (Școală) afișăm doar reclame nepersonalizate. Detalii: https://policies.google.com/technologies/ads</p>
+  -->
+
+  <h2>5. Drepturile tale</h2>
+  <p>Conform Regulamentului (UE) 2016/679 (GDPR) ai dreptul să ceri acces la datele tale, corectarea sau ștergerea lor, restricționarea prelucrării, portabilitatea lor și să te opui prelucrării. Dacă prelucrarea se bazează pe consimțământ, îl poți retrage oricând, din <button class="legal__inline-button" type="button" data-consent-open>Setări cookies</button>. Scrie-ne la <a href="mailto:{{EMAIL_CONTACT}}">{{EMAIL_CONTACT}}</a> și răspundem în cel mult o lună.</p>
+  <p>Poți depune și o plângere la Autoritatea Națională de Supraveghere a Prelucrării Datelor cu Caracter Personal (ANSPDCP), <a href="https://www.dataprotection.ro" rel="noopener">www.dataprotection.ro</a>.</p>
+
+  <h2>6. Cookies</h2>
+  <p>Ce salvăm pe dispozitivul tău, pe rând, găsești în <a href="cookies.html">Politica de cookies</a>.</p>
+
+  <h2>7. Modificări</h2>
+  <p>Când schimbăm această politică, actualizăm data de sus. Dacă schimbarea e importantă (de exemplu, apar reclame), îți cerem din nou acordul acolo unde e nevoie.</p>
+
+</main>
+  <footer class="site-footer">
+  <nav>
+    <a href="confidentialitate.html">Confidențialitate</a>
+    <a href="cookies.html">Cookies</a>
+    <a href="termeni.html">Termeni</a>
+    <button type="button" data-consent-open>Setări cookies</button>
+  </nav>
+  <span class="site-footer__brand"><img src="assets/icons/icon-192.png" alt="" width="24" height="24">© {{AN}} PlayLudiq</span>
+</footer>
+</body>
+</html>

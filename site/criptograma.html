@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script src="shared/theme/theme.js"></script>
+<script src="shared/page-loader/page-loader.js" defer></script>
+<title>Criptograma · PlayLudiq</title>
+<meta name="description" content="Descifrează citate celebre și proverbe: fiecare literă e un cod ascuns.">
+<link rel="canonical" href="https://playludiq.com/criptograma.html">
+<meta name="theme-color" content="#176b63">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="assets/icons/icon-192.png">
+<link rel="apple-touch-icon" href="assets/icons/icon-192.png">
+<link rel="stylesheet" href="styles/tokens.css">
+<link rel="stylesheet" href="styles/base.css">
+<link rel="stylesheet" href="styles/components.css">
+<link rel="stylesheet" href="styles/game.css">
+<link rel="stylesheet" href="shared/consent/consent.css">
+<link rel="stylesheet" href="features/criptograma/criptograma.styles.css">
+<script src="shared/consent/consent.js" defer></script>
+<script src="shared/pwa/register-service-worker.js" defer></script>
+<script src="features/criptograma/criptograma.game.js" defer></script>
+<script type="text/plain" data-consent="statistics" data-src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "74c145f1f04942f2879e1c23044be639"}'></script>
+</head>
+<body>
+<header class="top-bar">
+  <a class="top-bar__brand" href="index.html" aria-label="PlayLudiq, pagina de start"><img src="assets/icons/icon-192.png" alt="" width="28" height="28"><span>PlayLudiq</span></a>
+</header>
+<div class="game-root" data-family="words">
+<div class="wrap">
+  <a class="back-link" href="jocuri.html"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#arrow-left"/></svg> Jocuri</a>
+  <div class="top">
+    <h1><small>Perspicacitate</small>Criptograma</h1>
+    <div class="stats">
+      <div class="stat"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#lightbulb"/></svg> <b id="hints">3</b></div>
+      <div class="stat">Litere <b id="prog">0/0</b></div>
+    </div>
+  </div>
+
+  <div class="win hidden" id="winBox"><div class="t"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#trophy"/></svg> Rezolvat!</div></div>
+  <div class="author" id="author"></div>
+  <div class="puzzle" id="puzzle"></div>
+  <div class="hintrow" id="hintrow"></div>
+
+  <div class="kb" id="kb"></div>
+
+  <div class="ctrls">
+    <button class="btn primary" id="newBtn"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#restart"/></svg> Alt citat</button>
+    <button class="btn" id="hintBtn"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#lightbulb"/></svg> O literă</button>
+    <button class="btn" id="checkBtn"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#check"/></svg> Verifică</button>
+    <button class="btn" id="solveBtn"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#eye"/></svg> Soluția</button>
+  </div>
+
+  <div class="help">
+    Fiecare literă din citat a fost înlocuită cu alta (cifru). Numărul mic de sub căsuță e <b>codul</b>.
+    Apasă o căsuță, apoi o literă de pe tastatură — se completează <b>peste tot unde apare același cod</b>. Descoperă citatul și autorul!
+  </div>
+  
+</div>
+</div>
+<footer class="site-footer">
+  <nav>
+    <a href="confidentialitate.html">Confidențialitate</a>
+    <a href="cookies.html">Cookies</a>
+    <a href="termeni.html">Termeni</a>
+    <button type="button" data-consent-open>Setări cookies</button>
+  </nav>
+  <span class="site-footer__brand"><img src="assets/icons/icon-192.png" alt="" width="24" height="24">© 2026 PlayLudiq</span>
+</footer>
+</body>
+</html>

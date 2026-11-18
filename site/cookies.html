@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script src="shared/theme/theme.js"></script>
+<script src="shared/page-loader/page-loader.js" defer></script>
+<title>Politica de cookies · PlayLudiq</title>
+<meta name="description" content="Ce salvează PlayLudiq pe dispozitivul tău și cum alegi.">
+<link rel="canonical" href="https://playludiq.com/cookies.html">
+<link rel="icon" href="assets/icons/icon-192.png">
+<link rel="stylesheet" href="styles/tokens.css">
+<link rel="stylesheet" href="styles/base.css">
+<link rel="stylesheet" href="styles/components.css">
+<link rel="stylesheet" href="shared/consent/consent.css">
+<link rel="stylesheet" href="styles/legal.css">
+<script src="shared/consent/consent.js" defer></script>
+</head>
+<body>
+<header class="top-bar">
+  <a class="top-bar__brand" href="index.html" aria-label="PlayLudiq, pagina de start"><img src="assets/icons/icon-192.png" alt="" width="28" height="28"><span>PlayLudiq</span></a>
+</header>
+
+<main class="page page--text legal">
+  <a class="back-link" href="index.html"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#arrow-left"/></svg> Acasă</a>
+  <h1>Politica de cookies</h1>
+  <p class="legal__updated">Ultima actualizare: {{DATA_ACTUALIZARII}}</p>
+
+  <p>PlayLudiq <b>nu pune cookies</b> pe dispozitivul tău. Folosește în schimb memoria browserului (localStorage și memoria pentru joc fără internet), doar ca jocurile să funcționeze. Mai jos e lista completă.</p>
+  <p><button class="button button--secondary" type="button" data-consent-open>Deschide setările cookies</button></p>
+
+  <h2>1. Strict necesare (mereu active)</h2>
+  <p>Fără ele jocurile nu își amintesc nimic. Rămân doar pe dispozitivul tău; noi nu le vedem.</p>
+  <table class="legal__table">
+    <thead><tr><th>Nume</th><th>Ce face</th><th>Cât timp</th></tr></thead>
+    <tbody>
+      <tr><td><code>pl_consent</code></td><td>Ține minte ce ai ales în setările cookies</td><td>Până o schimbi sau o ștergi</td></tr>
+      <tr><td><code>integrame.v1</code></td><td>Progresul tău la Integrame</td><td>Până îl ștergi</td></tr>
+      <tr><td><code>pl_theme</code></td><td>Culorile alese pentru site</td><td>Până le schimbi sau le ștergi</td></tr>
+      <tr><td><code>ic_hints</code>, <code>ic_liked</code></td><td>Indiciile folosite azi și aprecierea la Integrame</td><td>Până le ștergi</td></tr>
+      <tr><td><code>pl_wordle</code>, <code>pl_wordle_arch</code>, <code>pl_wordle_seen</code>, <code>pl_wordle_stats</code></td><td>Încercările, arhiva, ajutorul văzut și statisticile la Cuvântul zilei</td><td>Până le ștergi</td></tr>
+      <tr><td>Memoria pentru joc fără internet (service worker)</td><td>Păstrează paginile ca să poți juca și în modul avion</td><td>Până la următoarea versiune a site-ului</td></tr>
+    </tbody>
+  </table>
+
+  <!-- STATISTICI: secțiunea rămâne doar dacă site-ul folosește Cloudflare Web Analytics -->
+  <h2>2. Statistici ({{STATISTICI_STARE}})</h2>
+  <p>Folosim Cloudflare Web Analytics ca să numărăm vizitele. Nu pune cookies și nu te urmărește de la un site la altul; noi vedem doar totaluri (câte vizite, ce pagini, din ce țară). {{STATISTICI_EXPLICATIE}}</p>
+
+  <h2>3. Reclame</h2>
+  <p>{{RECLAME_TEXT}}</p>
+
+  <h2>4. Cum ștergi ce e salvat</h2>
+  <p>Din setările browserului: „Șterge datele site-ului” sau „Șterge datele de navigare” pentru playludiq.com. Atenție: așa pierzi și progresul din jocuri.</p>
+
+  <h2>5. Întrebări</h2>
+  <p>Scrie-ne la <a href="mailto:{{EMAIL_CONTACT}}">{{EMAIL_CONTACT}}</a>. Detalii despre datele personale găsești în <a href="confidentialitate.html">Politica de confidențialitate</a>.</p>
+
+</main>
+  <footer class="site-footer">
+  <nav>
+    <a href="confidentialitate.html">Confidențialitate</a>
+    <a href="cookies.html">Cookies</a>
+    <a href="termeni.html">Termeni</a>
+    <button type="button" data-consent-open>Setări cookies</button>
+  </nav>
+  <span class="site-footer__brand"><img src="assets/icons/icon-192.png" alt="" width="24" height="24">© {{AN}} PlayLudiq</span>
+</footer>
+</body>
+</html>

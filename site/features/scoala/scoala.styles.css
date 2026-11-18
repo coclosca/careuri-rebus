@@ -1,0 +1,309 @@
+/* PlayLudiq · Teste școlare · board styles
+   The page frame, title, score chip, buttons and answer options come from
+   styles/game.css. This file styles the class tabs, the subject / module /
+   test lists, the module header and the question card. */
+
+/* Board geometry: the letter tile in front of each answer, same size as
+   the shared .option__letter in components.css. */
+.game-root {
+  --board-option-letter: 28px;
+}
+
+/* --- Subject line under the title -------------------------------------- */
+.game-root .subject {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin-bottom: var(--space-4);
+  color: var(--color-ink-muted);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+}
+.game-root .subject b { color: var(--color-ink); }
+.game-root .subject .icon { color: var(--family); }
+
+/* --- Class tabs ---------------------------------------------------------- */
+.game-root .tabs {
+  display: flex;
+  gap: var(--space-1);
+  margin-bottom: var(--space-5);
+  padding: var(--space-1);
+  border: var(--border-width) solid var(--color-line);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+}
+.game-root .tab {
+  flex: 1;
+  min-height: var(--tap-target);
+  padding: 0 var(--space-2);
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--color-ink-muted);
+  font: var(--weight-bold) var(--text-sm) / var(--leading-tight) var(--font-body);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-out),
+              color var(--duration-fast) var(--ease-out);
+}
+.game-root .tab:hover { color: var(--color-ink); }
+.game-root .tab.active {
+  background: var(--family);
+  color: var(--color-on-felt);
+}
+
+/* --- Lists: subjects, modules, tests ----------------------------------- */
+.game-root .pick-h {
+  margin-bottom: var(--space-3);
+  color: var(--color-ink-muted);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+}
+.game-root .list { display: grid; gap: var(--space-2); }
+/* The JS builds list rows with the shared .mbtn class; here they are compact
+   rows (icon tile, text, arrow) instead of the big mode-choice cards. */
+.game-root .list .mbtn {
+  grid-template-columns: var(--tap-target) 1fr auto;
+  column-gap: var(--space-3);
+  min-height: 0;
+  padding: var(--space-3) var(--space-4);
+  text-decoration: none;
+}
+.game-root .list .mbtn + .mbtn { margin-top: 0; }
+.game-root .list .mbtn > span:nth-child(2) { min-width: 0; }
+.game-root .mbtn .n {
+  display: grid;
+  place-items: center;
+  width: var(--tap-target);
+  height: var(--tap-target);
+  border-radius: var(--radius-md);
+  background: var(--family);
+  color: var(--color-on-felt);
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-display);
+  line-height: 1;
+}
+.game-root .mbtn.comb .n { background: var(--color-games); }
+.game-root .mbtn .tt {
+  display: block;
+  color: var(--color-ink);
+  font-size: var(--text-md);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-tight);
+}
+.game-root .mbtn .mt {
+  display: block;
+  margin-top: var(--space-1);
+  color: var(--color-ink-muted);
+  font-size: var(--text-sm);
+  line-height: var(--leading-tight);
+}
+.game-root .mbtn .per {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin-top: var(--space-1);
+  color: var(--color-accent);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-bold);
+}
+.game-root .mbtn .go {
+  color: var(--color-ink-muted);
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+.game-root .mbtn:hover .go { transform: translateX(var(--space-1)); }
+
+/* Competence chips (in test rows, the module header and the question card) */
+.game-root .chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  margin-top: var(--space-2);
+}
+.game-root .chip,
+.game-root .qbox .cmp {
+  padding: 0 var(--space-2);
+  border: var(--border-width) solid color-mix(in srgb, var(--family) 30%, var(--color-surface));
+  border-radius: var(--radius-pill);
+  background: color-mix(in srgb, var(--family) 10%, var(--color-surface));
+  color: var(--color-ink);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-bold);
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+/* "În curând" note under the subject list */
+.game-root .soon {
+  margin-top: var(--space-5);
+  padding: var(--space-3) var(--space-4);
+  border: var(--border-width) dashed var(--color-line);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-sunken);
+  color: var(--color-ink-muted);
+  font-size: var(--text-sm);
+}
+.game-root .soon b { color: var(--color-ink); }
+.game-root .soon .icon { color: var(--family); }
+
+/* --- Module header above the test list --------------------------------- */
+.game-root .modhead {
+  margin-bottom: var(--space-4);
+  padding: var(--space-4);
+  border: var(--border-width) solid var(--color-line);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+}
+.game-root .modhead .mh-t {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-display);
+  line-height: var(--leading-tight);
+}
+.game-root .modhead .mh-s {
+  margin-top: var(--space-1);
+  color: var(--color-ink-muted);
+  font-size: var(--text-sm);
+}
+.game-root .modhead .mh-p {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin-top: var(--space-2);
+  color: var(--color-accent);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-bold);
+}
+.game-root .modhead .mh-p:empty { display: none; }
+
+/* --- Question ------------------------------------------------------------ */
+.game-root .bar {
+  height: var(--space-2);
+  margin-bottom: var(--space-4);
+  overflow: hidden;
+  border-radius: var(--radius-pill);
+  background: var(--color-surface-sunken);
+}
+.game-root .bar > i {
+  display: block;
+  width: 0;
+  height: 100%;
+  background: var(--family);
+  transition: width var(--duration-base) var(--ease-out);
+}
+.game-root .qbox {
+  margin-bottom: var(--space-4);
+  padding: var(--space-4) var(--space-5);
+  border: var(--border-width) solid var(--color-line);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+}
+.game-root .qbox .qn {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+  color: var(--color-ink-muted);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.game-root .qbox .qt {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: var(--weight-bold);
+  line-height: 1.25;
+}
+
+/* Answer options: the shared .opt look, plus the letter tile and the
+   faded state the JS gives to the options that were not picked. */
+.game-root .opt .lt {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: var(--board-option-letter);
+  height: var(--board-option-letter);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-sunken);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-bold);
+}
+.game-root .opt.correct .lt { background: var(--color-correct); color: var(--color-surface); }
+.game-root .opt.wrong .lt { background: var(--color-wrong); color: var(--color-surface); }
+.game-root .opt.dim { opacity: 0.5; }
+.game-root .opt:active { transform: scale(0.99); }
+
+/* Explanation and "Știați că" boxes */
+.game-root .box {
+  margin-top: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border: var(--border-width) solid var(--color-line);
+  border-radius: var(--radius-lg);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .game-root .box { animation: scoala-box-in var(--duration-base) var(--ease-out); }
+}
+@keyframes scoala-box-in {
+  from { opacity: 0; transform: translateY(var(--space-2)); }
+  to   { opacity: 1; transform: none; }
+}
+.game-root .box .bl {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin-bottom: var(--space-1);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-display);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.game-root .box .bt { font-size: var(--text-md); line-height: var(--leading-body); }
+.game-root .explain {
+  border-color: color-mix(in srgb, var(--color-school) 35%, var(--color-surface));
+  background: color-mix(in srgb, var(--color-school) 10%, var(--color-surface));
+}
+.game-root .explain .bl .icon { color: var(--color-school); }
+.game-root .factb {
+  border-color: color-mix(in srgb, var(--color-star) 45%, var(--color-surface));
+  background: color-mix(in srgb, var(--color-star) 14%, var(--color-surface));
+}
+.game-root .factb .bl .icon { color: var(--color-star); }
+
+.game-root .foot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+}
+
+/* --- Result ------------------------------------------------------------- */
+.game-root .result {
+  padding: var(--space-5) var(--space-2);
+  text-align: center;
+}
+.game-root .result .big {
+  color: var(--color-school);
+  font-family: var(--font-display);
+  font-size: calc(var(--text-3xl) * 1.5);
+  font-weight: var(--weight-display);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.game-root .result .msg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  margin: var(--space-3) 0 var(--space-2);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-semibold);
+}
+.game-root .result .msg .icon { color: var(--color-star); }
+.game-root .result .sub {
+  margin-bottom: var(--space-5);
+  color: var(--color-ink-muted);
+  font-size: var(--text-sm);
+}

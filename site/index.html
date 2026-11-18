@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script src="shared/theme/theme.js"></script>
+<script src="shared/page-loader/page-loader.js" defer></script>
+<title>PlayLudiq · Jocuri de minte și teste școlare</title>
+<meta name="description" content="Integrame, criptograme, jocuri românești de cărți, quiz-uri și teste școlare pe module. Gratuit, fără cont, merge și fără internet.">
+<link rel="canonical" href="https://playludiq.com/">
+<meta name="theme-color" content="#176b63">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="assets/icons/icon-192.png">
+<link rel="apple-touch-icon" href="assets/icons/icon-192.png">
+<link rel="stylesheet" href="styles/tokens.css">
+<link rel="stylesheet" href="styles/base.css">
+<link rel="stylesheet" href="styles/components.css">
+<link rel="stylesheet" href="shared/consent/consent.css">
+<script src="shared/consent/consent.js" defer></script>
+<script src="shared/pwa/register-service-worker.js" defer></script>
+<script src="features/home/home.js" defer></script>
+<script type="text/plain" data-consent="statistics" data-src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "74c145f1f04942f2879e1c23044be639"}'></script>
+</head>
+<body>
+<header class="top-bar">
+  <a class="top-bar__brand" href="index.html" aria-label="PlayLudiq, pagina de start"><img src="assets/icons/icon-192.png" alt="" width="28" height="28"><span>PlayLudiq</span></a>
+</header>
+<main class="page page--hub page--home">
+
+  <header class="page-intro">
+    <h1>Jocuri de minte<br>și teste școlare</h1>
+  </header>
+
+  <nav class="hall" aria-label="Alege secțiunea">
+    <div class="hall__doors">
+      <a class="door door--games" href="jocuri.html">
+        <span class="door__sign">Jocuri</span>
+        <span class="door__frame">
+          <span class="door__room" aria-hidden="true"><svg class="icon"><use href="assets/icons/icons.svg#grid"/></svg><svg class="icon"><use href="assets/icons/icons.svg#help"/></svg><svg class="icon"><use href="assets/icons/icons.svg#spade"/></svg><svg class="icon"><use href="assets/icons/icons.svg#heart"/></svg></span>
+          <span class="door__leaf">
+            <span class="door__panel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="6" x2="10" y1="12" y2="12"/><line x1="8" x2="8" y1="10" y2="14"/><line x1="15" x2="15.01" y1="13" y2="13"/><line x1="18" x2="18.01" y1="11" y2="11"/><rect width="20" height="12" x="2" y="6" rx="2"/></svg></span>
+            <span class="door__panel"></span>
+            <span class="door__knob"></span>
+          </span>
+        </span>
+        <span class="door__spill"></span>
+        <span class="door__caption">Integrame, criptograme, jocuri de cărți, Quiz Fotbal</span>
+      </a>
+      <a class="door door--school" href="scoala.html">
+        <span class="door__sign">Școală</span>
+        <span class="door__frame">
+          <span class="door__room" aria-hidden="true"><svg class="icon"><use href="assets/icons/icons.svg#book"/></svg><svg class="icon"><use href="assets/icons/icons.svg#graduation"/></svg><svg class="icon"><use href="assets/icons/icons.svg#check"/></svg><svg class="icon"><use href="assets/icons/icons.svg#star"/></svg></span>
+          <span class="door__leaf">
+            <span class="door__panel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></span>
+            <span class="door__panel"></span>
+            <span class="door__knob"></span>
+          </span>
+        </span>
+        <span class="door__spill"></span>
+        <span class="door__caption">Teste pe module, quiz-uri și integrame pentru elevi</span>
+      </a>
+    </div>
+  </nav>
+
+  <div class="page-intro__actions home-actions">      <button class="button button--secondary" type="button" data-offline-open>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+        Joacă și fără internet
+      </button>
+      <button class="button button--secondary" type="button" data-share>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/></svg>
+        Invită prieteni
+      </button>
+  </div>
+  <p class="page-intro__lead home-note">Se adaugă mereu jocuri și teste noi.</p>
+</main>
+
+<div class="sheet-backdrop" id="offlineSheet" hidden>
+  <div class="sheet stack" role="dialog" aria-modal="true" aria-labelledby="offlineTitle">
+    <button class="icon-button sheet__close" type="button" data-offline-close aria-label="Închide">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+    </button>
+    <h2 id="offlineTitle">Joacă și fără internet</h2>
+    <p>Instalează PlayLudiq ca aplicație și joacă oriunde: în avion, în metrou, la mare.</p>
+    <h3>Android (Chrome)</h3>
+    <ol class="steps">
+      <li>Deschide site-ul în <b>Chrome</b>, o dată, cu internet.</li>
+      <li>Apasă <b>⋮</b> (sus, în dreapta).</li>
+      <li>Alege <b>„Adaugă pe ecranul principal”</b> sau <b>„Instalează aplicația”</b>.</li>
+      <li>Confirmă. Apare o iconiță pe ecran.</li>
+    </ol>
+    <h3>iPhone (Safari)</h3>
+    <ol class="steps">
+      <li>Deschide site-ul în <b>Safari</b>, o dată, cu internet.</li>
+      <li>Apasă butonul <b>Partajează</b> (pătratul cu săgeată în sus).</li>
+      <li>Alege <b>„Adaugă pe ecranul de pornire”</b>, apoi <b>Adaugă</b>.</li>
+    </ol>
+    <p class="page-intro__lead">Site-ul trebuie deschis o dată cu internet ca să se salveze. După aceea merge și în modul avion.</p>
+    <button class="button button--primary button--block" type="button" data-offline-close>Am înțeles</button>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <nav>
+    <a href="confidentialitate.html">Confidențialitate</a>
+    <a href="cookies.html">Cookies</a>
+    <a href="termeni.html">Termeni</a>
+    <button type="button" data-consent-open>Setări cookies</button>
+  </nav>
+  <span class="site-footer__brand"><img src="assets/icons/icon-192.png" alt="" width="24" height="24">© 2026 PlayLudiq</span>
+</footer>
+</body>
+</html>

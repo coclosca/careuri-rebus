@@ -1,0 +1,155 @@
+/* ==========================================================================
+   PlayLudiq - Solitaire (Klondike) - board styles only.
+   Frame, title, stat chips, buttons, controls, help panel and dialogs come
+   from styles/game.css.
+   ========================================================================== */
+
+/* --- Board geometry ----------------------------------------------------
+   klondike.game.js measures .wrap and writes --cw (card width), --ch (card
+   height) and --gap (column gap) on the root element on every render.
+   These are only the first-paint fallbacks; keep the names unchanged. */
+:root {
+  --cw: 48px;
+  --ch: 68px;
+  --gap: 4px;
+}
+
+/* --- Felt table --------------------------------------------------------
+   The negative margin equals padding + border, so the card area keeps the
+   exact .wrap width the script measured. */
+.game-root .board {
+  margin-inline: calc(-1 * var(--space-2));
+  padding: var(--space-3) var(--space-1);
+  border: var(--space-1) solid var(--color-felt-deep);
+  border-radius: var(--radius-lg);
+  background: radial-gradient(ellipse at 50% 30%,
+              color-mix(in srgb, var(--color-felt) 88%, var(--color-on-felt)) 0%,
+              var(--color-felt) 55%,
+              var(--color-felt-deep) 100%);
+  box-shadow: var(--shadow-raised);
+}
+.game-root .row {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: var(--gap);
+}
+.game-root .toprow { margin-bottom: var(--space-3); }
+.game-root .slot {
+  position: relative;
+  width: 100%;
+  height: var(--ch);
+  border-radius: var(--radius-sm);
+}
+.game-root .col { position: relative; width: 100%; }
+
+/* --- Empty slot (tableau, foundation, recycled stock) ------------------ */
+.game-root .empty,
+.game-root .stockempty {
+  display: grid;
+  place-items: center;
+  height: var(--ch);
+  border: calc(var(--border-width) * 2) dashed color-mix(in srgb, var(--color-on-felt) 40%, transparent);
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--color-felt-deep) 60%, transparent);
+  color: color-mix(in srgb, var(--color-on-felt) 60%, transparent);
+  font-size: calc(var(--cw) * 0.5);
+}
+.game-root .empty.f { color: color-mix(in srgb, var(--color-star) 70%, transparent); }
+.game-root .stockempty {
+  color: var(--color-on-felt);
+  font-size: calc(var(--cw) * 0.6);
+  cursor: pointer;
+}
+
+/* --- Cards: light face in both themes ---------------------------------- */
+.game-root .card {
+  position: absolute;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  width: 100%;
+  height: var(--ch);
+  padding: var(--space-1);
+  border: var(--border-width) solid color-mix(in srgb, var(--color-suit-black) 15%, transparent);
+  border-radius: var(--radius-sm);
+  background: var(--color-card-face);
+  color: var(--color-suit-black);
+  box-shadow: var(--shadow-raised);
+  cursor: pointer;
+  user-select: none;
+}
+.game-root .card .r {
+  font-family: var(--font-display);
+  font-size: calc(var(--cw) * 0.42);
+  font-weight: var(--weight-display);
+  line-height: 0.86;
+}
+.game-root .card .s { align-self: flex-end; font-size: calc(var(--cw) * 0.42); line-height: 0.86; }
+.game-root .card .big {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-size: calc(var(--cw) * 0.72);
+  opacity: 0.9;
+  transform: translate(-50%, -48%);
+  pointer-events: none;
+}
+.game-root .card.red { color: var(--color-suit-red); }
+.game-root .card.black { color: var(--color-suit-black); }
+
+/* Face-down card */
+.game-root .card.down {
+  border: calc(var(--border-width) * 2) solid var(--color-card-face);
+  background: repeating-linear-gradient(45deg,
+              var(--color-card-back) 0 var(--space-1),
+              color-mix(in srgb, var(--color-card-back) 85%, var(--color-card-face)) var(--space-1) var(--space-2));
+}
+.game-root .card.down .r,
+.game-root .card.down .s,
+.game-root .card.down .big { display: none; }
+
+/* Selected run, and where it can go */
+.game-root .card.sel {
+  z-index: 1;
+  outline: calc(var(--border-width) * 3) solid var(--color-star);
+  outline-offset: var(--border-width);
+}
+.game-root .card.hintdst,
+.game-root .empty.hintdst {
+  outline: calc(var(--border-width) * 3) solid var(--color-on-felt);
+  outline-offset: var(--border-width);
+}
+
+/* --- Draw 1 / draw 3 choice -------------------------------------------- */
+.game-root .draw-mode {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+  color: var(--color-ink-muted);
+  font-size: var(--text-sm);
+}
+.game-root .seg {
+  display: inline-flex;
+  overflow: hidden;
+  border: var(--border-width) solid var(--color-line);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+}
+.game-root .seg button {
+  min-height: var(--tap-target);
+  padding: 0 var(--space-4);
+  border: none;
+  background: transparent;
+  color: var(--color-ink-muted);
+  font: var(--weight-bold) var(--text-sm) / 1 var(--font-body);
+  cursor: pointer;
+  appearance: none;
+}
+.game-root .seg button.on { background: var(--color-accent); color: var(--color-ink-on-accent); }
+
+/* --- Dialog: the script opens it by adding .on ------------------------- */
+.game-root .modal p { margin-bottom: var(--space-3); color: var(--color-ink-muted); }

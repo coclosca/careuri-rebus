@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script src="shared/theme/theme.js"></script>
+<script src="shared/page-loader/page-loader.js" defer></script>
+<title>Ceasul · PlayLudiq</title>
+<meta name="description" content="Pasiență cu cadran de ceas.">
+<link rel="canonical" href="https://playludiq.com/ceasul.html">
+<meta name="theme-color" content="#176b63">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="assets/icons/icon-192.png">
+<link rel="apple-touch-icon" href="assets/icons/icon-192.png">
+<link rel="stylesheet" href="styles/tokens.css">
+<link rel="stylesheet" href="styles/base.css">
+<link rel="stylesheet" href="styles/components.css">
+<link rel="stylesheet" href="styles/game.css">
+<link rel="stylesheet" href="shared/consent/consent.css">
+<link rel="stylesheet" href="features/ceasul/ceasul.styles.css">
+<script src="shared/consent/consent.js" defer></script>
+<script src="shared/pwa/register-service-worker.js" defer></script>
+<script src="features/ceasul/ceasul.game.js" defer></script>
+<script type="text/plain" data-consent="statistics" data-src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "74c145f1f04942f2879e1c23044be639"}'></script>
+</head>
+<body>
+<header class="top-bar">
+  <a class="top-bar__brand" href="index.html" aria-label="PlayLudiq, pagina de start"><img src="assets/icons/icon-192.png" alt="" width="28" height="28"><span>PlayLudiq</span></a>
+</header>
+<div class="game-root" data-family="solitaire">
+<div class="wrap">
+  <a class="back-link" href="jocuri.html"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#arrow-left"/></svg> Jocuri</a>
+<header>
+  <h1><small>Pasiență · joc de noroc</small>Ceasul</h1>
+  <div class="stats">
+    <div class="stat">Întoarse <b id="sRev">0</b>/52</div>
+    <div class="stat">Popi <b id="sK">0</b>/4</div>
+  </div>
+</header>
+<div class="legend">Întoarce cărțile și pune-le la <b>ora</b> lor (A=1, J=11, D=12, K=centru). Tragi apoi din teancul unde ai pus. <b>Câștigi</b> dacă întorci toate cărțile înainte să iasă al 4-lea Pop.</div>
+
+<div id="clock"></div>
+
+<div class="ctrls">
+  <button class="btn primary" id="bStep">Următoarea carte</button>
+  <button class="btn" id="bAuto"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#play"/></svg> Auto</button>
+  <button class="btn" id="bNew">Joc nou</button>
+  <button class="btn" id="bRules"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#book"/></svg> Reguli</button>
+</div>
+</div>
+
+<div class="overlay" id="rules"><div class="modal modal--rules">
+  <h2><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#book"/></svg> Regulament</h2>
+  <p class="rules-lead"><b>Pasiența Ceasul</b></p>
+  <p>Cele 52 de cărți sunt împărțite în 13 teancuri a câte 4, așezate ca pe un cadran de ceas (orele 1–12) plus unul în centru (Popii).</p>
+  <ul>
+    <li>Începi cu teancul din <b>centru</b>.</li>
+    <li>Întorci cartea de deasupra și o pui, cu fața în sus, la <b>ora</b> ei: A=ora 1, 2–10 la ora lor, J=11, D=12, K=centru.</li>
+    <li>Tragi apoi cartea de deasupra din <b>acel</b> teanc și repeți.</li>
+  </ul>
+  <p><b>Câștigi</b> dacă întorci toate cele 52. <b>Pierzi</b> dacă iese al 4-lea Pop (K) înainte de a descoperi restul — nu mai ai de unde trage.</p>
+  <button class="btn primary" id="rulesClose">Am înțeles</button>
+</div></div>
+
+<div class="overlay" id="ov"><div class="modal">
+  <h2 id="ovT"></h2><p id="ovP"></p>
+  <button class="btn primary" id="ovNew">Joc nou</button>
+</div></div>
+</div>
+<footer class="site-footer">
+  <nav>
+    <a href="confidentialitate.html">Confidențialitate</a>
+    <a href="cookies.html">Cookies</a>
+    <a href="termeni.html">Termeni</a>
+    <button type="button" data-consent-open>Setări cookies</button>
+  </nav>
+  <span class="site-footer__brand"><img src="assets/icons/icon-192.png" alt="" width="24" height="24">© 2026 PlayLudiq</span>
+</footer>
+</body>
+</html>

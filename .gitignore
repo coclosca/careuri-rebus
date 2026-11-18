@@ -1,0 +1,15 @@
+# Never commit these (they can leak private data or are just junk)
+.env
+.env.*
+!.env.example
+*.log
+*.bak
+*.orig
+*.swp
+*.zip
+.DS_Store
+Thumbs.db
+node_modules/
+.baseline/
+scratch/
+tmp/

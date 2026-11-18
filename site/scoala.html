@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script src="shared/theme/theme.js"></script>
+<script src="shared/page-loader/page-loader.js" defer></script>
+<title>Teste școlare · PlayLudiq</title>
+<meta name="description" content="Teste pe module, quiz-uri și integrame pentru elevi, după programa școlară.">
+<link rel="canonical" href="https://playludiq.com/scoala.html">
+<meta name="theme-color" content="#176b63">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="assets/icons/icon-192.png">
+<link rel="apple-touch-icon" href="assets/icons/icon-192.png">
+<link rel="stylesheet" href="styles/tokens.css">
+<link rel="stylesheet" href="styles/base.css">
+<link rel="stylesheet" href="styles/components.css">
+<link rel="stylesheet" href="styles/game.css">
+<link rel="stylesheet" href="shared/consent/consent.css">
+<link rel="stylesheet" href="features/scoala/scoala.styles.css">
+<script src="shared/consent/consent.js" defer></script>
+<script src="shared/pwa/register-service-worker.js" defer></script>
+<script src="features/scoala/scoala.data.js" defer></script>
+<script src="features/scoala/scoala.game.js" defer></script>
+<script type="text/plain" data-consent="statistics" data-src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "74c145f1f04942f2879e1c23044be639"}'></script>
+</head>
+<body>
+<header class="top-bar">
+  <a class="top-bar__brand" href="index.html" aria-label="PlayLudiq, pagina de start"><img src="assets/icons/icon-192.png" alt="" width="28" height="28"><span>PlayLudiq</span></a>
+</header>
+<div class="game-root" data-family="school">
+<div class="wrap">
+  <a class="back-link" id="back" href="index.html">← Meniu</a>
+  <header><h1><small>Teste școlare</small><span id="htitle">Educație Muzicală</span></h1><div class="stat hidden" id="scoreWrap">Scor <b id="score">0</b></div></header>
+  <div class="subject hidden" id="subjLine"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#book"/></svg> <b id="subj"></b> · Clasa <span id="clasa"></span></div>
+
+  <!-- CLASE (taburi) + MODULE -->
+  <div id="pickMod">
+    <div class="tabs" id="tabs"></div>
+    <div class="pick-h" id="ph">Alege materia</div>
+    <div class="list" id="mods"></div>
+    <div class="soon"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#clock"/></svg> <b>În curând:</b> clasele a VII-a și a VIII-a și integrame pe materii. Spune-ne ce ai vrea primul!</div>
+  </div>
+
+  <!-- TESTE -->
+  <div id="pickTest" class="hidden">
+    <div class="modhead"><div class="mh-t" id="mhTitle"></div><div class="mh-s" id="mhTheme"></div><div class="mh-p" id="mhPer"></div><div class="chips" id="mhChips"></div></div>
+    <div class="pick-h">Alege testul</div>
+    <div class="list" id="tests"></div>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="game" class="hidden">
+    <div class="bar"><i id="barI"></i></div>
+    <div class="qbox"><div class="qn"><span id="qn"></span><span class="cmp" id="cmp"></span></div><div class="qt" id="qt"></div></div>
+    <div class="opts" id="opts"></div>
+    <div class="box explain hidden" id="explain"><div class="bl"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#check"/></svg> Explicație</div><div class="bt" id="explainText"></div></div>
+    <div class="box factb hidden" id="fact"><div class="bl"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#lightbulb"/></svg> Știați că…?</div><div class="bt" id="factText"></div></div>
+    <div class="foot"><button class="btn primary hidden" id="next">Următoarea <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#arrow-right"/></svg></button></div>
+  </div>
+
+  <!-- END -->
+  <div id="end" class="result hidden">
+    <div class="big" id="finalScore">0/0</div>
+    <div class="msg" id="finalMsg"></div>
+    <div class="sub" id="finalSub"></div>
+    <div class="foot"><button class="btn primary" id="againTest">Alt test din modul</button><button class="btn" id="againMod">Alt modul</button></div>
+  </div>
+
+  
+</div>
+</div>
+<footer class="site-footer">
+  <nav>
+    <a href="confidentialitate.html">Confidențialitate</a>
+    <a href="cookies.html">Cookies</a>
+    <a href="termeni.html">Termeni</a>
+    <button type="button" data-consent-open>Setări cookies</button>
+  </nav>
+  <span class="site-footer__brand"><img src="assets/icons/icon-192.png" alt="" width="24" height="24">© 2026 PlayLudiq</span>
+</footer>
+</body>
+</html>

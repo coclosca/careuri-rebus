@@ -1,0 +1,207 @@
+/* PlayLudiq · Septică · board styles
+   The page frame, title, chips, buttons, mode cards, rules panel and dialogs
+   come from styles/game.css. This file styles the card table only, with the
+   same felt, card faces, card backs and hand as Popa Prostul and Macao. */
+
+/* Board geometry: card widths on the table, in the hand and face down.
+   Every card keeps the 5:7 playing-card ratio. */
+.game-root {
+  --board-card-width: 46px;
+  --board-hand-card-width: 54px;
+  --board-back-width: 34px;
+  --board-card-ratio: 5 / 7;
+}
+
+/* --- Mode choice: heading above the two mode cards --------------------- */
+.game-root .wrap > .pick { text-align: center; }
+.game-root .pick > h2 { margin-bottom: var(--space-1); }
+.game-root .pick > p {
+  margin-bottom: var(--space-4);
+  color: var(--color-ink-muted);
+  font-size: var(--text-sm);
+}
+/* The mode cards use .t / .d spans instead of the b / text pair game.css expects. */
+.game-root .mbtn .t {
+  display: block;
+  margin-bottom: var(--space-1);
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-display);
+}
+.game-root .mbtn .d { display: block; color: var(--color-ink-muted); }
+.game-root .rules { text-align: left; }
+
+/* --- Dialogs: the JS opens them by adding .on -------------------------- */
+.game-root .modal p {
+  margin-bottom: var(--space-4);
+  color: var(--color-ink-muted);
+}
+.game-root .modal .rules-text { text-align: left; color: var(--color-ink); }
+
+/* --- Felt table -------------------------------------------------------- */
+.game-root .felt {
+  margin-bottom: var(--space-3);
+  padding: var(--space-3);
+  border: var(--border-width) solid var(--color-felt-deep);
+  border-radius: var(--radius-lg);
+  background: var(--color-felt);
+  color: var(--color-on-felt);
+  box-shadow: var(--shadow-raised);
+}
+.game-root .pname {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-2);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-bold);
+}
+.game-root .pname .pts {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 0 var(--space-2);
+  border-radius: var(--radius-sm);
+  background: var(--color-felt-deep);
+  font-variant-numeric: tabular-nums;
+}
+.game-root .pname .pts .icon { color: var(--color-star); }
+
+/* Opponent hand, face down */
+.game-root .backs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-1);
+  min-height: calc(var(--board-back-width) * 7 / 5);
+}
+.game-root .back {
+  width: var(--board-back-width);
+  aspect-ratio: var(--board-card-ratio);
+  border: var(--border-width) solid color-mix(in srgb, var(--color-on-felt) 35%, transparent);
+  border-radius: var(--radius-sm);
+  background: repeating-linear-gradient(45deg,
+              var(--color-card-back) 0 var(--space-1),
+              color-mix(in srgb, var(--color-card-back) 80%, var(--color-card-face)) var(--space-1) var(--space-2));
+}
+
+/* Middle of the table: pile, message, cards left in the deck */
+.game-root .center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  margin: var(--space-2) 0;
+}
+.game-root .pile {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  min-height: calc(var(--board-card-width) * 7 / 5);
+}
+.game-root .pile-empty { opacity: 0.6; font-size: var(--text-sm); }
+.game-root .msg {
+  min-height: calc(var(--text-sm) * var(--leading-body));
+  font-size: var(--text-sm);
+  text-align: center;
+}
+.game-root .stockc {
+  color: color-mix(in srgb, var(--color-on-felt) 80%, transparent);
+  font-size: var(--text-xs);
+  text-align: center;
+}
+
+/* --- Cards: light face in both themes so suits stay readable ----------- */
+.game-root .card {
+  position: relative;
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: var(--board-card-width);
+  aspect-ratio: var(--board-card-ratio);
+  padding: var(--space-1);
+  border: var(--border-width) solid color-mix(in srgb, var(--color-suit-black) 20%, var(--color-card-face));
+  border-radius: var(--radius-sm);
+  background: var(--color-card-face);
+  box-shadow: var(--shadow-raised);
+  font-family: var(--font-display);
+  font-weight: var(--weight-display);
+  line-height: var(--leading-tight);
+}
+.game-root .card .r,
+.game-root .card .s { font-size: var(--text-md); }
+.game-root .card .s { align-self: flex-end; }
+.game-root .card.red { color: var(--color-suit-red); }
+.game-root .card.black { color: var(--color-suit-black); }
+/* A 7 cuts anything; the first card of the hand is the one to cut. */
+.game-root .card.seven {
+  box-shadow: 0 0 0 calc(var(--border-width) * 2) var(--color-games), var(--shadow-raised);
+}
+.game-root .card.base {
+  outline: calc(var(--border-width) * 3) solid var(--color-star);
+  outline-offset: var(--border-width);
+}
+
+/* --- Your hand --------------------------------------------------------- */
+.game-root .handwrap { position: relative; }
+.game-root .hand {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: calc(var(--board-hand-card-width) * 7 / 5);
+  margin-top: var(--space-1);
+}
+.game-root .hand .card {
+  width: var(--board-hand-card-width);
+  cursor: pointer;
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+.game-root .hand .card .r,
+.game-root .hand .card .s { font-size: var(--text-lg); }
+.game-root .hand .card:active { transform: translateY(calc(var(--space-1) * -1)); }
+/* Point cards (10 and As) carry a small star. */
+.game-root .hand .card.pt::after {
+  content: "★";
+  position: absolute;
+  bottom: var(--space-1);
+  left: var(--space-1);
+  color: var(--color-star);
+  font-size: var(--text-xs);
+}
+
+/* Pass and play: hides the hand between turns */
+.game-root .curtain {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  padding: var(--space-3);
+  border-radius: var(--radius-lg);
+  background: var(--color-felt-deep);
+  color: var(--color-on-felt);
+  text-align: center;
+  cursor: pointer;
+  box-shadow: var(--shadow-raised);
+}
+.game-root .curtain .t {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-display);
+}
+.game-root .curtain .d { font-size: var(--text-sm); }
+
+.game-root .turn {
+  margin: var(--space-2) 0;
+  color: var(--color-accent);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-bold);
+  text-align: center;
+}

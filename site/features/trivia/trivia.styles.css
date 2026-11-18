@@ -1,0 +1,212 @@
+/* PlayLudiq · Trivia · board styles
+   Frame, title, stat chips, buttons, button row and answer options (.opt)
+   come from styles/game.css. This file styles the board only: timer bar,
+   question card, option markers, fact box, start/end card, length picker
+   and the streak flash. */
+
+/* --- Board geometry and option colours --------------------------------- */
+.game-root {
+  --board-timer-height: 9px;                        /* countdown bar under the title  */
+  --board-question-min-height: 104px;               /* card keeps its size between questions */
+  --board-marker-size: 28px;                        /* shape marker on each option    */
+  --board-hero-size: 64px;                          /* icon tile on the start/end card */
+  --board-score-size: calc(var(--text-3xl) * 1.5);  /* final score on the end card    */
+  /* One colour per answer position, so the options read at a glance. */
+  --board-option-0: var(--color-family-cards);
+  --board-option-1: var(--color-family-school);
+  --board-option-2: var(--color-family-words);
+}
+
+/* --- Timer bar --------------------------------------------------------- */
+.game-root .timebar {
+  height: var(--board-timer-height);
+  margin-block: var(--space-1) var(--space-3);
+  overflow: hidden;
+  border-radius: var(--radius-pill);
+  background: var(--color-surface-sunken);
+}
+.game-root .timebar > i {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-correct), var(--color-star), var(--color-timer-low));
+  transition: width var(--duration-base) linear;
+}
+
+/* --- Question card ----------------------------------------------------- */
+.game-root .cat {
+  margin-bottom: var(--space-2);
+  color: var(--color-ink-muted);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.03em;
+  text-align: center;
+}
+.game-root .qbox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--board-question-min-height);
+  margin-bottom: var(--space-3);
+  padding: var(--space-5) var(--space-4);
+  border: var(--border-width) solid var(--color-line);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-raised);
+  text-align: center;
+}
+.game-root .qbox .qt {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-tight);
+}
+
+/* --- Answer options: shape markers and the timed result states -------- */
+.game-root .opt .ic {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: var(--board-marker-size);
+  height: var(--board-marker-size);
+  border-radius: var(--radius-sm);
+}
+.game-root .opt.o0 .ic { color: var(--board-option-0); background: color-mix(in srgb, var(--board-option-0) 16%, var(--color-surface)); }
+.game-root .opt.o1 .ic { color: var(--board-option-1); background: color-mix(in srgb, var(--board-option-1) 16%, var(--color-surface)); }
+.game-root .opt.o2 .ic { color: var(--board-option-2); background: color-mix(in srgb, var(--board-option-2) 16%, var(--color-surface)); }
+.game-root .opt:active { transform: scale(0.98); }
+.game-root .opt.win  { border-color: var(--color-correct); background: var(--color-correct-soft); }
+.game-root .opt.lose { border-color: var(--color-wrong); background: var(--color-wrong-soft); }
+.game-root .opt.mut  { opacity: 0.45; }
+
+/* --- Fact box after an answer ------------------------------------------ */
+.game-root .factb {
+  margin-top: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border: var(--border-width) solid color-mix(in srgb, var(--family) 30%, var(--color-line));
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--family) 8%, var(--color-surface));
+  animation: trivia-fade var(--duration-base) var(--ease-out);
+}
+.game-root .factb .bl {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin-bottom: var(--space-1);
+  color: var(--color-ink-muted);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-display);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.game-root .factb .bl .icon { color: var(--family); }
+.game-root .factb .bt {
+  font-size: var(--text-md);
+  line-height: var(--leading-body);
+}
+
+/* --- Next button row --------------------------------------------------- */
+.game-root .foot {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--space-3);
+}
+.game-root a.btn { text-decoration: none; }
+
+/* --- Start and end card ------------------------------------------------ */
+.game-root .panel {
+  margin-top: var(--space-2);
+  padding: var(--space-6) var(--space-5);
+  border: var(--border-width) solid var(--color-line);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-raised);
+  text-align: center;
+}
+.game-root .panel .big {
+  display: grid;
+  place-items: center;
+  width: var(--board-hero-size);
+  height: var(--board-hero-size);
+  margin: 0 auto var(--space-3);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--family) 12%, var(--color-surface));
+  color: var(--family);
+}
+.game-root .panel .big .icon { width: 50%; height: 50%; }
+.game-root .panel h2 {
+  margin-bottom: var(--space-2);
+  font-size: var(--text-2xl);
+}
+.game-root .panel p {
+  margin-bottom: var(--space-4);
+  color: var(--color-ink-muted);
+}
+.game-root .panel .score {
+  color: var(--family);
+  font-family: var(--font-display);
+  font-size: var(--board-score-size);
+  font-weight: var(--weight-display);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.game-root .panel .lbl {
+  margin-block: var(--space-1) var(--space-4);
+  color: var(--color-ink-muted);
+  font-size: var(--text-sm);
+}
+
+/* --- Pickers on the start card ----------------------------------------- */
+.game-root .lenrow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+.game-root .lenrow button {
+  min-height: var(--tap-target);
+  padding: 0 var(--space-4);
+  border: var(--border-width) solid var(--color-line);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface-sunken);
+  color: var(--color-ink);
+  font: var(--weight-bold) var(--text-sm) / 1 var(--font-body);
+  cursor: pointer;
+}
+.game-root .lenrow button:hover { border-color: var(--family); }
+.game-root .lenrow button.on {
+  border-color: var(--family);
+  background: color-mix(in srgb, var(--family) 14%, var(--color-surface));
+}
+
+/* --- Streak flash ------------------------------------------------------ */
+.game-root .flash {
+  position: fixed;
+  top: 30%;
+  left: 50%;
+  z-index: var(--layer-toast);
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  color: var(--color-correct);
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-display);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-50%);
+}
+.game-root .flash .icon { color: var(--color-star); }
+.game-root .flash.go { animation: trivia-pop 1s ease; }
+
+@keyframes trivia-fade {
+  from { opacity: 0; transform: translateY(var(--space-2)); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes trivia-pop {
+  0%   { opacity: 0; transform: translateX(-50%) translateY(var(--space-2)) scale(0.8); }
+  20%  { opacity: 1; transform: translateX(-50%) translateY(0) scale(1.1); }
+  80%  { opacity: 1; }
+  100% { opacity: 0; transform: translateX(-50%) translateY(calc(var(--space-4) * -1)); }
+}

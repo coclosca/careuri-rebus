@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script src="shared/theme/theme.js"></script>
+<script src="shared/page-loader/page-loader.js" defer></script>
+<title>Roata Cuvintelor · PlayLudiq</title>
+<meta name="description" content="Ghicește proverbul alegând vocale și consoane.">
+<link rel="canonical" href="https://playludiq.com/roata.html">
+<meta name="theme-color" content="#176b63">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="assets/icons/icon-192.png">
+<link rel="apple-touch-icon" href="assets/icons/icon-192.png">
+<link rel="stylesheet" href="styles/tokens.css">
+<link rel="stylesheet" href="styles/base.css">
+<link rel="stylesheet" href="styles/components.css">
+<link rel="stylesheet" href="styles/game.css">
+<link rel="stylesheet" href="shared/consent/consent.css">
+<link rel="stylesheet" href="features/roata/roata.styles.css">
+<script src="shared/consent/consent.js" defer></script>
+<script src="shared/pwa/register-service-worker.js" defer></script>
+<script src="features/roata/roata.game.js" defer></script>
+<script type="text/plain" data-consent="statistics" data-src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "74c145f1f04942f2879e1c23044be639"}'></script>
+</head>
+<body>
+<header class="top-bar">
+  <a class="top-bar__brand" href="index.html" aria-label="PlayLudiq, pagina de start"><img src="assets/icons/icon-192.png" alt="" width="28" height="28"><span>PlayLudiq</span></a>
+</header>
+<div class="game-root" data-family="words">
+<div class="wrap">
+  <a class="back-link" href="jocuri.html"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#arrow-left"/></svg> Jocuri</a>
+  <div class="top">
+    <h1><small>Ghicește fraza</small>Roata Cuvintelor</h1>
+    <div class="stat">Scor: <b id="score">0</b></div>
+  </div>
+
+  <div class="cat">Categorie: <b id="cat">Proverb</b></div>
+  <div class="stats budgets">
+    <div class="stat"><span class="v">Vocale</span> <b id="vLeft">3</b></div>
+    <div class="stat"><span class="c">Consoane</span> <b id="cLeft">4</b></div>
+  </div>
+
+  <div class="board" id="board"></div>
+  <div class="hintrow" id="hint">Alege litere, apoi apasă „Ghicește!"</div>
+
+  <div class="kb" id="kb"></div>
+
+  <div class="ctrls">
+    <button class="btn primary" id="guessBtn"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#check"/></svg> Ghicește soluția</button>
+    <button class="btn" id="revealBtn"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#eye"/></svg> Soluția</button>
+    <button class="btn" id="newBtn"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#restart"/></svg> Alta</button>
+  </div>
+
+  <div class="help">
+    Ghicește proverbul! Ai <b>3 vocale</b> și <b>4 consoane</b> de dezvăluit. Apasă o literă → apare peste tot unde există (sau se marchează dacă lipsește). Când crezi că știi, apasă <b>„Ghicește soluția"</b> și scrie fraza întreagă.
+  </div>
+  
+</div>
+
+<div class="overlay" id="guessOv"><div class="modal">
+  <h2>Scrie soluția</h2>
+  <p>Scrie proverbul întreg (fără grija diacriticelor).</p>
+  <input id="guessInp" autocomplete="off" autocapitalize="characters" placeholder="ex. VORBA DULCE MULT ADUCE">
+  <div class="mrow"><button class="btn" id="guessCancel">Înapoi</button><button class="btn primary" id="guessOk">Verifică</button></div>
+</div></div>
+
+<div class="overlay" id="endOv"><div class="modal">
+  <h2 id="endT"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#trophy"/></svg> Corect!</h2>
+  <div class="author" id="endAuthor"></div>
+  <button class="btn primary" id="endNew">Alt proverb</button>
+</div></div>
+</div>
+<footer class="site-footer">
+  <nav>
+    <a href="confidentialitate.html">Confidențialitate</a>
+    <a href="cookies.html">Cookies</a>
+    <a href="termeni.html">Termeni</a>
+    <button type="button" data-consent-open>Setări cookies</button>
+  </nav>
+  <span class="site-footer__brand"><img src="assets/icons/icon-192.png" alt="" width="24" height="24">© 2026 PlayLudiq</span>
+</footer>
+</body>
+</html>

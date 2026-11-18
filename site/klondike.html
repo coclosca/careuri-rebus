@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script src="shared/theme/theme.js"></script>
+<script src="shared/page-loader/page-loader.js" defer></script>
+<title>Solitaire (Klondike) · PlayLudiq</title>
+<meta name="description" content="Pasiența clasică: de la As la Rege, pe culori.">
+<link rel="canonical" href="https://playludiq.com/klondike.html">
+<meta name="theme-color" content="#176b63">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="assets/icons/icon-192.png">
+<link rel="apple-touch-icon" href="assets/icons/icon-192.png">
+<link rel="stylesheet" href="styles/tokens.css">
+<link rel="stylesheet" href="styles/base.css">
+<link rel="stylesheet" href="styles/components.css">
+<link rel="stylesheet" href="styles/game.css">
+<link rel="stylesheet" href="shared/consent/consent.css">
+<link rel="stylesheet" href="features/klondike/klondike.styles.css">
+<script src="shared/consent/consent.js" defer></script>
+<script src="shared/pwa/register-service-worker.js" defer></script>
+<script src="features/klondike/klondike.game.js" defer></script>
+<script type="text/plain" data-consent="statistics" data-src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "74c145f1f04942f2879e1c23044be639"}'></script>
+</head>
+<body>
+<header class="top-bar">
+  <a class="top-bar__brand" href="index.html" aria-label="PlayLudiq, pagina de start"><img src="assets/icons/icon-192.png" alt="" width="28" height="28"><span>PlayLudiq</span></a>
+</header>
+<div class="game-root" data-family="solitaire">
+<div class="wrap">
+  <a class="back-link" href="jocuri.html"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#arrow-left"/></svg> Jocuri</a>
+  <div class="top">
+    <h1><small>Pasiență</small>Solitaire · Klondike</h1>
+    <div class="stats">
+      <div class="stat"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#timer"/></svg> <b id="time">0:00</b></div>
+      <div class="stat">Mutări <b id="moves">0</b></div>
+    </div>
+  </div>
+
+  <div class="board">
+    <div class="row toprow">
+      <div class="slot" id="stock"></div>
+      <div class="slot" id="waste"></div>
+      <div class="slot" aria-hidden="true"></div>
+      <div class="slot found" id="f0"></div>
+      <div class="slot found" id="f1"></div>
+      <div class="slot found" id="f2"></div>
+      <div class="slot found" id="f3"></div>
+    </div>
+    <div class="row" id="tableau">
+      <div class="col" id="t0"></div><div class="col" id="t1"></div><div class="col" id="t2"></div>
+      <div class="col" id="t3"></div><div class="col" id="t4"></div><div class="col" id="t5"></div><div class="col" id="t6"></div>
+    </div>
+  </div>
+
+  <div class="ctrls">
+    <button class="btn primary" id="newBtn"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#restart"/></svg> Joc nou</button>
+    <button class="btn" id="undoBtn"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#undo"/></svg> Înapoi</button>
+    <button class="btn" id="autoBtn"><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#zap"/></svg> La casă</button>
+  </div>
+  <div class="draw-mode">
+    Trage din pachet:
+    <span class="seg"><button id="d1" class="on">1 carte</button><button id="d3">3 cărți</button></span>
+  </div>
+
+  <div class="help">
+    <svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#target"/></svg> <b>Scop:</b> mută toate cărțile pe cele 4 case (sus-dreapta), de la <b>As</b> la <b>Rege</b>, pe culori.<br>
+    Apasă o carte, apoi locul unde o pui. <b>Dublu-tap</b> = o trimite direct la casă. Jos construiești <b>descrescător și alternând culorile</b> (roșu–negru). Pe o coloană goală pui doar un <b>Rege</b>.
+  </div>
+  
+</div>
+
+<div class="overlay" id="win"><div class="modal">
+  <h2><svg class="icon" aria-hidden="true"><use href="assets/icons/icons.svg#trophy"/></svg> Felicitări!</h2>
+  <p id="winSub">Ai rezolvat pasiența.</p>
+  <button class="btn primary" id="winNew">Joc nou</button>
+</div></div>
+</div>
+<footer class="site-footer">
+  <nav>
+    <a href="confidentialitate.html">Confidențialitate</a>
+    <a href="cookies.html">Cookies</a>
+    <a href="termeni.html">Termeni</a>
+    <button type="button" data-consent-open>Setări cookies</button>
+  </nav>
+  <span class="site-footer__brand"><img src="assets/icons/icon-192.png" alt="" width="24" height="24">© 2026 PlayLudiq</span>
+</footer>
+</body>
+</html>
