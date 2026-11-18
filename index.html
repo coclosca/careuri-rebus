@@ -17,18 +17,28 @@ h1{font-family:"Bricolage Grotesque";font-weight:800;font-size:clamp(28px,7.5vw,
 .offbtn{display:inline-flex;align-items:center;gap:7px;margin-top:14px;background:var(--card);border:1px solid var(--line);color:var(--accent);font-weight:700;font-size:13px;padding:9px 16px;border-radius:999px;box-shadow:var(--shadow);cursor:pointer;font-family:inherit}
 .offbtn:active{transform:translateY(1px)}
 
-/* === cele doua usi === */
-.doors{display:grid;gap:14px;margin-top:6px}
-.door{display:flex;align-items:center;gap:16px;border-radius:20px;padding:22px 20px;text-decoration:none;color:inherit;box-shadow:var(--shadow);position:relative;overflow:hidden;border:1px solid var(--line);transition:transform .1s}
-.door:active{transform:scale(.98)}
-.door .emo{font-size:40px;line-height:1;flex:none}
-.door .nm{font-family:"Bricolage Grotesque";font-weight:800;font-size:22px;line-height:1.05}
-.door .ds{font-size:13px;color:var(--muted);line-height:1.35;margin-top:3px}
-.door .go{margin-left:auto;font-size:24px;opacity:.5;flex:none}
-.door.play{background:linear-gradient(135deg,var(--card),color-mix(in srgb,var(--accent) 12%,var(--card)))}
-.door.play .emo{filter:drop-shadow(0 2px 4px rgba(0,0,0,.1))}
-.door.school{background:linear-gradient(135deg,var(--card),color-mix(in srgb,var(--school) 14%,var(--card)));border-color:color-mix(in srgb,var(--school) 30%,var(--line))}
-.door.school .nm{color:var(--school)}
+/* === cele doua usi (3D) === */
+.hall{position:relative;background:#23303d;border-radius:24px;padding:46px 14px 18px;box-shadow:var(--shadow);overflow:hidden}
+.hall::before{content:"";position:absolute;left:-10%;right:-10%;bottom:0;height:42%;background:repeating-linear-gradient(90deg,#2e3d4c 0 34px,#34465a 34px 68px);transform:perspective(500px) rotateX(58deg);transform-origin:bottom center;opacity:.9}
+.doors{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.door{position:relative;display:flex;flex-direction:column;align-items:center;text-decoration:none;color:#eef2f4;-webkit-tap-highlight-color:transparent;perspective:520px}
+.door.play{perspective-origin:50% 40%}.door.school{perspective-origin:50% 40%}
+.frame{position:relative;width:70%;height:220px;transform-style:preserve-3d;perspective:520px}
+.light{position:absolute;inset:0;border-radius:10px 10px 0 0}
+.door.play .light{background:#ffe7b8;box-shadow:0 0 50px 8px rgba(224,162,74,.5)}
+.door.school .light{background:#dcebff;box-shadow:0 0 50px 8px rgba(110,165,235,.5)}
+.leaf{position:absolute;inset:0;border-radius:10px 10px 0 0;border:5px solid rgba(0,0,0,.22);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;transition:transform .45s cubic-bezier(.2,.8,.2,1)}
+.door.play .leaf{background:#176b63;transform:rotateY(-42deg);transform-origin:left center;box-shadow:8px 0 16px rgba(0,0,0,.35)}
+.door.school .leaf{background:#2563a8;transform:rotateY(42deg);transform-origin:right center;box-shadow:-8px 0 16px rgba(0,0,0,.35)}
+.door.play:hover .leaf,.door.play:active .leaf{transform:rotateY(-62deg)}
+.door.school:hover .leaf,.door.school:active .leaf{transform:rotateY(62deg)}
+.knob{position:absolute;top:52%;width:9px;height:9px;border-radius:50%;background:#e0a24a}
+.door.play .knob{right:10px}.door.school .knob{left:10px}
+.leaf .lbl{font-family:"Bricolage Grotesque";font-weight:800;font-size:21px;color:#fff}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:4px}
+.tiles span{width:26px;height:26px;border-radius:6px;background:#f4efe3;color:#23303d;font-family:"Bricolage Grotesque";font-weight:800;font-size:16px;display:flex;align-items:center;justify-content:center}
+.tiles span:nth-child(1),.tiles span:nth-child(4){background:#e0a24a}
+.door .ds{position:relative;z-index:2;margin-top:46px;font-size:13.5px;line-height:1.35;text-align:center;color:#d4dce3;max-width:180px}
 
 .sect{font-weight:800;letter-spacing:.14em;text-transform:uppercase;font-size:11px;color:var(--accent);margin:26px 4px 12px;display:flex;align-items:center;gap:8px}
 .sect::after{content:"";flex:1;height:1px;background:var(--line)}
@@ -72,22 +82,25 @@ footer{text-align:center;color:var(--muted);font-size:12px;margin-top:22px}
   <div class="hero">
     <div class="kick">PlayLudiq</div>
     <h1>Jocuri de minte<br>&amp; Teste școlare</h1>
-    <p>Alege o lume 👇</p>
     <button class="offbtn" id="offBtn">📴 Joacă și fără internet — vezi cum</button>
     <button class="offbtn" id="shareBtn" style="margin-left:6px">📤 Invită prieteni</button>
   </div>
 
+  <div class="hall">
   <div class="doors">
-    <a class="door play" href="jocuri.html">
-      <div class="emo">🎮</div>
-      <div><div class="nm">Joacă-te</div><div class="ds">Integrame, rebus, pasiențe, quiz și trivia — pentru distracție.</div></div>
-      <div class="go">→</div>
+    <a class="door play" href="jocuri.html" aria-label="Jocuri: integrame, criptograme, jocuri de cărți, Quiz Fotbal">
+      <div class="frame"><span class="light"></span>
+        <span class="leaf"><span class="tiles"><span>J</span><span>O</span><span>C</span><span>!</span></span><span class="lbl">Jocuri</span><span class="knob"></span></span>
+      </div>
+      <div class="ds">Integrame, criptograme, jocuri de cărți, Quiz Fotbal</div>
     </a>
-    <a class="door school" href="scoala.html">
-      <div class="emo">📚</div>
-      <div><div class="nm">Teste școlare</div><div class="ds">Învață pe materii și module. Matematică și Educație Muzicală, clasele V–VI.</div></div>
-      <div class="go">→</div>
+    <a class="door school" href="scoala.html" aria-label="Școală: teste pe module, quiz-uri și integrame pentru elevi">
+      <div class="frame"><span class="light"></span>
+        <span class="leaf"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 9l10-5 10 5-10 5-10-5z"/><path d="M6 11v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/><path d="M22 9v6"/></svg><span class="lbl">Școală</span><span class="knob"></span></span>
+      </div>
+      <div class="ds">Teste pe module, quiz-uri și integrame pentru elevi</div>
     </a>
+  </div>
   </div>
 
   <footer>Făcut cu drag · se adaugă jocuri și teste mereu</footer>
