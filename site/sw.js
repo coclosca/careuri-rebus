@@ -3,7 +3,7 @@
    (no "close the app to update"); the saved copy is used only offline.
    RULE: when you add, rename or delete a file in site/, update PRECACHE_FILES
    and raise CACHE_VERSION. tools/check-site.mjs fails if the list is wrong. */
-const CACHE_VERSION = "playludiq-v41";
+const CACHE_VERSION = "playludiq-v42";
 const OFFLINE_FALLBACK = "index.html";
 const PRECACHE_FILES = [
   "./",
